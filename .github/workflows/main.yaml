@@ -38,14 +38,13 @@ jobs:
         extensionDir: '.'
         zipFilePath: 'build/extension.zip'
 
-    - name: Release Package as Pre-Repease
-      uses: "marvinpinto/action-automatic-releases@latest"
+    - uses: "marvinpinto/action-automatic-releases@latest"
       with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: true
-          title: "Foundry-Upgrade-${{ github.run_number }}"
+          prerelease: false
           files: |
-            'build/extension.zip'
+            build/extension.zip
+
 
     - uses: cardinalby/webext-buildtools-chrome-crx-action@v2
       with:
