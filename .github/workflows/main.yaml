@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -23,3 +22,21 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm i
     - run: npm run build
+
+    - run: ls
+
+    - id: packExtensionDir
+      uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
+      with:
+        extensionDir: 'extension'
+        zipFilePath: 'build/extension.zip'
+
+    - uses: cardinalby/webext-buildtools-chrome-crx-action@v2
+      with:
+        # zip file made at the packExtensionDir step
+        zipFilePath: 'build/extension.zip'
+        crxFilePath: 'build/extension.crx'
+        privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
+        # The following is optional if you need update.xml file
+        updateXmlPath: 'build/update.xml'
+        updateXmlCodebaseUrl: 'https://server.com/extension.crx'
