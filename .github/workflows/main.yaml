@@ -23,8 +23,14 @@ jobs:
     - run: npm i
     - run: npm run build
     - run: ls
-    - run: rm -rf node_modules
-    - run: rm -rf build
+    - name: cleanup
+      run: |
+        rm -rf node_modules
+        rm -rf src
+        rm package-lock.json
+        rm package.json
+        rm tsconfig.json.json
+        rm webpack.config.js
 
     - id: packExtensionDir
       uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
@@ -36,7 +42,7 @@ jobs:
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "Foundry-Upgrade-${{ github.run_number }}"
+          automatic_release_tag: "prerelease_${{ github.run_number }}"
           prerelease: true
           title: "Foundry-Upgrade-${{ github.run_number }}"
           files: |
