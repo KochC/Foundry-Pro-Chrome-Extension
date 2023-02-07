@@ -23,12 +23,10 @@ jobs:
     - run: npm i
     - run: npm run build
 
-    - run: ls
-
     - id: packExtensionDir
       uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
       with:
-        extensionDir: 'extension'
+        extensionDir: '.'
         zipFilePath: 'build/extension.zip'
 
     - uses: cardinalby/webext-buildtools-chrome-crx-action@v2
