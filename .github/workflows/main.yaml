@@ -42,7 +42,7 @@ jobs:
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "prerelease_${{ github.run_number }}"
+          automatic_release_tag: "latest"
           prerelease: true
           title: "Foundry-Upgrade-${{ github.run_number }}"
           files: |
