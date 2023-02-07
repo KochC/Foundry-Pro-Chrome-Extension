@@ -38,13 +38,20 @@ jobs:
         extensionDir: '.'
         zipFilePath: 'build/extension.zip'
 
-    - uses: "marvinpinto/action-automatic-releases@latest"
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          files: |
-            build/extension.zip
-
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          Changes in this Release
+          - First Change
+          - Second Change
+        draft: false
+        prerelease: false
 
     - uses: cardinalby/webext-buildtools-chrome-crx-action@v2
       with:
