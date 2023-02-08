@@ -37,7 +37,17 @@ jobs:
       uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
       with:
         extensionDir: '.'
-        zipFilePath: 'build/Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}.zip'
+        zipFilePath: 'build/package.zip'
+
+    - uses: cardinalby/webext-buildtools-chrome-crx-action@v2
+      with:
+        # zip file made at the packExtensionDir step
+        zipFilePath: 'build/package.zip'
+        crxFilePath: 'crx-file.crx'
+        privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
+
+    - name: Rename to release
+      run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}.zip
 
     - name: Release Package as Pre-Repease
       uses: "marvinpinto/action-automatic-releases@latest"
@@ -48,13 +58,3 @@ jobs:
           title: "Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}"
           files: |
             ./build/Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}.zip
-
-    - uses: cardinalby/webext-buildtools-chrome-crx-action@v2
-      with:
-        # zip file made at the packExtensionDir step
-        zipFilePath: 'build/extension.zip'
-        crxFilePath: 'build/extension.crx'
-        privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
-        # The following is optional if you need update.xml file
-        updateXmlPath: 'build/update.xml'
-        updateXmlCodebaseUrl: 'https://server.com/extension.crx'
