@@ -59,3 +59,13 @@ jobs:
           title: "Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}"
           files: |
             ./build/Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}.zip
+            
+    - name: Push to store
+      uses: Klemensas/chrome-extension-upload-action@$VERSION
+      with:
+        refresh-token: "${{ secrets.REFRESH_TOKEN }}"
+        client-id: "${{ secrets.CLIENT_ID }}"
+        client-secret: "${{ secrets.CLIENT_SECRET }}"
+        file-name: './build/Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}.zip'
+        app-id: 'emafkichlndjaelgikdhljjpohlomahm'
+        publish: false
