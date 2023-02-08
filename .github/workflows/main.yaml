@@ -26,8 +26,9 @@ jobs:
     - run: ls
     - name: cleanup
       run: |
-        rm -rf node_modules
-        rm -rf src
+        rm -rf ./node_modules
+        rm -rf ./src
+        rm -rf ./public
         rm package-lock.json
         rm package.json
         rm tsconfig.json
