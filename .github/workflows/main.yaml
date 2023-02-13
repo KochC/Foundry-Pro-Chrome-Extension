@@ -64,7 +64,7 @@ jobs:
       uses: mnao305/chrome-extension-upload@v4.0.1
       with:
         file-path: './build/Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}.zip'
-        extension-id: 'emafkichlndjaelgikdhljjpohlomahm'
+        extension-id: 'anjiaghdipilddabdekbchcgenjmofan'
         client-id: ${{ secrets.CLIENT_ID }}
         client-secret: ${{ secrets.CLIENT_SECRET }}
         refresh-token: ${{ secrets.REFRESH_TOKEN }}
