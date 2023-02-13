@@ -81,3 +81,8 @@
 .pf_notification.show {
     top: 0px;
 }
+
+body#pf_popup_container{
+    margin: 0;
+    padding: 0;
+}
