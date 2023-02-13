@@ -1,5 +1,5 @@
 {
-    "name": "foundry_pro",
+    "name": "foundry_pro_chrome_extension",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
