@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Foundry Pro Chrome Extension",
-    "description": "This tool adds new menu items to the Palantir Foundry UI for developers. Basic features are: - One click copying the current session-token into the clip-board. - One click creating a short-live token which gets copied into the clip-board. - more functions will be added soon.",
+    "description": "This tool adds new menu items to the Palantir Foundry UI for developers.",
     "version": "1.0",
     "content_scripts": [
         {
