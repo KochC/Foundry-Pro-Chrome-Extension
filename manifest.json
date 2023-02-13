@@ -11,7 +11,6 @@
     "background": {
         "service_worker": "background.js"
     },
-    "permissions": ["tabs", "storage", "nativeMessaging", "scripting"],
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
