@@ -1,39 +1,62 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import $ from "jquery";
 import Menu from "./Menu";
-
+import Popup from "./Popup"
 import styled from "styled-components"
 
 const MenuBorder = styled.div`
 `
 
-var counter = 10;
-    var init_interval = setInterval(() => {
-        if (
-            document.URL.includes("foundry") ||
-            document.URL.includes("palantir")
-        ) {
-            counter++;
-            var n = $(
-                '[class^="workspace-shell-ui__sidebar-grouped-menu-container__"]'
-            )[0];
-            if (n !== undefined || counter > 10) {
-                clearInterval(init_interval);
-                init(n);
-            }
-        } else {
-            // stop trying because there is no foundry installation
-          console.log("Not foundry");
-          clearInterval(init_interval);
-        }
-    }, 1000);
+var counter = 0;
+
+const init = () => {
+  console.log("try")
+  if (counter < 10) {
+    counter++;
+    // try to init menu
+    var n = $('[class^="workspace-shell-ui__sidebar-grouped-menu-container__"]')[0];
+    if (n !== undefined) {
+      console.log("Init menu")
+      if (init_interval != null)
+        clearInterval(init_interval);
+      init_menu(n);
+      return;
+    }
+
+    // try to init popup
+    var p = document.getElementById("pf_popup_container")
+    if (p !== undefined) {
+      console.log("Init popup")
+      if (init_interval != null)
+        clearInterval(init_interval);
+      init_popup(p);
+      return;
+    }
+  } else {
+    // stop trying because there is no foundry installation
+    console.log("Not foundry nor popup");
+
+    if (init_interval != null)
+      clearInterval(init_interval);
+    return;
+  }
+}
 
 
-function init(n: any) {
+var init_interval = setInterval(init, 100);
 
+function init_popup(n: any) {
+  const popup = ReactDOM.createRoot(n);
+  popup.render(
+    <React.StrictMode>
+      <Popup />
+    </React.StrictMode>
+  );
+}
+
+function init_menu(n: any) {
   $('<div class="pf_separator"/>').prependTo(n);
   var menu = document.createElement('div')
   menu.setAttribute("id", "pf_menu_89345h0ade")
@@ -47,5 +70,4 @@ function init(n: any) {
       </MenuBorder>
     </React.StrictMode>
   );
-
 }  
