@@ -39,7 +39,7 @@ const Menu = () => {
     return (
         <Popup>
             <p>
-                <img src={extension_icon} /> Foundry-pro Chrome Extension v1.0
+                <img src={extension_icon} /> Foundry-pro Chrome Extension
             </p>
             <p>
                 <br />
