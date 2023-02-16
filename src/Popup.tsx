@@ -46,7 +46,6 @@ const Menu = () => {
             </p>
             <p>
                 <ManageExistingLinks />
-                <br />
                 Please report issues or feature requests <a target="_blank" href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/issues">here</a>.
             </p>
         </Popup >

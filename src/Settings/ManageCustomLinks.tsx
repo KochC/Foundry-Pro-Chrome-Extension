@@ -17,7 +17,15 @@ const SettingsContainer = styled.div`
         text-decoration: underline;
     }
 `
+const Name = styled.td`
 
+`
+const Link = styled.td`
+    font-style: italic;
+    text-overflow: elipsis;
+    verflow: hidden;
+    white-space:nowrap
+`
 
 const ManageExistingLinks = () => {
 
@@ -72,12 +80,21 @@ const ManageExistingLinks = () => {
                 <input onChange={changedUrl} value={url} placeholder='url'></input>
                 <button onClick={add_link}>Add</button>
             </div>
+            <br />
             <p>Manage existing links:</p>
-            <ul>
-                {
-                    customLinks.length > 0 ? customLinks.map((link) => <li>{link.name}</li>) : ""
-                }
-            </ul>
+            <table>
+                <tbody>
+                    {
+                        customLinks.length > 0 ? customLinks.map((link) =>
+                            <tr>
+                                <Name>{link.name}</Name>
+                                <Link>{link.url}</Link>
+                                <td>X</td>
+                            </tr>
+                        ) : <li>No custom links</li>
+                    }
+                </tbody>
+            </table>
             <a onClick={reset}>Reset all</a>
         </SettingsContainer >
     );
