@@ -3,53 +3,37 @@ import styled from 'styled-components';
 import { LinkProps } from './Item';
 import ManageExistingLinks from './Settings/ManageCustomLinks';
 import extension_icon from '../icon/icon48_dark.png'
+import { Card, H5, Button, ControlGroup, InputGroup, Tag } from "@blueprintjs/core";
 
-const Popup = styled.div`
-    width: 270px;
-    max-width: 500px;
-    height: auto;
-    background-color: #2d72d2;
-    border-radius: 2px;
-    padding: 10px 8px;
-    font-size: 13px;
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 1.2858142857;
-    text-transform: none;
-    color: #F6F7FC;
-    font-family: Source-Sans-Pro,Helvetica,sans-serif,blueprint-icons-16;
-
-    & img{
-        width: 20px;
-        height: 20px;
-        margin-bottom: -5px;
-    }
-
-    & p{
-        margin: 0;
-        padding: 0;
-    }
-
-    & a{
-        color: white;
-    }
+const SettingsContainer = styled.div`
+    width: 600px;
 `
 
-const Menu = () => {
+const Logo = styled.img`
+    margin-bottom: -4.5px;
+    margin-right: 5px;
+`
 
-
-
+const Settings = () => {
     return (
-        <Popup>
-            <p>
-                <img src={extension_icon} /> Foundry-pro Settings
-            </p>
-            <p>
-                <ManageExistingLinks />
-                Please report issues or feature requests <a target="_blank" href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/issues">here</a>.
-            </p>
-        </Popup >
+        <SettingsContainer>
+            <nav className="bp4-navbar bp4-dark">
+                <div>
+                    <div className="bp4-navbar-group bp4-align-left">
+                        <div className="bp4-navbar-heading">
+                            <Logo height="20px" src={extension_icon} />Foundry-Pro</div>
+                    </div>
+                    <div className="bp4-navbar-group bp4-align-right">
+                        <Tag>
+                            {"Release Version 1.34"}
+                        </Tag>
+                    </div>
+                </div>
+            </nav>
+            <ManageExistingLinks />
+
+        </SettingsContainer >
     );
 };
 
-export default Menu;
+export default Settings;

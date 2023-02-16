@@ -2,29 +2,20 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { LinkProps } from '../Item';
 
-const SettingsContainer = styled.div`
-    padding: 10px 0 10px 0;
-    input{
-        width: calc(50% - 20px);
-        float: left;
-    }
-    button{
-        width: 40px;
-        float: left;
-    }
-    a{
-        cursor: pointer;
-        text-decoration: underline;
-    }
-`
-const Name = styled.td`
+import { Card, H5, Button, ControlGroup, InputGroup, Icon } from "@blueprintjs/core";
 
+const SettingsContainer = styled.div`
+    > div{
+        margin: 20px;
+        overflow: hidden;
+    }
 `
-const Link = styled.td`
-    font-style: italic;
-    text-overflow: elipsis;
-    verflow: hidden;
-    white-space:nowrap
+const TD = styled.td`
+    display: block;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `
 
 const ManageExistingLinks = () => {
@@ -74,28 +65,43 @@ const ManageExistingLinks = () => {
 
     return (
         <SettingsContainer>
-            <div>
-                <p>Add your custom link:</p>
-                <input onChange={changedName} value={name} placeholder='Name'></input>
-                <input onChange={changedUrl} value={url} placeholder='url'></input>
-                <button onClick={add_link}>Add</button>
-            </div>
-            <br />
-            <p>Manage existing links:</p>
-            <table>
-                <tbody>
-                    {
-                        customLinks.length > 0 ? customLinks.map((link) =>
-                            <tr>
-                                <Name>{link.name}</Name>
-                                <Link>{link.url}</Link>
-                                <td>X</td>
-                            </tr>
-                        ) : <li>No custom links</li>
-                    }
-                </tbody>
-            </table>
-            <a onClick={reset}>Reset all</a>
+            <Card>
+                <H5>
+                    Add your custom links
+                </H5>
+                <p>
+                    User interfaces that enable people to interact smoothly with data, ask better questions, and
+                    make better decisions.
+                </p>
+                <ControlGroup>
+                    <InputGroup onChange={changedName} id=" text-input" value={name} placeholder="Name" />
+                    <InputGroup onChange={changedUrl} id="text-input" value={url} placeholder="Link" />
+                    <Button onClick={add_link}>
+                        Add
+                    </Button>
+                </ControlGroup>
+            </Card>
+            <Card>
+                <H5>Manage existing links:</H5>
+                <table width="100%" className="bp4-html-table bp4-compact bp4-html-table-condensed">
+                    <tbody>
+                        {
+                            customLinks.length > 0 ? customLinks.map((link) =>
+                                <tr>
+                                    <TD width="180px">{link.name}</TD>
+                                    <TD width="300px">{link.url}</TD>
+                                    <TD width="40px"><Icon icon="delete" size={16} intent="danger" /></TD>
+                                </tr>
+                            ) : <li>No custom links</li>
+                        }
+                    </tbody>
+                </table>
+
+            </Card>
+            <Card>
+                <H5>Reset Settings</H5>
+                <Button icon="refresh" intent="danger" text="Reset all links" onClick={reset} />
+            </Card>
         </SettingsContainer >
     );
 };
