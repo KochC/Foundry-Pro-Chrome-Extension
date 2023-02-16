@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Foundry Pro Chrome Extension",
+    "name": "Foundry Pro",
     "description": "This tool adds new menu items to the Palantir Foundry UI for developers.",
     "author": "Christopher Koch",
     "version": "1.0",
