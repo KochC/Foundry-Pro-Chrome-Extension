@@ -27,7 +27,7 @@ const IconComponent = styled.div`
     }
 `
 
-const Link = styled.a`
+const LinkComponent = styled.a`
     display: block;
     width: 100%;
     height: 100%;
@@ -51,19 +51,38 @@ type ItemProps = {
     callback: React.MouseEventHandler<HTMLAnchorElement>
 }
 
-const Item = ({ icon, name, callback }: ItemProps) => {
+export const Item = ({ icon, name, callback }: ItemProps) => {
     return (
         <ItemContainer>
-            <Link onClick={callback}>
+            <LinkComponent onClick={callback}>
                 <IconComponent>
                     <Icon path={icon}
                         size={0.9}
                         color="#8F99A8" />
                 </IconComponent>
                 <Label>{name}</Label>
-            </Link>
+            </LinkComponent>
         </ItemContainer>
     );
 };
 
-export default Item;
+export type LinkProps = {
+    icon: string
+    name: string,
+    url: string
+}
+
+export const Link = ({ icon, name, url }: LinkProps) => {
+    return (
+        <ItemContainer>
+            <LinkComponent href={url}>
+                <IconComponent>
+                    <Icon path={icon}
+                        size={0.9}
+                        color="#8F99A8" />
+                </IconComponent>
+                <Label>{name}</Label>
+            </LinkComponent>
+        </ItemContainer>
+    );
+};

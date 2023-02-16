@@ -1,24 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Item from './Item'
+import { LinkProps, Item, Link } from './Item'
 import Notification from './Notification';
 
-import { mdiKeyStar, mdiKeyPlus } from '@mdi/js';
+import { mdiKeyStar, mdiKeyPlus, mdiSquareRoundedBadgeOutline, mdiChartLine } from '@mdi/js';
 
-const Row = styled.li`
-    padding: 2px;
-    background: green;
-`
 
 const MenuContainer = styled.ul`
     margin: 0;
     padding: 0;
 `
-
-const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-  console.log('element clicked');
-};
-
 
 const get_session_key = () => {
   var nameEQ = "PALANTIR_TOKEN=";
@@ -34,35 +25,32 @@ const get_session_key = () => {
   return "";
 }
 
-const create_dev_token = () => {
-  return $.ajax({
-    type: "POST",
-    url: "/multipass/api/tokens",
-    headers: {
-      Authorization: "Bearer " + get_session_key(),
-      "Content-Type": "application/json",
-    },
-    data: JSON.stringify({
-      description: "short-live-dev-token",
-      name: "short-live-dev-token",
-      secondsToLive: 5 * 60,
-    }),
-    success: (data) => {
-      navigator.clipboard.writeText(data.access_token);
-      return data.access_token
-    },
-    error: (err) => {
-      console.log("ERROR:");
-      console.log(err);
-      return "";
-    },
-  });
-};
-
 const Menu = () => {
 
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState("")
+  const [customLinks, setCustomLinks] = useState<LinkProps[]>([])
+
+  const init = async () => {
+    // requesting an update
+    const response = await chrome.runtime.sendMessage({ action: "request_update" });
+    // get the whole store as a result
+    // therefore only updating the custom_links
+    setCustomLinks(response.custom_links)
+  }
+
+  // this function runs once at the beginning
+  useEffect(() => {
+    // add update listener for potential updates from the background
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.action == "update_client") {
+        setCustomLinks(request.payload.store.custom_links)
+      }
+      return true;
+    })
+    // request an update from background.js
+    init();
+  }, [])
 
 
   const openPopup = (message: string) => {
@@ -112,11 +100,19 @@ const Menu = () => {
       )
   }
 
+  const tpa_url = "/workspace/module/view/latest/ri.workshop.main.module.d3646394-3d64-469d-ba46-cb77d78ada44"
+  const resource_queue = "/workspace/report/ri.report.main.report.3784a752-4b98-42c7-bfda-f02dba42f7dd"
+
   return (
     <div>
       <MenuContainer>
         <Item icon={mdiKeyStar} name="Copy Session Token" callback={copySessionToken} />
         <Item icon={mdiKeyPlus} name="Copy Development Token" callback={copyDevelopmentToken} />
+        <Link icon={mdiSquareRoundedBadgeOutline} name="Third Party Apps" url={tpa_url} />
+        <Link icon={mdiChartLine} name="Global Resource Queue" url={resource_queue} />
+        {
+          customLinks.length > 0 ? customLinks.map((link) => <Link icon={mdiSquareRoundedBadgeOutline} name={link.name} url={link.url} />) : ""
+        }
       </MenuContainer>
 
 

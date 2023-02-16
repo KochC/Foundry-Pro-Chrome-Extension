@@ -86,3 +86,15 @@ body#pf_popup_container{
     margin: 0;
     padding: 0;
 }
+
+.expand_by_hover{
+    height: 2px;
+    position: fixed;
+    z-index: 1000;
+    cursor: pointer;
+    overflow: hidden;
+    transition: height 0.25s ease-in-out;
+}
+.expand_by_hover:hover{
+    height: 18px;
+}

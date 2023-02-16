@@ -12,7 +12,6 @@ const MenuBorder = styled.div`
 var counter = 0;
 
 const init = () => {
-  console.log("try")
   if (counter < 10) {
     counter++;
     // try to init menu
@@ -57,6 +56,11 @@ function init_popup(n: any) {
 }
 
 function init_menu(n: any) {
+
+  var banner = $('[class^="workspace-shell-ui__banner"]')[0];
+  banner.classList.add("expand_by_hover");
+  //banner.style.display = "none"
+
   $('<div class="pf_separator"/>').prependTo(n);
   var menu = document.createElement('div')
   menu.setAttribute("id", "pf_menu_89345h0ade")

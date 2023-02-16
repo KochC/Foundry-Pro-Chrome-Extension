@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Icon from '@mdi/react';
-import { mdiXml } from '@mdi/js';
+import { LinkProps } from './Item';
+import ManageExistingLinks from './Settings/ManageCustomLinks';
 import extension_icon from '../icon/icon48_dark.png'
 
 const Popup = styled.div`
@@ -36,12 +36,16 @@ const Popup = styled.div`
 `
 
 const Menu = () => {
+
+
+
     return (
         <Popup>
             <p>
-                <img src={extension_icon} /> Foundry-pro Chrome Extension
+                <img src={extension_icon} /> Foundry-pro Settings
             </p>
             <p>
+                <ManageExistingLinks />
                 <br />
                 Please report issues or feature requests <a target="_blank" href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/issues">here</a>.
             </p>
