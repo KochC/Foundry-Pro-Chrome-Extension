@@ -36,7 +36,8 @@ const ManageExistingLinks = () => {
             { action: "reset_links" }
         );
         // receiving the updated list
-        setCustomLinks(response.custom_links)
+        if (response.hasOwnProperty("custom_links"))
+            setCustomLinks(response.custom_links)
     }
 
     const add_link = async () => {
@@ -44,8 +45,9 @@ const ManageExistingLinks = () => {
         const response = await chrome.runtime.sendMessage(
             { action: "add_link", payload: { icon: "a", url: url, name: name } }
         );
-        // receiving the updated list
-        setCustomLinks(response.custom_links)
+        // receiving the updated listif (response.hasProperty("custom_links"))
+        if (response.hasOwnProperty("custom_links"))
+            setCustomLinks(response.custom_links)
     }
 
     const [customLinks, setCustomLinks] = useState<LinkProps[]>([])
@@ -55,7 +57,10 @@ const ManageExistingLinks = () => {
         const response = await chrome.runtime.sendMessage({ action: "request_update" });
         // get the whole store as a result
         // therefore only updating the custom_links
-        setCustomLinks(response.custom_links)
+
+        console.log('store', response)
+        if (response.hasOwnProperty("custom_links"))
+            setCustomLinks(response.custom_links)
     }
 
     const delete_item = async (item: LinkProps) => {
@@ -63,7 +68,8 @@ const ManageExistingLinks = () => {
         const response = await chrome.runtime.sendMessage({ action: "delete_link", name: item.name });
         // get the whole store as a result
         // therefore only updating the custom_links
-        setCustomLinks(response.custom_links)
+        if (response.hasOwnProperty("custom_links"))
+            setCustomLinks(response.custom_links)
     }
 
     useEffect(() => {
