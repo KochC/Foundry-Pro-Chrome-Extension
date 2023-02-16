@@ -1,16 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { LinkProps, Item, Link } from './Item'
-import Notification from './Notification';
+import { LinkProps } from './LinkProps'
 
-import { mdiKeyStar, mdiKeyPlus, mdiSquareRoundedBadgeOutline, mdiChartLine } from '@mdi/js';
+import {
+  Toast,
+  Toaster,
+  Position,
+  ToastProps,
+  MenuItem,
+  MenuDivider,
+  Icon
+} from "@blueprintjs/core";
 
-
-const MenuContainer = styled.ul`
-    margin: 0;
-    padding: 0;
+const Container = styled.ul`
+  padding: 0 10px;
+  margin: 0;
+  li{
+    list-style: none;
+  }
 `
-
 const get_session_key = () => {
   var nameEQ = "PALANTIR_TOKEN=";
   var ca = document.cookie.split(";");
@@ -25,10 +33,8 @@ const get_session_key = () => {
   return "";
 }
 
-const Menu = () => {
+const Menu2 = () => {
 
-  const [showPopup, setShowPopup] = useState(false)
-  const [popupMessage, setPopupMessage] = useState("")
   const [customLinks, setCustomLinks] = useState<LinkProps[]>([])
 
   const init = async () => {
@@ -52,27 +58,17 @@ const Menu = () => {
     init();
   }, [])
 
-
-  const openPopup = (message: string) => {
-    setPopupMessage(message);
-    setShowPopup(true);
-  };
-
-  const closePopup = () => {
-    setShowPopup(false);
-  };
-
-  const copySessionToken = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const copySessionToken = (event: any) => {
     const key = get_session_key();
     if (key !== "") {
       navigator.clipboard.writeText(key);
-      openPopup("Session token copied to clipboard!");
+      addToast("Session token was copied to clipboard!", "success", 'tick')
     } else {
-      openPopup("Something went wrong...");
+      addToast("Something went wrong!", "danger", 'error')
     }
   };
 
-  const copyDevelopmentToken = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const copyDevelopmentToken = (event: any) => {
 
     const requestOptions = {
       method: 'POST',
@@ -90,36 +86,41 @@ const Menu = () => {
     fetch("/multipass/api/tokens", requestOptions)
       .then(res => res.json())
       .then((result) => {
-        console.log(result);
         navigator.clipboard.writeText(result);
-        openPopup("Development token copied to clipboard!");
+        addToast("Development token was copied to clipboard!", "success", 'tick')
       },
         (error) => {
-          openPopup("Something went wrong...");
+          addToast("Something went wrong!", "danger", 'error')
         }
       )
   }
 
-  const tpa_url = "/workspace/module/view/latest/ri.workshop.main.module.d3646394-3d64-469d-ba46-cb77d78ada44"
-  const resource_queue = "/workspace/report/ri.report.main.report.3784a752-4b98-42c7-bfda-f02dba42f7dd"
+  var toaster: Toaster;
+  const [toasts, setToasts] = useState<ToastProps[]>([])
+
+  const addToast = (msg: string, intent: ToastProps['intent'], icon: ToastProps['icon']) => {
+    toaster.show({ message: msg, intent: intent, icon: icon, timeout: 5000 });
+  }
+
+  const refHandlers = {
+    toaster: (ref: Toaster) => toaster = ref,
+  };
 
   return (
     <div>
-      <MenuContainer>
-        <Item icon={mdiKeyStar} name="Copy Session Token" callback={copySessionToken} />
-        <Item icon={mdiKeyPlus} name="Copy Development Token" callback={copyDevelopmentToken} />
-        <Link icon={mdiSquareRoundedBadgeOutline} name="Third Party Apps" url={tpa_url} />
-        <Link icon={mdiChartLine} name="Global Resource Queue" url={resource_queue} />
+      <Container>
+        <MenuItem icon="key" text="Copy session token" onClick={copySessionToken} />
+        <MenuItem icon="bug" text="Copy development token" onClick={copyDevelopmentToken} />
         {
-          customLinks.length > 0 ? customLinks.map((link) => <Link icon={mdiSquareRoundedBadgeOutline} name={link.name} url={link.url} />) : ""
+          customLinks.length > 0 ? customLinks.map((link) => <MenuItem icon="link" text={link.name} href={link.url} />) : ""
         }
-      </MenuContainer>
+      </Container>
 
-
-      <Notification message={popupMessage} open={showPopup} closePopup={closePopup} />
-
+      <Toaster position={Position.TOP} ref={refHandlers.toaster}>
+        {toasts.map(toast => <Toast {...toast} />)}
+      </Toaster>
     </div>
   );
 };
 
-export default Menu;
+export default Menu2;

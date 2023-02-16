@@ -61,13 +61,14 @@ chrome.runtime.onInstalled.addListener(() => {
                 save_config(store);
                 // return new store
                 sendResponse(store);
-            } else if (request.acition == "update_links") {
-                chrome.storage.sync.set(
-                    { custom_links: request.payload },
-                    function () {
-                        console.log("Updated Links", request.payload);
-                    }
+            } else if (request.action == "delete_link") {
+                store.custom_links = store.custom_links.filter(
+                    (item) => item.name !== request.name
                 );
+                // save store
+                save_config(store);
+                // return new store
+                sendResponse(store);
             } else if (request.action == "request_update") {
                 // this can happen from the popup and the content
                 // load config

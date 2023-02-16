@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import $ from "jquery";
-import Menu from "./Menu";
-import Popup from "./Popup"
+import Menu from "./Menu/Menu";
+import Popup from "./Settings/Popup"
 import styled from "styled-components"
 
 const MenuBorder = styled.div`
@@ -58,8 +58,9 @@ function init_popup(n: any) {
 function init_menu(n: any) {
 
   var banner = $('[class^="workspace-shell-ui__banner"]')[0];
-  banner.classList.add("expand_by_hover");
-  //banner.style.display = "none"
+  if (banner !== undefined) {
+    banner.classList.add("expand_by_hover");
+  }
 
   $('<div class="pf_separator"/>').prependTo(n);
   var menu = document.createElement('div')

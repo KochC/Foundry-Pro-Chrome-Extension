@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { LinkProps } from '../Item';
+import { LinkProps } from '../Menu/LinkProps';
 
-import { Card, H5, Button, ControlGroup, InputGroup, Icon } from "@blueprintjs/core";
+import { Card, H5, Button, Divider, ControlGroup, InputGroup, Icon, Callout } from "@blueprintjs/core";
 
 const SettingsContainer = styled.div`
     > div{
@@ -58,6 +58,14 @@ const ManageExistingLinks = () => {
         setCustomLinks(response.custom_links)
     }
 
+    const delete_item = async (item: LinkProps) => {
+        // request to delete one item
+        const response = await chrome.runtime.sendMessage({ action: "delete_link", name: item.name });
+        // get the whole store as a result
+        // therefore only updating the custom_links
+        setCustomLinks(response.custom_links)
+    }
+
     useEffect(() => {
         // request first update from the background.js
         init()
@@ -69,20 +77,20 @@ const ManageExistingLinks = () => {
                 <H5>
                     Add your custom links
                 </H5>
-                <p>
-                    User interfaces that enable people to interact smoothly with data, ask better questions, and
-                    make better decisions.
+                <p className="bp4-text-muted bp4-text-small">
+                    Add links here to show in the side panel on the top. You can add relative and absolute links.
                 </p>
                 <ControlGroup>
-                    <InputGroup onChange={changedName} id=" text-input" value={name} placeholder="Name" />
-                    <InputGroup onChange={changedUrl} id="text-input" value={url} placeholder="Link" />
-                    <Button onClick={add_link}>
-                        Add
+                    <InputGroup leftIcon="new-text-box" width="180px" onChange={changedName} id=" text-input" value={name} placeholder="Name" />
+                    <InputGroup leftIcon="link" fill={true} onChange={changedUrl} id="text-input" value={url} placeholder="Link" />
+                    <Button intent="primary" onClick={add_link}>
+                        <Icon icon="add" size={16} />
                     </Button>
                 </ControlGroup>
-            </Card>
-            <Card>
-                <H5>Manage existing links:</H5>
+                <br />
+                <Divider />
+                <br />
+                <H5>Manage existing links</H5>
                 <table width="100%" className="bp4-html-table bp4-compact bp4-html-table-condensed">
                     <tbody>
                         {
@@ -90,17 +98,21 @@ const ManageExistingLinks = () => {
                                 <tr>
                                     <TD width="180px">{link.name}</TD>
                                     <TD width="300px">{link.url}</TD>
-                                    <TD width="40px"><Icon icon="delete" size={16} intent="danger" /></TD>
+                                    <TD width="40px"><Icon icon="cross" size={16} onClick={() => delete_item(link)} intent="danger" /></TD>
                                 </tr>
-                            ) : <li>No custom links</li>
+                            ) : <Callout icon="info-sign" title={"No custom links setup yet"}>
+                                To setup your first custom link, just fill out the form above.
+                            </Callout>
                         }
                     </tbody>
                 </table>
 
-            </Card>
-            <Card>
+                <br />
+                <Divider />
+                <br />
+
                 <H5>Reset Settings</H5>
-                <Button icon="refresh" intent="danger" text="Reset all links" onClick={reset} />
+                <Button icon="refresh" minimal intent="danger" text="Reset all links" onClick={reset} />
             </Card>
         </SettingsContainer >
     );

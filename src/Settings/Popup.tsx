@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { LinkProps } from './Item';
-import ManageExistingLinks from './Settings/ManageCustomLinks';
-import extension_icon from '../icon/icon48_dark.png'
-import { Card, H5, Button, ControlGroup, InputGroup, Tag } from "@blueprintjs/core";
+import ManageExistingLinks from './ManageCustomLinks';
+import extension_icon from '../../icon/icon48_dark.png'
+import { Tag } from "@blueprintjs/core";
 
 const SettingsContainer = styled.div`
     width: 600px;
@@ -31,7 +29,9 @@ const Settings = () => {
                 </div>
             </nav>
             <ManageExistingLinks />
-
+            <p className="bp4-text-muted bp4-text-small" style={{ textAlign: "center" }}>
+                This chrome extension is open-source and was started by <a href="http://koch.codes">koch.codes</a>. It uses <br /> the open source Blueprint framework from Palantir for UI components.
+            </p>
         </SettingsContainer >
     );
 };
