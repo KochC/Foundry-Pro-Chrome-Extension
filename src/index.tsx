@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import $ from "jquery";
-import Menu from "./Menu";
-import Popup from "./Popup"
+import Menu from "./Menu/Menu";
+import Popup from "./Settings/Popup"
 import styled from "styled-components"
 
 const MenuBorder = styled.div`
@@ -12,7 +12,6 @@ const MenuBorder = styled.div`
 var counter = 0;
 
 const init = () => {
-  console.log("try")
   if (counter < 10) {
     counter++;
     // try to init menu
@@ -57,6 +56,12 @@ function init_popup(n: any) {
 }
 
 function init_menu(n: any) {
+
+  var banner = $('[class^="workspace-shell-ui__banner"]')[0];
+  if (banner !== undefined) {
+    banner.classList.add("expand_by_hover");
+  }
+
   $('<div class="pf_separator"/>').prependTo(n);
   var menu = document.createElement('div')
   menu.setAttribute("id", "pf_menu_89345h0ade")

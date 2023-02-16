@@ -8,6 +8,7 @@
         "default_title": "Foundry Pro Chrome Extension",
         "default_popup": "popup.html"
     },
+    "permissions": ["storage"],
     "background": {
         "service_worker": "background.js"
     },
