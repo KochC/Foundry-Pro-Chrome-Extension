@@ -7,7 +7,6 @@ on:
 jobs:
     build:
         env:
-            VERSION: "${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
             BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
         permissions: write-all
@@ -20,23 +19,28 @@ jobs:
               with:
                   node-version: 14.x
 
-            - name: Development workflow
+            - name: Development version
               if: env.BRANCH_NAME == 'dev'
-              run: |
-                  echo "I am a dev workflow"
+              env:
+                  VERSION: "${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
+                  PRERELEASE: true
 
-            - name: Main workflow
+            - name: Stable version
               if: env.BRANCH_NAME == 'main'
-              run: |
-                  echo "I am a main workflow"
+              env:
+                  VERSION: "${{ vars.MAJOR_VERSION }}.${{ github.run_number }}"
+                  PRERELEASE: false
 
-            - name: Versioning
+            - name: Create versioning file for app
               run: |
                   echo 'export var version = "${{ env.VERSION }}";' > ./src/version.tsx
                   echo 'export var commit = "${{ github.GITHUB_SHA }}";' >> ./src/version.tsx
                   echo 'export var actor = "${{ github.GITHUB_ACTOR }}";' >> ./src/version.tsx
                   cat ./src/version.tsx
-            - run: npm i
+
+            - name: Install npm packages
+              run: npm i
+
             - name: Update my-file.json description
               uses: jossef/action-set-json-field@v2.1
               with:
@@ -44,9 +48,10 @@ jobs:
                   field: version
                   value: ${{ env.VERSION }}
 
-            - run: npm run build
+            - name: Build chrome extension
+              run: npm run build
 
-            - name: cleanup
+            - name: Cleanup release package
               run: |
                   mv ./node_modules/normalize.css/ ./normalize.css/
                   mv ./node_modules/@blueprintjs/ ./@blueprintjs/
@@ -83,7 +88,18 @@ jobs:
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
                   automatic_release_tag: "nightly_${{ env.VERSION }}"
-                  prerelease: true
+                  prerelease: env.PRERELEASE
                   title: "Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}"
                   files: |
                       ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
+
+            - name: Upload & release
+              if: env.BRANCH_NAME == 'main'
+              uses: mnao305/chrome-extension-upload@v4.0.1
+              with:
+                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-${{ vars.MAJOR_VERSION }}.${{ github.run_number }}.zip"
+                  extension-id: "anjiaghdipilddabdekbchcgenjmofan"
+                  client-id: ${{ secrets.CLIENT_ID }}
+                  client-secret: ${{ secrets.CLIENT_SECRET }}
+                  refresh-token: ${{ secrets.REFRESH_TOKEN }}
+                  publish: false
