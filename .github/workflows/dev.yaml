@@ -19,11 +19,9 @@ jobs:
               with:
                   node-version: 14.x
 
-            - run: echo ${{github}}
-
-            - name: Development version
+            - name: Define version
               run: |
-                  if env.BRANCH_NAME == 'main'; then
+                  if ${{ env.BRANCH_NAME }} == 'main'; then
                       echo "VERSION=${{ vars.MAJOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_ENV
                       echo "RERELEASE=false" >> $GITHUB_ENV
                   else
@@ -35,8 +33,8 @@ jobs:
               run: |
                   echo "export var version = '${{ env.VERSION }}';" > ./src/version.tsx
                   echo "export var branch = '${{ env.BRANCH_NAME }}';" >> ./src/version.tsx
-                  echo "export var commit = '${{ github.github_sha }}';" >> ./src/version.tsx
-                  echo "export var actor = '${{ github.github_actor }}';" >> ./src/version.tsx
+                  echo "export var commit = '${{ github_sha }}';" >> ./src/version.tsx
+                  echo "export var actor = '${{ github_actor }}';" >> ./src/version.tsx
                   cat ./src/version.tsx
 
             - name: Install npm packages
@@ -47,7 +45,7 @@ jobs:
               with:
                   file: manifest.json
                   field: version
-                  value: $env.VERSION
+                  value: ${{ env.VERSION }}
 
             - name: Build chrome extension
               run: npm run build
@@ -89,7 +87,7 @@ jobs:
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
                   automatic_release_tag: "nightly_${{ env.VERSION }}"
-                  prerelease: ${{env.PRERELEASE}}
+                  prerelease: ${{ env.PRERELEASE }}
                   title: "Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}"
                   files: |
                       ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
