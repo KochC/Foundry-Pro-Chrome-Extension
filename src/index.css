@@ -99,3 +99,17 @@ body#pf_popup_container{
 .expand_by_hover:hover{
     height: 18px;
 }
+
+.dummy_popup{
+    border: 1px solid red;
+    width: auto;
+    float: left;
+    height: 100vh;
+}
+
+.dummy_menu{
+    border: 1px solid green;
+    width: 250px;
+    float: left;
+    height: 100vh;
+}

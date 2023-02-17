@@ -32,49 +32,49 @@ const ManageExistingLinks = () => {
     }
 
     const reset = async () => {
-        const response = await chrome.runtime.sendMessage(
+        chrome.runtime.sendMessage(
             { action: "reset_links" }
         );
-        // receiving the updated list
-        if (response.hasOwnProperty("custom_links"))
-            setCustomLinks(response.custom_links)
+
     }
 
     const add_link = async () => {
         // sending a new list enry
-        const response = await chrome.runtime.sendMessage(
+        chrome.runtime.sendMessage(
             { action: "add_link", payload: { icon: "a", url: url, name: name } }
         );
-        // receiving the updated listif (response.hasProperty("custom_links"))
-        if (response.hasOwnProperty("custom_links"))
-            setCustomLinks(response.custom_links)
     }
 
     const [customLinks, setCustomLinks] = useState<LinkProps[]>([])
 
-    const init = async () => {
+    const init = () => {
         // requesting an update
-        const response = await chrome.runtime.sendMessage({ action: "request_update" });
-        // get the whole store as a result
-        // therefore only updating the custom_links
-
-        console.log('store', response)
-        if (response.hasOwnProperty("custom_links"))
-            setCustomLinks(response.custom_links)
+        chrome.runtime.sendMessage({ action: "request_update" }, (result) => {
+            if (!window.chrome.runtime.lastError) {
+                // works
+            } else {
+                const error = window.chrome.runtime.lastError
+                // we dont care abour this error
+            }
+        })
     }
 
     const delete_item = async (item: LinkProps) => {
         // request to delete one item
-        const response = await chrome.runtime.sendMessage({ action: "delete_link", name: item.name });
-        // get the whole store as a result
-        // therefore only updating the custom_links
-        if (response.hasOwnProperty("custom_links"))
-            setCustomLinks(response.custom_links)
+        chrome.runtime.sendMessage({ action: "delete_link", name: item.name });
     }
 
     useEffect(() => {
+        chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+            if (request.action == "update_client") {
+                setCustomLinks(request.payload.store.custom_links)
+            }
+            return false;
+        });
         // request first update from the background.js
+
         init()
+
     }, [])
 
     return (
