@@ -6,6 +6,9 @@ on:
 
 jobs:
     build:
+        env:
+            VERSION: "${{ vars.MAJOR_VERSION }}.${{ github.run_number }}"
+
         permissions: write-all
         runs-on: ubuntu-latest
 
@@ -17,16 +20,18 @@ jobs:
                   node-version: 14.x
 
             - name: Versioning
-              run: echo 'export var version = "${{ env.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}";' > ./src/version.tsx
-
+              run: |
+                  echo 'export var version = "${{ env.VERSION }}";' > ./src/version.tsx
+                  echo 'export var commit = "${{ github.GITHUB_SHA }}";' >> ./src/version.tsx
+                  echo 'export var actor = "${{ github.GITHUB_ACTOR }}";' >> ./src/version.tsx
+                  cat ./src/version.tsx
             - run: npm i
-
             - name: Update my-file.json description
               uses: jossef/action-set-json-field@v2.1
               with:
                   file: manifest.json
                   field: version
-                  value: ${{ env.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}
+                  value: ${{ env.VERSION }}
 
             - run: npm run build
 
@@ -60,14 +65,14 @@ jobs:
                   privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
 
             - name: Rename to release
-              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ env.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}.zip
+              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
 
             - name: Release Package as Pre-Repease
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                  automatic_release_tag: "nightly_${{ env.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
+                  automatic_release_tag: "nightly_${{ env.VERSION }}"
                   prerelease: true
-                  title: "Foundry-Upgrade-Chrome-Extension-${{ env.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
+                  title: "Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}"
                   files: |
-                      ./build/Foundry-Upgrade-Chrome-Extension-${{ env.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}.zip
+                      ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
