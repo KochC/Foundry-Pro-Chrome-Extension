@@ -86,7 +86,7 @@ const Menu2 = () => {
     fetch("/multipass/api/tokens", requestOptions)
       .then(res => res.json())
       .then((result) => {
-        navigator.clipboard.writeText(result);
+        navigator.clipboard.writeText(result.access_token);
         addToast("Development token was copied to clipboard!", "success", 'tick')
       },
         (error) => {
