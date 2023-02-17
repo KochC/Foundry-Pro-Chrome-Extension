@@ -15,6 +15,10 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: 14.x
+
+            - name: Versioning
+              run: echo 'export const version = "1.${{ github.run_number }}";' > ./src/version.tsx
+
             - run: npm i
 
             - name: Update my-file.json description
