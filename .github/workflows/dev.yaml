@@ -33,8 +33,8 @@ jobs:
               run: |
                   echo "export var version = '${{ env.VERSION }}';" > ./src/version.tsx
                   echo "export var branch = '${{ env.BRANCH_NAME }}';" >> ./src/version.tsx
-                  echo "export var commit = '${{ github_sha }}';" >> ./src/version.tsx
-                  echo "export var actor = '${{ github_actor }}';" >> ./src/version.tsx
+                  echo "export var commit = '${GITHUB_REF#refs/heads/}.${GITHUB_SHA}';" >> ./src/version.tsx
+                  echo "export var commit_message = '${{ github.event.head_commit.message }}';" >> ./src/version.tsx
                   cat ./src/version.tsx
 
             - name: Install npm packages
