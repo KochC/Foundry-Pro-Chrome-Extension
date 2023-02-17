@@ -39,7 +39,7 @@ jobs:
 
             - name: Create versioning file for app
               run: |
-                  echo 'export var version = "${{ env.VERSION }}";' > ./src/version.tsx
+                  echo 'export var version = "${{ VERSION }}";' > ./src/version.tsx
                   echo 'export var commit = "${{ github.GITHUB_SHA }}";' >> ./src/version.tsx
                   echo 'export var actor = "${{ github.GITHUB_ACTOR }}";' >> ./src/version.tsx
                   cat ./src/version.tsx
@@ -52,7 +52,7 @@ jobs:
               with:
                   file: manifest.json
                   field: version
-                  value: $VERSION
+                  value: $env.VERSION
 
             - name: Build chrome extension
               run: npm run build
