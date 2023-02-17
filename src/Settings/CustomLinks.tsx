@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { LinkProps } from '../Menu/LinkProps';
 
-import { Card, H5, Button, Divider, ControlGroup, InputGroup, Icon, Callout } from "@blueprintjs/core";
+import { Card, H5, Button, HTMLTable, ControlGroup, InputGroup, Icon, Callout } from "@blueprintjs/core";
 
 const SettingsContainer = styled.div`
     > div{
-        margin: 20px;
+        margin: 0px;
         overflow: hidden;
     }
 `
@@ -94,27 +94,25 @@ const ManageExistingLinks = () => {
                     </Button>
                 </ControlGroup>
                 <br />
-                <Divider />
                 <br />
                 <H5>Manage existing links</H5>
-                <table width="100%" className="bp4-html-table bp4-compact bp4-html-table-condensed">
-                    <tbody>
+                <HTMLTable compact={true} width="100%">
+                    <tbody style={{ width: "100%" }}>
                         {
                             customLinks.length > 0 ? customLinks.map((link) =>
                                 <tr>
-                                    <TD width="180px">{link.name}</TD>
-                                    <TD width="300px">{link.url}</TD>
-                                    <TD width="40px"><Icon icon="cross" size={16} onClick={() => delete_item(link)} intent="danger" /></TD>
+                                    <TD style={{ width: "calc(50% - 20px)" }}>{link.name}</TD>
+                                    <TD style={{ width: "calc(50% - 20px)" }}>{link.url}</TD>
+                                    <TD style={{ width: "40px" }}><Icon icon="cross" size={16} onClick={() => delete_item(link)} intent="danger" /></TD>
                                 </tr>
                             ) : <Callout icon="info-sign" title={"No custom links setup yet"}>
                                 To setup your first custom link, just fill out the form above.
                             </Callout>
                         }
                     </tbody>
-                </table>
+                </HTMLTable>
 
                 <br />
-                <Divider />
                 <br />
 
                 <H5>Reset Settings</H5>

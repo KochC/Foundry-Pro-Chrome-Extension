@@ -1,12 +1,21 @@
 import styled from 'styled-components';
-import ManageExistingLinks from './ManageCustomLinks';
 import extension_icon from '../../icon/icon48_dark.png'
-import { Tag, AnchorButton, Navbar, Alignment, Icon } from "@blueprintjs/core";
+import { Tag, AnchorButton, Navbar, Alignment, Tabs, Tab } from "@blueprintjs/core";
 import { version } from '../version';
+import About from './About';
+import CustomHost from './CustomHost';
+import CustomLinks from './CustomLinks';
 
 const SettingsContainer = styled.div`
-    width: 600px;
-    padding-bottom: 7px;
+    width: 660px;
+`
+
+const Content = styled.div`
+    padding: 20px;
+
+    & div:focus{
+        outline:none;
+    }
 `
 
 const Logo = styled.img`
@@ -31,11 +40,20 @@ const Settings = () => {
                     </Tag>
                 </Navbar.Group>
             </Navbar>
-            <ManageExistingLinks />
-            <p className="bp4-text-muted bp4-text-small" style={{ textAlign: "center" }}>
-                This chrome extension is <a target="_blank" href="https://github.com/KochC/Foundry-Pro-Chrome-Extension">open-source</a> and was built with <Icon icon="heart" size={12} /> by <a target="_blank" href="http://koch.codes">koch.codes</a>. <br />
-                It uses <a target="_blank" href="https://blueprintjs.com/">Blueprint</a> from Palantir for UI components.
-            </p>
+            <Content>
+                <Tabs
+                    animate={true}
+                    id="TabsExample"
+                    key={"vertical"}
+                    renderActiveTabPanelOnly={true}
+                    vertical={true}
+                >
+                    <Tab id="rx" title="Custom Links" panel={<CustomLinks />} />
+                    <Tab id="ng" title="Custom Host" panel={<CustomHost />} />
+                    <Tab id="mb" title="About" panel={<About />} panelClassName="ember-panel" />
+                    <Tabs.Expander />
+                </Tabs>
+            </Content>
         </SettingsContainer >
     );
 };
