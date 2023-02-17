@@ -1,4 +1,4 @@
-name: Nightly Pipeline
+name: CI/CD Pipeline
 
 on:
     push:
@@ -82,12 +82,24 @@ jobs:
             - name: Rename to release
               run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
 
-            - name: Release Package as Pre-Repease
+            - name: Pre-Release Package
+              if: env.BRANCH_NAME == 'dev'
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
                   automatic_release_tag: "nightly_${{ env.VERSION }}"
-                  prerelease: "${{ env.PRERELEASE }}"
+                  prerelease: true
+                  title: "Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}"
+                  files: |
+                      ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
+
+            - name: Release Package
+              if: env.BRANCH_NAME == 'main'
+              uses: "marvinpinto/action-automatic-releases@latest"
+              with:
+                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                  automatic_release_tag: "nightly_${{ env.VERSION }}"
+                  prerelease: false
                   title: "Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}"
                   files: |
                       ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
