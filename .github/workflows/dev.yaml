@@ -25,10 +25,10 @@ jobs:
                   value: 0.${{ github.run_number }}
 
             - name: Versioning
-              run: echo 'export const version = "0.${{ github.runner_number }}"' > ./src/version.tsx
-            - run: cat ./src/version.tsx
+              run: echo 'export const version = "0.${{ github.run_number }}"' > ./src/version.tsx
+      
             - run: npm run build
-            - run: ls
+
             - name: cleanup
               run: |
                   mv ./node_modules/normalize.css/ ./normalize.css/
