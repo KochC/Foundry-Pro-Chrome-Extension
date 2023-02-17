@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import ManageExistingLinks from './ManageCustomLinks';
 import extension_icon from '../../icon/icon48_dark.png'
-import { Tag } from "@blueprintjs/core";
+import { Tag, AnchorButton, Navbar, Alignment, Icon } from "@blueprintjs/core";
 import { version } from '../version';
 
 const SettingsContainer = styled.div`
     width: 600px;
+    padding-bottom: 7px;
 `
 
 const Logo = styled.img`
@@ -16,22 +17,24 @@ const Logo = styled.img`
 const Settings = () => {
     return (
         <SettingsContainer>
-            <nav className="bp4-navbar bp4-dark">
-                <div>
-                    <div className="bp4-navbar-group bp4-align-left">
-                        <div className="bp4-navbar-heading">
-                            <Logo height="20px" src={extension_icon} />Foundry-Pro</div>
-                    </div>
-                    <div className="bp4-navbar-group bp4-align-right">
-                        <Tag>
-                            {"Release " + version}
-                        </Tag>
-                    </div>
-                </div>
-            </nav>
+            <Navbar className="bp4-dark">
+                <Navbar.Group align={Alignment.LEFT}>
+                    <Navbar.Heading>
+                        <Logo height="20px" src={extension_icon} />Foundry-Pro
+                    </Navbar.Heading>
+                </Navbar.Group>
+                <Navbar.Group align={Alignment.RIGHT}>
+                    <AnchorButton small minimal={true} intent="danger" icon="issue" text="Report an issue" target="_blank" href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/issues" />
+                    <Navbar.Divider />
+                    <Tag round={true} minimal={true}>
+                        {"Release " + version}
+                    </Tag>
+                </Navbar.Group>
+            </Navbar>
             <ManageExistingLinks />
             <p className="bp4-text-muted bp4-text-small" style={{ textAlign: "center" }}>
-                This chrome extension is open-source and was started by <a href="http://koch.codes">koch.codes</a>. It uses <br /> the open source Blueprint framework from Palantir for UI components.
+                This chrome extension is <a target="_blank" href="https://github.com/KochC/Foundry-Pro-Chrome-Extension">open-source</a> and was built with <Icon icon="heart" size={12} /> by <a target="_blank" href="http://koch.codes">koch.codes</a>. <br />
+                It uses <a target="_blank" href="https://blueprintjs.com/">Blueprint</a> from Palantir for UI components.
             </p>
         </SettingsContainer >
     );
