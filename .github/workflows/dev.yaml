@@ -23,10 +23,10 @@ jobs:
             - name: Development version
               if: env.BRANCH_NAME == 'dev'
               env:
-                  VERSION: "${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
+                  run: echo "::set-env name=VERSION::${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
                   PRERELEASE: true
               run: |
-                  echo $VERSION
+                  echo $env.VERSION
                   echo $PRERELEASE
 
             - name: Stable version
