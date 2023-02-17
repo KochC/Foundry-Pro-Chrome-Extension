@@ -8,8 +8,6 @@ jobs:
     build:
         env:
             BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-            VERSION: "0.0.${{ github.run_number }}"
-            PRERELEASE: true
 
         permissions: write-all
         runs-on: ubuntu-latest
@@ -22,23 +20,14 @@ jobs:
                   node-version: 14.x
 
             - name: Development version
-              if: env.BRANCH_NAME == 'dev'
-              env:
-                  run: |
+              run: |
+                  if env.BRANCH_NAME == 'main'; then
+                      echo "VERSION=${{ vars.MAJOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_ENV
+                      echo "RERELEASE=false" >> $GITHUB_ENV
+                  else
                       echo "VERSION=${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_ENV
                       echo "RERELEASE=true" >> $GITHUB_ENV
-              run: |
-                  echo $env.VERSION
-                  echo $env.PRERELEASE
-
-            - name: Stable version
-              if: env.BRANCH_NAME == 'main'
-              env:
-                  VERSION: "${{ vars.MAJOR_VERSION }}.${{ github.run_number }}"
-                  PRERELEASE: false
-              run: |
-                  echo $VERSION
-                  echo $PRERELEASE
+                  fi
 
             - name: Create versioning file for app
               run: |
