@@ -22,7 +22,7 @@ jobs:
 
             - name: Development workflow
               if: env.BRANCH_NAME == 'dev'
-                run: |
+              run: |
                   echo "I am a dev workflow"
 
             - name: Main workflow
