@@ -24,11 +24,12 @@ jobs:
             - name: Development version
               if: env.BRANCH_NAME == 'dev'
               env:
-                  run: echo "VERSION=${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
-                  PRERELEASE: true
+                  run: |
+                      echo "VERSION=${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_ENV
+                      echo "RERELEASE=true" >> $GITHUB_ENV
               run: |
-                  echo $VERSION
-                  echo $PRERELEASE
+                  echo $env.VERSION
+                  echo $env.PRERELEASE
 
             - name: Stable version
               if: env.BRANCH_NAME == 'main'
