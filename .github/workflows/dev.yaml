@@ -38,7 +38,6 @@ jobs:
                   mkdir ./node_modules
                   mv ./normalize.css/ ./node_modules/normalize.css/
                   mv ./@blueprintjs/ ./node_modules/@blueprintjs/
-                  rm -rf ./src
                   rm -rf ./public
                   rm package-lock.json
                   rm package.json
