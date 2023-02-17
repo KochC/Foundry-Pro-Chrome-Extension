@@ -9,6 +9,7 @@ jobs:
         env:
             BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
             VERSION: "0.0.${{ github.run_number }}"
+            PRERELEASE: true
 
         permissions: write-all
         runs-on: ubuntu-latest
@@ -23,7 +24,7 @@ jobs:
             - name: Development version
               if: env.BRANCH_NAME == 'dev'
               env:
-                  run: echo "::set-env name=VERSION::${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
+                  run: echo "VERSION=${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
                   PRERELEASE: true
               run: |
                   echo $env.VERSION
