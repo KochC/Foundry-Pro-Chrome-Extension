@@ -7,7 +7,8 @@ on:
 jobs:
     build:
         env:
-            VERSION: "${{ vars.MAJOR_VERSION }}.${{ github.run_number }}"
+            VERSION: "${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
+            BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
         permissions: write-all
         runs-on: ubuntu-latest
@@ -18,6 +19,16 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: 14.x
+
+            - name: Development workflow
+              if: ${{ env.BRANCH_NAME }} == dev
+              run: |
+                  echo "I am a dev workflow"
+
+            - name: Main workflow
+              if: ${{ env.BRANCH_NAME }} == main
+              run: |
+                  echo "I am a main workflow"
 
             - name: Versioning
               run: |
