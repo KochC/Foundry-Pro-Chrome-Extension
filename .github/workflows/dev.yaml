@@ -52,7 +52,7 @@ jobs:
               with:
                   file: manifest.json
                   field: version
-                  value: ${{ env.VERSION }}
+                  value: $VERSION
 
             - name: Build chrome extension
               run: npm run build
@@ -87,23 +87,23 @@ jobs:
                   privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
 
             - name: Rename to release
-              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
+              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ VERSION }}.zip
 
             - name: Release Package as Pre-Repease
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                  automatic_release_tag: "nightly_${{ env.VERSION }}"
+                  automatic_release_tag: "nightly_${{ VERSION }}"
                   prerelease: env.PRERELEASE
-                  title: "Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}"
+                  title: "Foundry-Upgrade-Chrome-Extension-${{ VERSION }}"
                   files: |
-                      ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
+                      ./build/Foundry-Upgrade-Chrome-Extension-${{ VERSION }}.zip
 
             - name: Upload & release
               if: env.BRANCH_NAME == 'main'
               uses: mnao305/chrome-extension-upload@v4.0.1
               with:
-                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-${{ vars.MAJOR_VERSION }}.${{ github.run_number }}.zip"
+                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-${{ VERSION }}.zip"
                   extension-id: "anjiaghdipilddabdekbchcgenjmofan"
                   client-id: ${{ secrets.CLIENT_ID }}
                   client-secret: ${{ secrets.CLIENT_SECRET }}
