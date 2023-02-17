@@ -6,6 +6,10 @@ import Menu from "./Menu/Menu";
 import Popup from "./Settings/Popup"
 import styled from "styled-components"
 
+import 'normalize.css';
+import '@blueprintjs/core/lib/css/blueprint.css';
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
+
 const MenuBorder = styled.div`
 `
 
