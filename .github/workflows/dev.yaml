@@ -24,12 +24,18 @@ jobs:
               env:
                   VERSION: "${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
                   PRERELEASE: true
+              run: |
+                  echo $VERSION
+                  echo $PRERELEASE
 
             - name: Stable version
               if: env.BRANCH_NAME == 'main'
               env:
                   VERSION: "${{ vars.MAJOR_VERSION }}.${{ github.run_number }}"
                   PRERELEASE: false
+              run: |
+                  echo $VERSION
+                  echo $PRERELEASE
 
             - name: Create versioning file for app
               run: |
