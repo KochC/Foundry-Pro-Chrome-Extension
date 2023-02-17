@@ -47,6 +47,16 @@ const Menu2 = () => {
         // we dont care abour this error
       }
     });
+
+    // register to the background.js
+    chrome.runtime.sendMessage({ action: "register" }, (result) => {
+      if (!window.chrome.runtime.lastError) {
+        // works
+      } else {
+        const error = window.chrome.runtime.lastError
+        // we dont care abour this error
+      }
+    });
   }
 
   // this function runs once at the beginning

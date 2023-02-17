@@ -120,6 +120,19 @@ chrome.runtime.onInstalled.addListener(() => {
                 }
             }
 
+            // registering a active client and showing it in the icon
+            if (request.action != undefined) {
+                if (request.action == "register") {
+                    chrome.action.setBadgeText(
+                        { text: "ON", tabId: sender.tab.id },
+                        (r) => {
+                            console.log(r);
+                        }
+                    );
+                }
+                return false;
+            }
+
             if (request.schema != undefined) {
                 if (request.scheme == "light") {
                     chrome.action.setIcon({
