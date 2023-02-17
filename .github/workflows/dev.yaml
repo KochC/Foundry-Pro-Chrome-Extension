@@ -27,7 +27,7 @@ jobs:
                   run: echo "VERSION=${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
                   PRERELEASE: true
               run: |
-                  echo $env.VERSION
+                  echo $VERSION
                   echo $PRERELEASE
 
             - name: Stable version
