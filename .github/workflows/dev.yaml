@@ -29,8 +29,6 @@ jobs:
                       echo "RERELEASE=true" >> $GITHUB_ENV
                   fi
 
-            - run: echo ${{ env.PRERELEASE }}
-
             - name: Create versioning file for app
               run: |
                   echo "export var version = '${{ env.VERSION }}';" > ./src/version.tsx
@@ -89,7 +87,7 @@ jobs:
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
                   automatic_release_tag: "nightly_${{ env.VERSION }}"
-                  prerelease: ${{ env.PRERELEASE }}
+                  prerelease: "${{ env.PRERELEASE }}"
                   title: "Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}"
                   files: |
                       ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
