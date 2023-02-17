@@ -8,7 +8,7 @@ jobs:
     build:
         env:
             BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-            VERSION: "${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
+            VERSION: "0.0.${{ github.run_number }}"
 
         permissions: write-all
         runs-on: ubuntu-latest
