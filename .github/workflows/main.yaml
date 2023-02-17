@@ -17,7 +17,7 @@ jobs:
                   node-version: 14.x
 
             - name: Versioning
-              run: echo 'export const version = "1.${{ github.run_number }}";' > ./src/version.tsx
+              run: echo 'export var version = "1.${{ github.run_number }}";' > ./src/version.tsx
 
             - run: npm i
 
@@ -44,6 +44,7 @@ jobs:
                   rm package.json
                   rm tsconfig.json
                   rm webpack.config.js
+                  rm logo.afdesign
 
             - id: packExtensionDir
               uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1

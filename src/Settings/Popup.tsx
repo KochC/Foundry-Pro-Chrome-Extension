@@ -24,7 +24,7 @@ const Settings = () => {
                     </div>
                     <div className="bp4-navbar-group bp4-align-right">
                         <Tag>
-                            {"Release Version " + version}
+                            {"Release " + version}
                         </Tag>
                     </div>
                 </div>

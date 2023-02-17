@@ -17,7 +17,7 @@ jobs:
                   node-version: 14.x
 
             - name: Versioning
-              run: echo 'export const version = "0.${{ github.run_number }}";' > ./src/version.tsx
+              run: echo 'export var version = "0.${{ github.run_number }}";' > ./src/version.tsx
 
             - run: npm i
 
@@ -38,13 +38,13 @@ jobs:
                   mkdir ./node_modules
                   mv ./normalize.css/ ./node_modules/normalize.css/
                   mv ./@blueprintjs/ ./node_modules/@blueprintjs/
-                  rm -rf ./src
                   rm -rf ./public
                   rm package-lock.json
                   rm package.json
                   rm tsconfig.json
                   rm webpack.config.js
                   rm logo.afdesign
+                  rm -rf ./src
 
             - id: packExtensionDir
               uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
