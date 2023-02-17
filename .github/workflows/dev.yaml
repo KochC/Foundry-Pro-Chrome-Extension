@@ -19,6 +19,8 @@ jobs:
               with:
                   node-version: 14.x
 
+            - run: echo ${{github}}
+
             - name: Development version
               run: |
                   if env.BRANCH_NAME == 'main'; then
@@ -31,10 +33,10 @@ jobs:
 
             - name: Create versioning file for app
               run: |
-                  echo "export var version = ${{ env.VERSION }};" > ./src/version.tsx
+                  echo "export var version = '${{ env.VERSION }}';" > ./src/version.tsx
                   echo "export var branch = '${{ env.BRANCH_NAME }}';" >> ./src/version.tsx
-                  echo "export var commit = '${{ github.GITHUB_SHA }}';" >> ./src/version.tsx
-                  echo "export var actor = '${{ github.GITHUB_ACTOR }}';" >> ./src/version.tsx
+                  echo "export var commit = '${{ github.github_sha }}';" >> ./src/version.tsx
+                  echo "export var actor = '${{ github.github_actor }}';" >> ./src/version.tsx
                   cat ./src/version.tsx
 
             - name: Install npm packages
@@ -80,23 +82,23 @@ jobs:
                   privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
 
             - name: Rename to release
-              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-$VERSION.zip
+              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
 
             - name: Release Package as Pre-Repease
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                  automatic_release_tag: "nightly_$VERSION"
-                  prerelease: env.PRERELEASE
-                  title: "Foundry-Upgrade-Chrome-Extension-$VERSION"
+                  automatic_release_tag: "nightly_${{ env.VERSION }}"
+                  prerelease: ${{env.PRERELEASE}}
+                  title: "Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}"
                   files: |
-                      ./build/Foundry-Upgrade-Chrome-Extension-$VERSION.zip
+                      ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
 
             - name: Upload & release
               if: env.BRANCH_NAME == 'main'
               uses: mnao305/chrome-extension-upload@v4.0.1
               with:
-                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-$VERSION.zip"
+                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip"
                   extension-id: "anjiaghdipilddabdekbchcgenjmofan"
                   client-id: ${{ secrets.CLIENT_ID }}
                   client-secret: ${{ secrets.CLIENT_SECRET }}
