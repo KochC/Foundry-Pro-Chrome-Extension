@@ -87,7 +87,7 @@ jobs:
                   privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
 
             - name: Rename to release
-              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ VERSION }}.zip
+              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-$VERSION.zip
 
             - name: Release Package as Pre-Repease
               uses: "marvinpinto/action-automatic-releases@latest"
