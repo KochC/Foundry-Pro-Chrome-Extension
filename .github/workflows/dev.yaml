@@ -21,12 +21,12 @@ jobs:
                   node-version: 14.x
 
             - name: Development workflow
-              if: ${{ env.BRANCH_NAME }} == dev
-              run: |
+              if: env.BRANCH_NAME == 'dev'
+                run: |
                   echo "I am a dev workflow"
 
             - name: Main workflow
-              if: ${{ env.BRANCH_NAME }} == main
+              if: env.BRANCH_NAME == 'main'
               run: |
                   echo "I am a main workflow"
 
