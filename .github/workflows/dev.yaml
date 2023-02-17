@@ -24,9 +24,9 @@ jobs:
                   field: version
                   value: 0.${{ github.run_number }}
 
-            - run: |
-                  rm ./src/version.tsx
-                  echo 'export const version = "0.${{ github.runner_number }}"' > ./src/version.tsx
+            - name: Versioning
+              run: echo 'export const version = "0.${{ github.runner_number }}"' > ./src/version.tsx
+            - run: cat ./src/version.tsx
             - run: npm run build
             - run: ls
             - name: cleanup
