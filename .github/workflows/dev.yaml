@@ -93,17 +93,17 @@ jobs:
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                  automatic_release_tag: "nightly_${{ VERSION }}"
+                  automatic_release_tag: "nightly_$VERSION"
                   prerelease: env.PRERELEASE
-                  title: "Foundry-Upgrade-Chrome-Extension-${{ VERSION }}"
+                  title: "Foundry-Upgrade-Chrome-Extension-$VERSION"
                   files: |
-                      ./build/Foundry-Upgrade-Chrome-Extension-${{ VERSION }}.zip
+                      ./build/Foundry-Upgrade-Chrome-Extension-$VERSION.zip
 
             - name: Upload & release
               if: env.BRANCH_NAME == 'main'
               uses: mnao305/chrome-extension-upload@v4.0.1
               with:
-                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-${{ VERSION }}.zip"
+                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-$VERSION.zip"
                   extension-id: "anjiaghdipilddabdekbchcgenjmofan"
                   client-id: ${{ secrets.CLIENT_ID }}
                   client-secret: ${{ secrets.CLIENT_SECRET }}
