@@ -21,7 +21,7 @@ jobs:
 
             - name: Define version
               run: |
-                  if '${{ env.BRANCH_NAME }}' == 'main'; then
+                  if ["${{ env.BRANCH_NAME }}" = "main"]; then
                       echo "VERSION=${{ vars.MAJOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_ENV
                       echo "RERELEASE=false" >> $GITHUB_ENV
                   else
