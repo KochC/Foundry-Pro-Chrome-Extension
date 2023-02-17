@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Stable Pipeline
 
 on:
     push:
@@ -17,7 +17,7 @@ jobs:
                   node-version: 14.x
 
             - name: Versioning
-              run: echo 'export var version = "1.${{ github.run_number }}";' > ./src/version.tsx
+              run: echo 'export var version = "${{ env.MAJOR_VERSION }}.${{ github.run_number }}";' > ./src/version.tsx
 
             - run: npm i
 
@@ -26,7 +26,7 @@ jobs:
               with:
                   file: manifest.json
                   field: version
-                  value: 1.${{ github.run_number }}
+                  value: ${{ env.MAJOR_VERSION }}.${{ github.run_number }}
 
             - run: npm run build
 
@@ -60,22 +60,22 @@ jobs:
                   privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
 
             - name: Rename to release
-              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-1.${{ github.run_number }}.zip
+              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ env.MAJOR_VERSION }}.${{ github.run_number }}.zip
 
             - name: Release Package as Pre-Repease
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                  automatic_release_tag: "stable 1.${{ github.run_number }}"
+                  automatic_release_tag: "stable ${{ env.MAJOR_VERSION }}.${{ github.run_number }}"
                   prerelease: false
-                  title: "Foundry-Upgrade-Chrome-Extension-1.${{ github.run_number }}"
+                  title: "Foundry-Upgrade-Chrome-Extension-${{ env.MAJOR_VERSION }}.${{ github.run_number }}"
                   files: |
-                      ./build/Foundry-Upgrade-Chrome-Extension-1.${{ github.run_number }}.zip
+                      ./build/Foundry-Upgrade-Chrome-Extension-${{ env.MAJOR_VERSION }}.${{ github.run_number }}.zip
 
             - name: Upload & release
               uses: mnao305/chrome-extension-upload@v4.0.1
               with:
-                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-1.${{ github.run_number }}.zip"
+                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-${{ env.MAJOR_VERSION }}.${{ github.run_number }}.zip"
                   extension-id: "anjiaghdipilddabdekbchcgenjmofan"
                   client-id: ${{ secrets.CLIENT_ID }}
                   client-secret: ${{ secrets.CLIENT_SECRET }}

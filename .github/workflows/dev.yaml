@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Nightly Pipeline
 
 on:
     push:
@@ -17,7 +17,7 @@ jobs:
                   node-version: 14.x
 
             - name: Versioning
-              run: echo 'export var version = "0.${{ github.run_number }}";' > ./src/version.tsx
+              run: echo 'export var version = "${{ env.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}";' > ./src/version.tsx
 
             - run: npm i
 
@@ -26,7 +26,7 @@ jobs:
               with:
                   file: manifest.json
                   field: version
-                  value: 0.${{ github.run_number }}
+                  value: ${{ env.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}
 
             - run: npm run build
 
@@ -60,14 +60,14 @@ jobs:
                   privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
 
             - name: Rename to release
-              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}.zip
+              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ env.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}.zip
 
             - name: Release Package as Pre-Repease
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                  automatic_release_tag: "nightly 0.${{ github.run_number }}"
+                  automatic_release_tag: "nightly ${{ env.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
                   prerelease: true
-                  title: "Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}"
+                  title: "Foundry-Upgrade-Chrome-Extension-${{ env.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}"
                   files: |
-                      ./build/Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}.zip
+                      ./build/Foundry-Upgrade-Chrome-Extension-${{ env.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}.zip
