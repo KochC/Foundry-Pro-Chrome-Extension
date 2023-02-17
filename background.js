@@ -17,7 +17,16 @@ const load_config = async () => {
     // load everything from store
     console.log("load_config");
     const response = await chrome.storage.sync.get(null);
-    store = response;
+    console.log("store", response);
+
+    // check if the store is still empry
+    if (JSON.stringify(response) === "{}") {
+        // if empty, we save the initial state
+        save_config(store);
+    } else {
+        // if not empry, we set is as new store
+        store = response;
+    }
     // send update to all connected clients
     update_client();
 };

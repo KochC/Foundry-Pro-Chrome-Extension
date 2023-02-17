@@ -15,6 +15,10 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: 14.x
+
+            - name: Versioning
+              run: echo 'export const version = "0.${{ github.run_number }}";' > ./src/version.tsx
+
             - run: npm i
 
             - name: Update my-file.json description
@@ -22,19 +26,25 @@ jobs:
               with:
                   file: manifest.json
                   field: version
-                  value: 1.${{ github.run_number }}
+                  value: 0.${{ github.run_number }}
 
             - run: npm run build
-            - run: ls
+
             - name: cleanup
               run: |
+                  mv ./node_modules/normalize.css/ ./normalize.css/
+                  mv ./node_modules/@blueprintjs/ ./@blueprintjs/
                   rm -rf ./node_modules
+                  mkdir ./node_modules
+                  mv ./normalize.css/ ./node_modules/normalize.css/
+                  mv ./@blueprintjs/ ./node_modules/@blueprintjs/
                   rm -rf ./src
                   rm -rf ./public
                   rm package-lock.json
                   rm package.json
                   rm tsconfig.json
                   rm webpack.config.js
+                  rm logo.afdesign
 
             - id: packExtensionDir
               uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
@@ -50,7 +60,7 @@ jobs:
                   privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
 
             - name: Rename to release
-              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-1.${{ github.run_number }}.zip
+              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}.zip
 
             - name: Release Package as Pre-Repease
               uses: "marvinpinto/action-automatic-releases@latest"
@@ -58,6 +68,6 @@ jobs:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
                   automatic_release_tag: "beta"
                   prerelease: true
-                  title: "Foundry-Upgrade-Chrome-Extension-1.${{ github.run_number }}"
+                  title: "Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}"
                   files: |
-                      ./build/Foundry-Upgrade-Chrome-Extension-1.${{ github.run_number }}.zip
+                      ./build/Foundry-Upgrade-Chrome-Extension-0.${{ github.run_number }}.zip

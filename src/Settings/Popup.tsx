@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import ManageExistingLinks from './ManageCustomLinks';
 import extension_icon from '../../icon/icon48_dark.png'
 import { Tag } from "@blueprintjs/core";
+import { version } from '../version';
 
 const SettingsContainer = styled.div`
     width: 600px;
@@ -23,7 +24,7 @@ const Settings = () => {
                     </div>
                     <div className="bp4-navbar-group bp4-align-right">
                         <Tag>
-                            {"Release Version 1.34"}
+                            {"Release Version " + version}
                         </Tag>
                     </div>
                 </div>
