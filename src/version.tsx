@@ -1,1 +1,1 @@
-export const version = "0.10";
+export var version = "local";

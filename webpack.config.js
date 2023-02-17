@@ -47,6 +47,6 @@ module.exports = {
     },
     output: {
         filename: "content.js",
-        path: path.resolve(__dirname, "..", "foundry-pro-Chrome-Extension"),
+        path: path.resolve(__dirname, "..", "Foundry-Pro-Chrome-Extension"),
     },
 };
