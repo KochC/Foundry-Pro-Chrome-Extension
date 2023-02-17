@@ -100,16 +100,18 @@ body#pf_popup_container{
     height: 18px;
 }
 
-.dummy_popup{
-    border: 1px solid red;
-    width: auto;
-    float: left;
-    height: 100vh;
+#webpack-dev-server-client-overlay{
+    display: none;
 }
 
-.dummy_menu{
-    border: 1px solid green;
-    width: 250px;
-    float: left;
-    height: 100vh;
+.preview{
+    width: 300px;
+    height: 200px;
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid gray;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
