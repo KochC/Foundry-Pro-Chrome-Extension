@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { LinkProps } from '../Menu/LinkProps';
 
-import { Card, H5, Button, HTMLTable, ControlGroup, InputGroup, Icon, Callout } from "@blueprintjs/core";
+import { Card, H5, Button, HTMLTable, ControlGroup, InputGroup, Icon, Tag } from "@blueprintjs/core";
 
 const SettingsContainer = styled.div`
     > div{
@@ -96,18 +96,40 @@ const ManageExistingLinks = () => {
                 <br />
                 <br />
                 <H5>Manage existing links</H5>
-                <HTMLTable compact={true} width="100%">
+                <HTMLTable compact={true} width="100%" >
                     <tbody style={{ width: "100%" }}>
+                        <tr>
+                            <TD style={{ width: "calc(50% - 20px)" }}>
+                                Session Token
+                            </TD>
+                            <TD style={{ width: "calc(50% - 20px)" }}>
+                                <Tag round={true} minimal={true}>default</Tag>
+                            </TD>
+                            <TD className='gray' style={{ width: "40px" }}>
+                                <Icon color="#D3D8DE" icon="lock" size={14} />
+                            </TD>
+                        </tr>
+                        <tr>
+                            <TD style={{ width: "calc(50% - 20px)" }}>
+                                Development Token
+                            </TD>
+                            <TD style={{ width: "calc(50% - 20px)" }}>
+                                <Tag round={true} minimal={true}>default</Tag>
+                            </TD>
+                            <TD style={{ width: "40px" }}>
+                                <Icon color="#D3D8DE" icon="lock" size={14} />
+                            </TD>
+                        </tr>
                         {
                             customLinks.length > 0 ? customLinks.map((link) =>
                                 <tr>
-                                    <TD style={{ width: "calc(50% - 20px)" }}>{link.name}</TD>
-                                    <TD style={{ width: "calc(50% - 20px)" }}>{link.url}</TD>
+                                    <TD style={{ width: "calc(50% - 20px)" }}>
+                                        {link.name}
+                                    </TD>
+                                    <TD style={{ width: "calc(50% - 20px)" }}><Tag round={true} minimal={true}>...{link.url.substring(link.url.length - 20, link.url.length)}</Tag></TD>
                                     <TD style={{ width: "40px" }}><Icon icon="cross" size={16} onClick={() => delete_item(link)} intent="danger" /></TD>
                                 </tr>
-                            ) : <Callout icon="info-sign" title={"No custom links setup yet"}>
-                                To setup your first custom link, just fill out the form above.
-                            </Callout>
+                            ) : ""
                         }
                     </tbody>
                 </HTMLTable>
