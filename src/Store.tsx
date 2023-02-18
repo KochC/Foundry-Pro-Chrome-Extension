@@ -32,3 +32,12 @@ export const save_store = async (s: Store) => {
         console.warn(e);
     }
 };
+
+export const reset_store = async () => {
+    try {
+        // save everything to storage
+        await chrome.storage.sync.set({});
+    } catch (e) {
+        console.warn(e);
+    }
+}

@@ -5,7 +5,7 @@ import { version } from '../version';
 import About from './About';
 import CustomHost from './CustomHost';
 import CustomLinks from './CustomLinks';
-import { initial_store } from '../Store';
+import { reset_store } from '../Store';
 
 const SettingsContainer = styled.div`
     width: 660px;    
@@ -42,7 +42,7 @@ const Logo = styled.img`
 const Settings = () => {
 
     const reset = () => {
-        chrome.storage.sync.set(initial_store);
+        reset_store()
     }
 
     return (
@@ -60,7 +60,7 @@ const Settings = () => {
                         {"Release " + version}
                     </Tag>
                     {version == "local" ?
-                        <Button onClick={reset}>
+                        <Button minimal={true} onClick={reset}>
                             Reset
                         </Button> : ""
                     }

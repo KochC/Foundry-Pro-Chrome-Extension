@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener(() => {
                     chrome.action.setBadgeText(
                         { text: "ON", tabId: sender.tab.id },
                         (r) => {
-                            console.log(r);
+                            //console.log(r);
                         }
                     );
                 }

@@ -22,7 +22,14 @@
     "web_accessible_resources": [
         {
             "matches": ["*://*/*"],
-            "resources": ["content.js", "icon/*"]
+            "resources": [
+                "content.js",
+                "icon/*",
+                "*.eot",
+                "*.woff",
+                "*.woff2",
+                "*.ttf"
+            ]
         }
     ],
     "icons": {
