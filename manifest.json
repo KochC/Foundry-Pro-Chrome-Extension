@@ -3,7 +3,7 @@
     "name": "Foundry Pro",
     "description": "This tool adds new menu items to the Palantir Foundry UI for developers.",
     "author": "Christopher Koch",
-    "version": "1.0",
+    "version": "0",
     "action": {
         "default_title": "Foundry Pro Chrome Extension",
         "default_popup": "popup.html"
@@ -22,7 +22,14 @@
     "web_accessible_resources": [
         {
             "matches": ["*://*/*"],
-            "resources": ["content.js", "icon/*"]
+            "resources": [
+                "content.js",
+                "icon/*",
+                "*.eot",
+                "*.woff",
+                "*.woff2",
+                "*.ttf"
+            ]
         }
     ],
     "icons": {

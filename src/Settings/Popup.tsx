@@ -1,20 +1,36 @@
 import styled from 'styled-components';
 import extension_icon from '../../icon/icon48_dark.png'
-import { Tag, AnchorButton, Navbar, Alignment, Tabs, Tab } from "@blueprintjs/core";
+import { Tag, AnchorButton, Button, Navbar, Alignment, Tabs, Tab, H6 } from "@blueprintjs/core";
 import { version } from '../version';
 import About from './About';
 import CustomHost from './CustomHost';
 import CustomLinks from './CustomLinks';
+import { reset_store } from '../Store';
 
 const SettingsContainer = styled.div`
-    width: 660px;
+    width: 660px;    
+    & div:focus{
+        outline:none;
+    }
+    & button:focus{
+        outline:none;
+    }
 `
 
 const Content = styled.div`
     padding: 20px;
+`
 
-    & div:focus{
-        outline:none;
+const Category = styled.p`
+    color: #5F6B7C;
+    margin: 0;
+    padding: 20px 10px 5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 12px;
+
+    &:first-of-type{
+        padding-top: 0;
     }
 `
 
@@ -24,6 +40,11 @@ const Logo = styled.img`
 `
 
 const Settings = () => {
+
+    const reset = () => {
+        reset_store()
+    }
+
     return (
         <SettingsContainer>
             <Navbar className="bp4-dark">
@@ -38,6 +59,11 @@ const Settings = () => {
                     <Tag round={true} minimal={true}>
                         {"Release " + version}
                     </Tag>
+                    {version == "local" ?
+                        <Button minimal={true} onClick={reset}>
+                            Reset
+                        </Button> : ""
+                    }
                 </Navbar.Group>
             </Navbar>
             <Content>
@@ -45,11 +71,13 @@ const Settings = () => {
                     animate={true}
                     id="TabsExample"
                     key={"vertical"}
-                    renderActiveTabPanelOnly={true}
+                    renderActiveTabPanelOnly={false}
                     vertical={true}
                 >
+                    <Category>General Config</Category>
                     <Tab id="rx" title="Custom Links" panel={<CustomLinks />} />
                     <Tab id="ng" title="Custom Host" panel={<CustomHost />} />
+                    <Category>Information</Category>
                     <Tab id="mb" title="About" panel={<About />} panelClassName="ember-panel" />
                     <Tabs.Expander />
                 </Tabs>

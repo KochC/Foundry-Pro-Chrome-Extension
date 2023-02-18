@@ -13,6 +13,5 @@ if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
     console.log("dark");
     chrome.runtime.sendMessage({ scheme: "dark" });
 } else {
-    console.log("light");
     chrome.runtime.sendMessage({ scheme: "light" });
 }

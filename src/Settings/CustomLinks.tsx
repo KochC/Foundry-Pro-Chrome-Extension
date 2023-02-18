@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { LinkProps } from '../Menu/LinkProps';
-
-import { Card, H5, Button, HTMLTable, ControlGroup, InputGroup, Icon, Callout } from "@blueprintjs/core";
+import { Card, H5, Button, HTMLTable, ControlGroup, InputGroup, Icon, Tag } from "@blueprintjs/core";
+import { Store, LinkProps, initial_store, load_store, save_store } from '../Store'
 
 const SettingsContainer = styled.div`
     > div{
@@ -20,61 +19,49 @@ const TD = styled.td`
 
 const ManageExistingLinks = () => {
 
+    const [store, setStore] = useState<Store>(initial_store)
     const [name, setName] = useState("")
     const [url, setUrl] = useState("")
 
-    const changedName = (e: any) => {
-        setName(e.target.value);
+    const on_store_change_listener = async () => {
+        setStore(await load_store())
     }
 
-    const changedUrl = (e: any) => {
-        setUrl(e.target.value);
+    const init = async () => {
+        on_store_change_listener()
+        chrome.storage.onChanged.addListener(on_store_change_listener);
     }
 
     const reset = async () => {
-        chrome.runtime.sendMessage(
-            { action: "reset_links" }
-        );
-
+        save_store(
+            {
+                ...store,
+                custom_links: []
+            }
+        )
     }
 
     const add_link = async () => {
-        // sending a new list enry
-        chrome.runtime.sendMessage(
-            { action: "add_link", payload: { icon: "a", url: url, name: name } }
-        );
-    }
-
-    const [customLinks, setCustomLinks] = useState<LinkProps[]>([])
-
-    const init = () => {
-        // requesting an update
-        chrome.runtime.sendMessage({ action: "request_update" }, (result) => {
-            if (!window.chrome.runtime.lastError) {
-                // works
-            } else {
-                const error = window.chrome.runtime.lastError
-                // we dont care abour this error
+        save_store(
+            {
+                ...store,
+                custom_links: [...store.custom_links, { url: url, name: name }]
             }
-        })
+        )
     }
+
 
     const delete_item = async (item: LinkProps) => {
-        // request to delete one item
-        chrome.runtime.sendMessage({ action: "delete_link", name: item.name });
+        save_store(
+            {
+                ...store,
+                custom_links: store.custom_links.filter((i) => i.name !== item.name)
+            }
+        )
     }
 
     useEffect(() => {
-        chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-            if (request.action == "update_client") {
-                setCustomLinks(request.payload.store.custom_links)
-            }
-            return false;
-        });
-        // request first update from the background.js
-
         init()
-
     }, [])
 
     return (
@@ -87,27 +74,72 @@ const ManageExistingLinks = () => {
                     Add links here to show in the side panel on the top. You can add relative and absolute links.
                 </p>
                 <ControlGroup>
-                    <InputGroup leftIcon="new-text-box" width="180px" onChange={changedName} id=" text-input" value={name} placeholder="Name" />
-                    <InputGroup leftIcon="link" fill={true} onChange={changedUrl} id="text-input" value={url} placeholder="Link" />
-                    <Button intent="primary" onClick={add_link}>
+                    <InputGroup
+                        leftIcon="new-text-box"
+                        width="180px"
+                        onChange={(e) => setName(e.target.value)}
+                        id=" text-input"
+                        value={name}
+                        placeholder="Name"
+                    />
+                    <InputGroup
+                        leftIcon="link"
+                        fill={true}
+                        onChange={(e) => setUrl(e.target.value)}
+                        id="text-input"
+                        value={url}
+                        placeholder="Link"
+                    />
+                    <Button
+                        intent="primary"
+                        onClick={add_link}
+                    >
                         <Icon icon="add" size={16} />
                     </Button>
                 </ControlGroup>
                 <br />
                 <br />
                 <H5>Manage existing links</H5>
-                <HTMLTable compact={true} width="100%">
+                <HTMLTable compact={true} width="100%" >
                     <tbody style={{ width: "100%" }}>
+                        <tr>
+                            <TD style={{ width: "calc(50% - 20px)" }}>
+                                Session Token
+                            </TD>
+                            <TD style={{ width: "calc(50% - 20px)" }}>
+                                <Tag round={true} minimal={true}>default</Tag>
+                            </TD>
+                            <TD className='gray' style={{ width: "40px" }}>
+                                <Icon color="#D3D8DE" icon="lock" size={14} />
+                            </TD>
+                        </tr>
+                        <tr>
+                            <TD style={{ width: "calc(50% - 20px)" }}>
+                                Development Token
+                            </TD>
+                            <TD style={{ width: "calc(50% - 20px)" }}>
+                                <Tag round={true} minimal={true}>default</Tag>
+                            </TD>
+                            <TD style={{ width: "40px" }}>
+                                <Icon color="#D3D8DE" icon="lock" size={14} />
+                            </TD>
+                        </tr>
                         {
-                            customLinks.length > 0 ? customLinks.map((link) =>
+                            store.custom_links.length > 0 ? store.custom_links.map((link) =>
                                 <tr>
-                                    <TD style={{ width: "calc(50% - 20px)" }}>{link.name}</TD>
-                                    <TD style={{ width: "calc(50% - 20px)" }}>{link.url}</TD>
-                                    <TD style={{ width: "40px" }}><Icon icon="cross" size={16} onClick={() => delete_item(link)} intent="danger" /></TD>
+                                    <TD style={{ width: "calc(50% - 20px)" }}>
+                                        {link.name}
+                                    </TD>
+                                    <TD style={{ width: "calc(50% - 20px)" }}>
+                                        <Tag round={true} minimal={true}>
+                                            ...{link.url.substring(link.url.length - 20, link.url.length)}
+                                        </Tag>
+                                    </TD>
+                                    <TD style={{ width: "40px" }}>
+                                        <Icon icon="cross" size={16} onClick={() => delete_item(link)} intent="danger" />
+                                    </TD>
                                 </tr>
-                            ) : <Callout icon="info-sign" title={"No custom links setup yet"}>
-                                To setup your first custom link, just fill out the form above.
-                            </Callout>
+                            ) : ""
                         }
                     </tbody>
                 </HTMLTable>
