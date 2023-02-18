@@ -51,12 +51,7 @@ jobs:
 
             - name: Cleanup release package
               run: |
-                  mv ./node_modules/normalize.css/ ./normalize.css/
-                  mv ./node_modules/@blueprintjs/ ./@blueprintjs/
                   rm -rf ./node_modules
-                  mkdir ./node_modules
-                  mv ./normalize.css/ ./node_modules/normalize.css/
-                  mv ./@blueprintjs/ ./node_modules/@blueprintjs/
                   rm -rf ./src
                   rm -rf ./public
                   rm package-lock.json
@@ -64,6 +59,8 @@ jobs:
                   rm tsconfig.json
                   rm webpack.config.js
                   rm logo.afdesign
+                  rm -rf .github
+                  rm -rf .gitignore
 
             - id: packExtensionDir
               uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1

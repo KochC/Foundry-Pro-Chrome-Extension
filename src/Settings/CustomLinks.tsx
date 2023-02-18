@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { LinkProps } from '../Menu/LinkProps';
 
-import { Card, H5, Button, Divider, ControlGroup, InputGroup, Icon, Callout } from "@blueprintjs/core";
+import { Card, H5, Button, HTMLTable, ControlGroup, InputGroup, Icon, Callout } from "@blueprintjs/core";
 
 const SettingsContainer = styled.div`
     > div{
-        margin: 20px;
+        margin: 0px;
         overflow: hidden;
     }
 `
@@ -32,49 +32,49 @@ const ManageExistingLinks = () => {
     }
 
     const reset = async () => {
-        const response = await chrome.runtime.sendMessage(
+        chrome.runtime.sendMessage(
             { action: "reset_links" }
         );
-        // receiving the updated list
-        if (response.hasOwnProperty("custom_links"))
-            setCustomLinks(response.custom_links)
+
     }
 
     const add_link = async () => {
         // sending a new list enry
-        const response = await chrome.runtime.sendMessage(
+        chrome.runtime.sendMessage(
             { action: "add_link", payload: { icon: "a", url: url, name: name } }
         );
-        // receiving the updated listif (response.hasProperty("custom_links"))
-        if (response.hasOwnProperty("custom_links"))
-            setCustomLinks(response.custom_links)
     }
 
     const [customLinks, setCustomLinks] = useState<LinkProps[]>([])
 
-    const init = async () => {
+    const init = () => {
         // requesting an update
-        const response = await chrome.runtime.sendMessage({ action: "request_update" });
-        // get the whole store as a result
-        // therefore only updating the custom_links
-
-        console.log('store', response)
-        if (response.hasOwnProperty("custom_links"))
-            setCustomLinks(response.custom_links)
+        chrome.runtime.sendMessage({ action: "request_update" }, (result) => {
+            if (!window.chrome.runtime.lastError) {
+                // works
+            } else {
+                const error = window.chrome.runtime.lastError
+                // we dont care abour this error
+            }
+        })
     }
 
     const delete_item = async (item: LinkProps) => {
         // request to delete one item
-        const response = await chrome.runtime.sendMessage({ action: "delete_link", name: item.name });
-        // get the whole store as a result
-        // therefore only updating the custom_links
-        if (response.hasOwnProperty("custom_links"))
-            setCustomLinks(response.custom_links)
+        chrome.runtime.sendMessage({ action: "delete_link", name: item.name });
     }
 
     useEffect(() => {
+        chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+            if (request.action == "update_client") {
+                setCustomLinks(request.payload.store.custom_links)
+            }
+            return false;
+        });
         // request first update from the background.js
+
         init()
+
     }, [])
 
     return (
@@ -94,27 +94,25 @@ const ManageExistingLinks = () => {
                     </Button>
                 </ControlGroup>
                 <br />
-                <Divider />
                 <br />
                 <H5>Manage existing links</H5>
-                <table width="100%" className="bp4-html-table bp4-compact bp4-html-table-condensed">
-                    <tbody>
+                <HTMLTable compact={true} width="100%">
+                    <tbody style={{ width: "100%" }}>
                         {
                             customLinks.length > 0 ? customLinks.map((link) =>
                                 <tr>
-                                    <TD width="180px">{link.name}</TD>
-                                    <TD width="300px">{link.url}</TD>
-                                    <TD width="40px"><Icon icon="cross" size={16} onClick={() => delete_item(link)} intent="danger" /></TD>
+                                    <TD style={{ width: "calc(50% - 20px)" }}>{link.name}</TD>
+                                    <TD style={{ width: "calc(50% - 20px)" }}>{link.url}</TD>
+                                    <TD style={{ width: "40px" }}><Icon icon="cross" size={16} onClick={() => delete_item(link)} intent="danger" /></TD>
                                 </tr>
                             ) : <Callout icon="info-sign" title={"No custom links setup yet"}>
                                 To setup your first custom link, just fill out the form above.
                             </Callout>
                         }
                     </tbody>
-                </table>
+                </HTMLTable>
 
                 <br />
-                <Divider />
                 <br />
 
                 <H5>Reset Settings</H5>

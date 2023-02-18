@@ -39,10 +39,24 @@ const Menu2 = () => {
 
   const init = async () => {
     // requesting an update
-    const response = await chrome.runtime.sendMessage({ action: "request_update" });
-    // get the whole store as a result
-    // therefore only updating the custom_links
-    setCustomLinks(response.custom_links)
+    chrome.runtime.sendMessage({ action: "request_update" }, (result) => {
+      if (!window.chrome.runtime.lastError) {
+        // works
+      } else {
+        const error = window.chrome.runtime.lastError
+        // we dont care abour this error
+      }
+    });
+
+    // register to the background.js
+    chrome.runtime.sendMessage({ action: "register" }, (result) => {
+      if (!window.chrome.runtime.lastError) {
+        // works
+      } else {
+        const error = window.chrome.runtime.lastError
+        // we dont care abour this error
+      }
+    });
   }
 
   // this function runs once at the beginning

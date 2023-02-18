@@ -4,7 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
-
+*.eot
+*.woff
+*.woff2
+*.ttf
 content.js
 
 # testing
