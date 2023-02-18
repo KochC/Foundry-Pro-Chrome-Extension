@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { LinkProps } from './LinkProps'
 
 import {
   Toast,
   Toaster,
   Position,
   ToastProps,
-  MenuItem,
-  MenuDivider,
-  Icon
+  MenuItem
 } from "@blueprintjs/core";
+
+import { Store, initial_store, load_store } from '../Store'
 
 const Container = styled.ul`
   padding: 0 10px;
@@ -33,20 +32,17 @@ const get_session_key = () => {
   return "";
 }
 
-const Menu2 = () => {
+const Menu = () => {
 
-  const [customLinks, setCustomLinks] = useState<LinkProps[]>([])
+  const [store, setStore] = useState<Store>(initial_store)
+
+  const on_store_change_listener = async () => {
+    setStore(await load_store())
+  }
 
   const init = async () => {
-    // requesting an update
-    chrome.runtime.sendMessage({ action: "request_update" }, (result) => {
-      if (!window.chrome.runtime.lastError) {
-        // works
-      } else {
-        const error = window.chrome.runtime.lastError
-        // we dont care abour this error
-      }
-    });
+    on_store_change_listener()
+    chrome.storage.onChanged.addListener(on_store_change_listener);
 
     // register to the background.js
     chrome.runtime.sendMessage({ action: "register" }, (result) => {
@@ -54,21 +50,13 @@ const Menu2 = () => {
         // works
       } else {
         const error = window.chrome.runtime.lastError
-        // we dont care abour this error
+        console.log(error.message)
       }
     });
   }
 
   // this function runs once at the beginning
   useEffect(() => {
-    // add update listener for potential updates from the background
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request.action == "update_client") {
-        setCustomLinks(request.payload.store.custom_links)
-      }
-      return true;
-    })
-    // request an update from background.js
     init();
   }, [])
 
@@ -126,7 +114,7 @@ const Menu2 = () => {
         <MenuItem icon="key" text="Copy session token" onClick={copySessionToken} />
         <MenuItem icon="bug" text="Copy development token" onClick={copyDevelopmentToken} />
         {
-          customLinks.length > 0 ? customLinks.map((link) => <MenuItem icon="link" text={link.name} href={link.url} />) : ""
+          store.custom_links.length > 0 ? store.custom_links.map((link) => <MenuItem icon="link" text={link.name} href={link.url} />) : ""
         }
       </Container>
 
@@ -137,4 +125,4 @@ const Menu2 = () => {
   );
 };
 
-export default Menu2;
+export default Menu;

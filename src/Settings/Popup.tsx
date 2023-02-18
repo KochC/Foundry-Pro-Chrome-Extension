@@ -1,21 +1,24 @@
 import styled from 'styled-components';
 import extension_icon from '../../icon/icon48_dark.png'
-import { Tag, AnchorButton, Navbar, Alignment, Tabs, Tab, H6 } from "@blueprintjs/core";
+import { Tag, AnchorButton, Button, Navbar, Alignment, Tabs, Tab, H6 } from "@blueprintjs/core";
 import { version } from '../version';
 import About from './About';
 import CustomHost from './CustomHost';
 import CustomLinks from './CustomLinks';
+import { initial_store } from '../Store';
 
 const SettingsContainer = styled.div`
-    width: 660px;
+    width: 660px;    
+    & div:focus{
+        outline:none;
+    }
+    & button:focus{
+        outline:none;
+    }
 `
 
 const Content = styled.div`
     padding: 20px;
-
-    & div:focus{
-        outline:none;
-    }
 `
 
 const Category = styled.p`
@@ -37,6 +40,11 @@ const Logo = styled.img`
 `
 
 const Settings = () => {
+
+    const reset = () => {
+        chrome.storage.sync.set(initial_store);
+    }
+
     return (
         <SettingsContainer>
             <Navbar className="bp4-dark">
@@ -51,6 +59,11 @@ const Settings = () => {
                     <Tag round={true} minimal={true}>
                         {"Release " + version}
                     </Tag>
+                    {version == "local" ?
+                        <Button onClick={reset}>
+                            Reset
+                        </Button> : ""
+                    }
                 </Navbar.Group>
             </Navbar>
             <Content>
@@ -58,7 +71,7 @@ const Settings = () => {
                     animate={true}
                     id="TabsExample"
                     key={"vertical"}
-                    renderActiveTabPanelOnly={true}
+                    renderActiveTabPanelOnly={false}
                     vertical={true}
                 >
                     <Category>General Config</Category>
