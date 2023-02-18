@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import extension_icon from '../../icon/icon48_dark.png'
-import { Tag, AnchorButton, Navbar, Alignment, Tabs, Tab } from "@blueprintjs/core";
+import { Tag, AnchorButton, Navbar, Alignment, Tabs, Tab, H6 } from "@blueprintjs/core";
 import { version } from '../version';
 import About from './About';
 import CustomHost from './CustomHost';
@@ -15,6 +15,19 @@ const Content = styled.div`
 
     & div:focus{
         outline:none;
+    }
+`
+
+const Category = styled.p`
+    color: #5F6B7C;
+    margin: 0;
+    padding: 20px 10px 5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 12px;
+
+    &:first-of-type{
+        padding-top: 0;
     }
 `
 
@@ -48,8 +61,10 @@ const Settings = () => {
                     renderActiveTabPanelOnly={true}
                     vertical={true}
                 >
+                    <Category>General Config</Category>
                     <Tab id="rx" title="Custom Links" panel={<CustomLinks />} />
                     <Tab id="ng" title="Custom Host" panel={<CustomHost />} />
+                    <Category>Information</Category>
                     <Tab id="mb" title="About" panel={<About />} panelClassName="ember-panel" />
                     <Tabs.Expander />
                 </Tabs>
