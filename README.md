@@ -61,3 +61,9 @@ The deployment process includes packaging the extension, uploading it to the Chr
 In summary, the automated CI/CD process for the Chrome extension ensures that new changes are thoroughly tested and deployed to the Chrome Web Store quickly and efficiently. This helps to ensure a high level of quality and reliability for users of the extension.
 
 Once a newer version reaches the Chrome Web Store, a review process will be started manually by the extension owner (same as the repository owner) followed by a review process by Google. One this process was successfull, the extension will automatically be published to the Chrome Web Store.
+
+As part of the automated CI/CD process, the pipeline creates packages that can be manually downloaded (Releases and Pre-Releases) and added to Chrome. These packages include the compiled code for the extension, as well as any other necessary assets and resources.
+
+These packages are created during the build process and can be found in the [release](https://github.com/KochC/Foundry-Pro-Chrome-Extension/releases) secion of the repository. Once the build process is complete, you can manually download the package and add it to Chrome as an unpacked extension.
+
+While this process is less automated than deploying to the Chrome Web Store, it can be useful for testing and debugging the extension before it is officially released. By manually adding the extension to Chrome, you can test it in a real-world environment and make sure that it works as expected.
