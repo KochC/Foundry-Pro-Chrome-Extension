@@ -11,6 +11,14 @@ The Palantir Foundry Chrome Extension is not an official tool provided by Palant
 
 Overall, the Palantir Pro Chrome Extension is a community-driven solution that provides additional features to enhance the development experience on Palantir Foundry.
 
+## Current Features
+Main features of the current release are:
+- Quick access to `Session Token` (one click to clipboard)
+- Quick creation and access to `Short-Live Developer Tokens` (one click to create and copy to clipboard)
+- Customize additional menu entries (whithin the Popup-Settings)
+- Customize `host` settings (on which hosts is the extension allowed to operate, auto detected and manually edited)
+- Saving all settings in the `chrome.storage.sync` to share and save Settings over multiple browsers and machines within one Google Account.
+
 ## How this project works
 You are welcome to contribute to the project. If you encounter any issues or have feature requests, please use the [Issue](https://github.com/KochC/Foundry-Pro-Chrome-Extension/issues) section in the repository to report them. To help organize the issues, we kindly ask that you use tags to indicate the type of issue or feature you are reporting. When submitting an issue or request, please provide as much information as possible, and if you have potential solutions to improve the code, please feel free to include them as well.
 
