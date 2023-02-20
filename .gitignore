@@ -9,6 +9,7 @@
 *.woff2
 *.ttf
 content.js
+package-lock.json
 
 # testing
 /coverage
