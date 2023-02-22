@@ -7,6 +7,10 @@ import CustomHost from './CustomHost';
 import CustomLinks from './CustomLinks';
 import { reset_store } from '../Store';
 
+import 'normalize.css';
+import '@blueprintjs/core/lib/css/blueprint.css';
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
+
 const SettingsContainer = styled.div`
     width: 660px;    
     & div:focus{
