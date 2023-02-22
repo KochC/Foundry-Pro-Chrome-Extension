@@ -6,15 +6,10 @@ import Menu from "./Menu/Menu";
 import Popup from "./Settings/Popup"
 import styled from "styled-components"
 
-import { save_store, load_store, Store, initial_store } from './Store';
-
-import 'normalize.css';
-import '@blueprintjs/core/lib/css/blueprint.css';
-import '@blueprintjs/icons/lib/css/blueprint-icons.css';
+import { save_store, load_store, initial_store } from './Store';
 
 const MenuBorder = styled.div`
 `
-
 
 function init_popup(n: any) {
   const popup = ReactDOM.createRoot(n);
