@@ -79,9 +79,9 @@ const Menu = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        description: "short-live-dev-token",
-        name: "short-live-dev-token",
-        secondsToLive: 5 * 60,
+        description: "Dev token created by Foundry-Pro. This token is only valid for " + store.token_manager.dev_token_ttl + "s and will auto expire.",
+        name: "foundry-pro-dev-token-" + store.token_manager.dev_token_ttl,
+        secondsToLive: store.token_manager.dev_token_ttl,
       })
     };
 
@@ -111,8 +111,14 @@ const Menu = () => {
   return (
     <div>
       <Container>
-        <MenuItem icon="key" text="Copy session token" onClick={copySessionToken} />
-        <MenuItem icon="bug" text="Copy development token" onClick={copyDevelopmentToken} />
+        {
+          store.token_manager.session_token_state ?
+            <MenuItem icon="key" text="Copy session token" onClick={copySessionToken} /> : ""
+        }
+        {
+          store.token_manager.dev_token_state ?
+            <MenuItem icon="bug" text="Copy development token" onClick={copyDevelopmentToken} /> : ""
+        }
         {
           store.custom_links.length > 0 ? store.custom_links.map((link) => <MenuItem icon="link" text={link.name} href={link.url} />) : ""
         }

@@ -5,12 +5,22 @@ export type LinkProps = {
 
 export type Store = {
     custom_links: LinkProps[],
-    custom_hosts: string[]
+    custom_hosts: string[],
+    token_manager: {
+        dev_token_state: boolean,
+        dev_token_ttl: number,
+        session_token_state: boolean
+    }
 }
 
 export const initial_store: Store = {
     custom_links: [],
-    custom_hosts: []
+    custom_hosts: [],
+    token_manager: {
+        dev_token_state: true,      // true = enabled, false = disabled
+        dev_token_ttl: 5 * 60,      // set default to 5 min
+        session_token_state: true   // true = enabled, false = disabled
+    }
 }
 
 export const load_store = async () => {
@@ -20,7 +30,12 @@ export const load_store = async () => {
     }
     return {
         custom_links: response.custom_links,
-        custom_hosts: response.custom_hosts
+        custom_hosts: response.custom_hosts,
+        token_manager: {
+            dev_token_state: response.token_manager.dev_token_state,
+            dev_token_ttl: response.token_manager.dev_token_ttl,
+            session_token_state: response.token_manager.session_token_state
+        }
     }
 }
 
