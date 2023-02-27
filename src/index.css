@@ -100,6 +100,6 @@ body#pf_popup_container{
     height: 18px;
 }
 
-#webpack-dev-server-client-overlay{
-    display: none;
+*:focus {
+    outline: none;
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Card, H5, Button, HTMLTable, ControlGroup, InputGroup, Icon, Tag } from "@blueprintjs/core";
+import { Card, H5, Button, HTMLTable, ControlGroup, InputGroup, Icon, NumericInput, Tag, Switch } from "@blueprintjs/core";
 import { Store, LinkProps, initial_store, load_store, save_store } from '../Store'
 
 const SettingsContainer = styled.div`
@@ -60,9 +60,45 @@ const ManageExistingLinks = () => {
         )
     }
 
+    const toggle_dev_token_state = () => {
+        save_store(
+            {
+                ...store,
+                token_manager: {
+                    ...store.token_manager,
+                    dev_token_state: !store.token_manager.dev_token_state
+                }
+            }
+        )
+    }
+
+    const toggle_session_token_state = () => {
+        save_store(
+            {
+                ...store,
+                token_manager: {
+                    ...store.token_manager,
+                    session_token_state: !store.token_manager.session_token_state
+                }
+            }
+        )
+    }
+
+    const dev_token_ttl_change = (ttl: number) => {
+        save_store(
+            {
+                ...store,
+                token_manager: {
+                    ...store.token_manager,
+                    dev_token_ttl: ttl
+                }
+            }
+        )
+    }
+
     useEffect(() => {
         init()
-    }, [])
+    }, [store.token_manager.dev_token_state, store.token_manager.session_token_state])
 
     return (
         <SettingsContainer>
@@ -103,25 +139,25 @@ const ManageExistingLinks = () => {
                 <HTMLTable compact={true} width="100%" >
                     <tbody style={{ width: "100%" }}>
                         <tr>
-                            <TD style={{ width: "calc(50% - 20px)" }}>
+                            <TD style={{ width: "calc(50% - 20px)", height: "32px" }}>
                                 Session Token
                             </TD>
-                            <TD style={{ width: "calc(50% - 20px)" }}>
+                            <TD style={{ width: "calc(50% - 20px)", height: "32px" }}>
                                 <Tag round={true} minimal={true}>default</Tag>
                             </TD>
-                            <TD className='gray' style={{ width: "40px" }}>
-                                <Icon color="#D3D8DE" icon="lock" size={14} />
+                            <TD className='gray' style={{ width: "40px", paddingTop: "10px", height: "32px", paddingLeft: "5px" }}>
+                                <Switch checked={store.token_manager.session_token_state} onChange={toggle_session_token_state} />
                             </TD>
                         </tr>
                         <tr>
-                            <TD style={{ width: "calc(50% - 20px)" }}>
+                            <TD style={{ width: "calc(50% - 20px)", height: "32px" }}>
                                 Development Token
                             </TD>
-                            <TD style={{ width: "calc(50% - 20px)" }}>
-                                <Tag round={true} minimal={true}>default</Tag>
+                            <TD style={{ width: "calc(50% - 20px)", height: "32px", paddingTop: "1px", paddingBottom: 0 }}>
+                                <NumericInput disabled={!store.token_manager.dev_token_state} onValueChange={dev_token_ttl_change} fill={true} leftIcon={"stopwatch"} allowNumericCharactersOnly={true} value={store.token_manager.dev_token_ttl} />
                             </TD>
-                            <TD style={{ width: "40px" }}>
-                                <Icon color="#D3D8DE" icon="lock" size={14} />
+                            <TD style={{ width: "40px", paddingTop: "10px", height: "32px", paddingLeft: "5px" }}>
+                                <Switch checked={store.token_manager.dev_token_state} onChange={toggle_dev_token_state} />
                             </TD>
                         </tr>
                         {
@@ -136,7 +172,7 @@ const ManageExistingLinks = () => {
                                         </Tag>
                                     </TD>
                                     <TD style={{ width: "40px" }}>
-                                        <Icon icon="cross" size={16} onClick={() => delete_item(link)} intent="danger" />
+                                        <Icon style={{ cursor: "pointer" }} icon="cross" size={16} onClick={() => delete_item(link)} intent="danger" />
                                     </TD>
                                 </tr>
                             ) : ""
