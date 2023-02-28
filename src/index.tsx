@@ -12,9 +12,7 @@ function init_popup(n: any) {
   const popup = ReactDOM.createRoot(n);
   popup.render(
     <React.StrictMode>
-      <root.div className="popup-shadow">
-        <Popup />
-      </root.div>
+      <Popup />
     </React.StrictMode>
   );
 }

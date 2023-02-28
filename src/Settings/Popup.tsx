@@ -51,7 +51,7 @@ const Settings = () => {
     }
 
     useEffect(() => {
-        console.log(ref.current)
+        let parent: any = window.frames
         let normalize = document.createElement('link')
         normalize.href = "node_modules/normalize.css/normalize.css"
         normalize.rel = "stylesheet"

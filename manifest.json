@@ -6,7 +6,7 @@
     "version": "0",
     "action": {
         "default_title": "Foundry Pro Chrome Extension",
-        "default_popup": "popup.html"
+        "default_popup": "iframe.html"
     },
     "permissions": ["storage"],
     "background": {
