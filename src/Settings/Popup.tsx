@@ -51,7 +51,6 @@ const Settings = () => {
     }
 
     useEffect(() => {
-        let parent: any = window.frames
         let normalize = document.createElement('link')
         normalize.href = "node_modules/normalize.css/normalize.css"
         normalize.rel = "stylesheet"
@@ -66,6 +65,12 @@ const Settings = () => {
         blueprint_icons.href = "node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css"
         blueprint_icons.rel = "stylesheet"
         ref.current?.appendChild(blueprint_icons)
+
+        chrome.runtime.sendMessage({
+            action: "resize",
+            clientHeight: ref.current?.scrollHeight,
+            clientWidth: ref.current?.scrollWidth
+        });
     }, [])
 
     return (
