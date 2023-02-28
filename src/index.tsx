@@ -1,21 +1,20 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import $ from "jquery";
 import Menu from "./Menu/Menu";
 import Popup from "./Settings/Popup"
-import styled from "styled-components"
-
+import root from 'react-shadow';
 import { save_store, load_store, initial_store } from './Store';
 
-const MenuBorder = styled.div`
-`
-
 function init_popup(n: any) {
+
   const popup = ReactDOM.createRoot(n);
   popup.render(
     <React.StrictMode>
-      <Popup />
+      <root.div className="popup-shadow">
+        <Popup />
+      </root.div>
     </React.StrictMode>
   );
 }
@@ -33,11 +32,6 @@ function init_menu(n: any) {
     )
   }
 
-  var banner = $('[class^="workspace-shell-ui__banner"]')[0];
-  if (banner !== undefined) {
-    banner.classList.add("expand_by_hover");
-  }
-
   $('<div class="pf_separator"/>').prependTo(n);
   var menu = document.createElement('div')
   menu.setAttribute("id", "pf_menu_89345h0ade")
@@ -46,9 +40,7 @@ function init_menu(n: any) {
   const root = ReactDOM.createRoot(domNode);
   root.render(
     <React.StrictMode>
-      <MenuBorder>
-        <Menu></Menu>
-      </MenuBorder>
+      <Menu></Menu>
     </React.StrictMode>
   );
 }

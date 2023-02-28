@@ -10,6 +10,7 @@ import {
 } from "@blueprintjs/core";
 
 import { Store, initial_store, load_store } from '../Store'
+import { CodeGuardListener } from "../Settings/CodeGuard"
 
 const Container = styled.ul`
   padding: 0 10px;
@@ -123,6 +124,8 @@ const Menu = () => {
           store.custom_links.length > 0 ? store.custom_links.map((link) => <MenuItem icon="link" text={link.name} href={link.url} />) : ""
         }
       </Container>
+
+      <CodeGuardListener store={store} />
 
       <Toaster position={Position.TOP} ref={refHandlers.toaster}>
         {toasts.map(toast => <Toast {...toast} />)}

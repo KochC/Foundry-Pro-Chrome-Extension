@@ -5,11 +5,10 @@ import { version } from '../version';
 import About from './About';
 import CustomHost from './CustomHost';
 import CustomLinks from './CustomLinks';
+import SecretGuard from './CodeGuard';
 import { reset_store } from '../Store';
+import React, { useEffect, useRef } from 'react';
 
-import 'normalize.css';
-import '@blueprintjs/core/lib/css/blueprint.css';
-import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 
 const SettingsContainer = styled.div`
     width: 660px;    
@@ -43,14 +42,34 @@ const Logo = styled.img`
     margin-right: 5px;
 `
 
-const Settings = () => {
 
+
+const Settings = () => {
+    let ref = React.createRef<HTMLInputElement>();
     const reset = () => {
         reset_store()
     }
 
+    useEffect(() => {
+        console.log(ref.current)
+        let normalize = document.createElement('link')
+        normalize.href = "node_modules/normalize.css/normalize.css"
+        normalize.rel = "stylesheet"
+        ref.current?.appendChild(normalize)
+
+        let blueprint = document.createElement('link')
+        blueprint.href = "node_modules/@blueprintjs/core/lib/css/blueprint.css"
+        blueprint.rel = "stylesheet"
+        ref.current?.appendChild(blueprint)
+
+        let blueprint_icons = document.createElement('link')
+        blueprint_icons.href = "node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css"
+        blueprint_icons.rel = "stylesheet"
+        ref.current?.appendChild(blueprint_icons)
+    }, [])
+
     return (
-        <SettingsContainer>
+        <SettingsContainer ref={ref} >
             <Navbar className="bp4-dark">
                 <Navbar.Group align={Alignment.LEFT}>
                     <Navbar.Heading>
@@ -81,6 +100,7 @@ const Settings = () => {
                     <Category>General Config</Category>
                     <Tab id="rx" title="Custom Links" panel={<CustomLinks />} />
                     <Tab id="ng" title="Custom Host" panel={<CustomHost />} />
+                    <Tab id="sg" title="Secret Guard" panel={<SecretGuard />} />
                     <Category>Information</Category>
                     <Tab id="mb" title="About" panel={<About />} panelClassName="ember-panel" />
                     <Tabs.Expander />

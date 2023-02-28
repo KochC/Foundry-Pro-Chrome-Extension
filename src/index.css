@@ -1,105 +1,29 @@
-.pf_icon {
-    width: 20px;
-    height: 20px;
-    display: block;
-    text-align: center;
-    border-radius: 3px;
-    overflow: hidden;
-    float: left;
-    color: #8F99A8;
+*:focus {
+    outline: none;
 }
 
-.pf_icon.alarm {
-    color: orange;
-    font-weight: bold;
-    text-shadow: 0 0 2px orange;
-    animation: blink 1s step-start 0s infinite;
-}
-
-.pf_icon.warn {
-    color: yellow;
-    font-weight: bold;
-    text-shadow: 0 0 2px yellow;
-}
-
-.pf_icon.critical {
-    color: red;
-    font-weight: bold;
-    text-shadow: 0 0 2px red;
-    animation: blink 0.5s step-start 0s infinite;
-}
-
-@-webkit-keyframes blink {
-    50% {
-        opacity: 0.0;
-    }
-}
-
-.pf_icon svg {
-    color: #8F99A8;
-}
-
-.pf_row {
-    width: 100%;
-    overflow: hidden;
-    height: 30px;
-    cursor: pointer;
-    padding: 7px 3px 12px 7px;
-    margin: 0 7px 0 7px;
-    width: calc(100% - 15px);
-    border-radius: 3px;
-}
-
-.pf_row:hover {
-    background: rgba(28, 33, 39, .8)
-}
-
-.pf_separator {
-    width: calc(100% - 40px);
-    margin: 10px 20px 10px 20px;
-    background: rgba(17, 20, 24, .4);
-    height: 1px;
-}
-
-.pf_label {
-    padding: 0 0 0 7px;
-    font-weight: 400;
-    float: left;
-    height: 20px;
-    height: 20px;
-    display: block;
-}
-
-.pf_notification {
-    position: absolute !important;
-    top: -80px;
-    left: 50%;
-    z-index: 1000;
-    transform: translateX(-50%);
-}
-
-.pf_notification.show {
-    top: 0px;
-}
-
-body#pf_popup_container{
+body#pf_popup_container {
     margin: 0;
     padding: 0;
     background: #edeff2;
+    width: 660px;
 }
 
-.expand_by_hover{
-    height: 2px;
-    position: fixed;
-    z-index: 1000;
-    cursor: pointer;
-    overflow: hidden;
-    transition: height 0.25s ease-in-out;
+.code_guard_error span{
+    text-decoration: #fbb360 underline  wavy;
 }
-.expand_by_hover:hover{
+
+.code_guard_error:hover::before{
+    content: "⬇ Code Guard Warning - Potential use of hardcoded secrets!";
+    background: #fbb360;
+    border-radius: 2px;
+    display: inline-block;
+    position: absolute;
+    margin: -18px 0 0 0;
+    color: #1c2127;
+    font-size: 12px;
+    padding: 0 5px;
     height: 18px;
-}
-
-*:focus {
-    outline: none;
+    text-align: center;
+    z-index: 1000;
 }
