@@ -2,17 +2,14 @@ import { useState, useEffect } from 'react';
 import { Tag, H5, Switch, NumericInput } from "@blueprintjs/core";
 import { Store, initial_store, load_store, save_store } from '../Store'
 
-const CodeGuard = () => {
+type CodeGuardProps = {
+    store: Store;
+}
 
-    const [store, setStore] = useState<Store>(initial_store)
-
-    const on_store_change_listener = async () => {
-        setStore(await load_store())
-    }
+const CodeGuard = ({ store }: CodeGuardProps) => {
 
     const init = async () => {
-        on_store_change_listener()
-        chrome.storage.onChanged.addListener(on_store_change_listener);
+
     }
 
     useEffect(() => {
@@ -61,7 +58,6 @@ export const CodeGuardListener = ({ store }: CodeGuardListenerProps) => {
     const [codeGuardInterval, setCodeGuardInterval] = useState<ReturnType<typeof setInterval>>()
 
     const init = () => {
-        console.log(store.code_guard.state, codeGuardInterval)
         if (store.code_guard.state && codeGuardInterval == undefined) {
             setCodeGuardInterval(setInterval(guard_code, store.code_guard.scan_interval))
         } else if (!store.code_guard.state && codeGuardInterval != undefined) {

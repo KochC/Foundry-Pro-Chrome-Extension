@@ -6,7 +6,7 @@ import About from './About';
 import CustomHost from './CustomHost';
 import CustomLinks from './CustomLinks';
 import SecretGuard from './CodeGuard';
-import { reset_store } from '../Store';
+import { Store, reset_store } from '../Store';
 import React, { useEffect } from 'react';
 
 const Category = styled.p`
@@ -70,10 +70,22 @@ const PopoverFooter = styled.div`
     padding: 10px;
 `
 
-const Settings = () => {
+type PopoutProps = {
+    store: Store;
+}
+
+const Settings = ({ store }: PopoutProps) => {
     let ref = React.createRef<HTMLInputElement>();
+
     const reset = () => {
         reset_store()
+    }
+
+    const compromise = async () => {
+        await chrome.storage.sync.set({ version: 0 });
+        console.warn("Store is compromized")
+        const s = await chrome.storage.sync.get(null);
+        console.warn(s)
     }
 
     useEffect(() => {
@@ -117,9 +129,9 @@ const Settings = () => {
                     vertical={true}
                 >
                     <Category>General Config</Category>
-                    <Tab id="rx" title="Custom Links" panel={<CustomLinks />} />
-                    <Tab id="ng" title="Custom Host" panel={<CustomHost />} />
-                    <Tab id="sg" title="Secret Guard" panel={<SecretGuard />} />
+                    <Tab id="rx" title="Custom Links" panel={<CustomLinks store={store} />} />
+                    <Tab id="ng" title="Custom Host" panel={<CustomHost store={store} />} />
+                    <Tab id="sg" title="Secret Guard" panel={<SecretGuard store={store} />} />
                     <Category>Information</Category>
                     <Tab id="mb" title="About" panel={<About />} panelClassName="ember-panel" />
                     <Tabs.Expander />
@@ -129,7 +141,12 @@ const Settings = () => {
                 <AnchorButton small minimal={true} icon="issue" text="Report an issue on Github" target="_blank" href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/issues" />
                 {version == "local" ?
                     <Button intent="danger" minimal={true} onClick={reset}>
-                        Reset Settings
+                        Reset Settings!
+                    </Button> : ""
+                }
+                {version == "local" ?
+                    <Button intent="warning" minimal={true} onClick={compromise}>
+                        Compromise store!
                     </Button> : ""
                 }
             </PopoverFooter>

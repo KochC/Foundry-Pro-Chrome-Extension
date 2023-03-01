@@ -112,7 +112,7 @@ const Menu = () => {
 
   return (
     <div>
-      <ProSettings></ProSettings>
+      <ProSettings store={store} ></ProSettings>
       <Container>
         {
           store.token_manager.session_token_state ?

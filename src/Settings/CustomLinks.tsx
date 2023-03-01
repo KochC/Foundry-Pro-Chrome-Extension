@@ -16,20 +16,18 @@ const TD = styled.td`
     text-overflow: ellipsis;
     white-space: nowrap;
 `
+type ManageExistingLinksProps = {
+    store: Store;
+}
 
-const ManageExistingLinks = () => {
+const ManageExistingLinks = ({ store }: ManageExistingLinksProps) => {
 
-    const [store, setStore] = useState<Store>(initial_store)
     const [name, setName] = useState("")
     const [url, setUrl] = useState("")
 
-    const on_store_change_listener = async () => {
-        setStore(await load_store())
-    }
 
     const init = async () => {
-        on_store_change_listener()
-        chrome.storage.onChanged.addListener(on_store_change_listener);
+
     }
 
     const reset = async () => {

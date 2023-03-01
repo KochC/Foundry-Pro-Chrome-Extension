@@ -8,19 +8,16 @@ const Space = styled.div`
     padding-bottom: 5px;
     display: inline-block;
 `
+type CustomHostProps = {
+    store: Store;
+}
 
-const CustomHost = () => {
+const CustomHost = ({ store }: CustomHostProps) => {
 
-    const [store, setStore] = useState<Store>(initial_store)
     const [host, setHost] = useState<string>("")
 
-    const on_store_change_listener = async () => {
-        setStore(await load_store())
-    }
-
     const init = async () => {
-        on_store_change_listener()
-        chrome.storage.onChanged.addListener(on_store_change_listener);
+
     }
 
     const remove = (host: string) => {
@@ -86,7 +83,6 @@ const CustomHost = () => {
             <Callout intent="primary" title="Privacy disclaimer" icon="info-sign">
                 Please note, this chrome extension does <strong>not</strong> send any information anywhere else. It does not collect any data! The settings of this extension are saved within chromes sync storage.
             </Callout>
-
         </>
     );
 };

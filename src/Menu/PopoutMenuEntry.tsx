@@ -10,7 +10,7 @@ import {
 
 import { Popover2 } from "@blueprintjs/popover2"
 
-import { Store, initial_store, load_store } from '../Store'
+import { Store } from '../Store'
 import Popup from '../Settings/Popout'
 
 const Container = styled.div`
@@ -40,18 +40,13 @@ const Logo = styled.img`
     margin-bottom: -4.5px;
     margin-right: 5px;
 `
-const ProSettings = () => {
 
-    const [store, setStore] = useState<Store>(initial_store)
-
-    const on_store_change_listener = async () => {
-        setStore(await load_store())
-    }
+type PopoutMenuEntryProps = {
+    store: Store;
+}
+const ProSettings = ({ store }: PopoutMenuEntryProps) => {
 
     const init = async () => {
-        on_store_change_listener()
-        chrome.storage.onChanged.addListener(on_store_change_listener);
-
         // register to the background.js
         chrome.runtime.sendMessage({ action: "register" }, (result) => {
             if (!window.chrome.runtime.lastError) {
@@ -70,7 +65,7 @@ const ProSettings = () => {
 
     let popoverContent = (
         <Box>
-            <Popup />
+            <Popup store={store} />
         </Box>
     );
 
