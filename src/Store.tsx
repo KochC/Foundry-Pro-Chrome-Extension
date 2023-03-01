@@ -1,5 +1,5 @@
 
-const STORE_VERSION = 2
+const STORE_VERSION = 1
 // `LinkProps` is an interface that defines the shape of an object representing a custom link
 // added by the user. It has two properties: `name` and `url`, both of which are strings.
 export type LinkProps = {
@@ -27,16 +27,16 @@ export type LinkProps = {
 //     the code for potentially malicious or unauthorized activities.
 export type Store = {
     version: number,
-    session_token: {
-        token: string | null,
-        valid_until: Date | null,
-    }
     custom_links: LinkProps[],
     custom_hosts: string[],
     token_manager: {
         dev_token_state: boolean,
         dev_token_ttl: number,
-        session_token_state: boolean
+        session_token_state: boolean,
+        session_token: {
+            token: string | null,
+            valid_until: Date | null,
+        }
     },
     code_guard: {
         state: boolean,
@@ -49,10 +49,7 @@ export type Store = {
 // It is of the type `Store`, which is an interface that defines the structure of the store object.
 export const initial_store: Store = {
     version: STORE_VERSION,
-    session_token: {
-        token: null,
-        valid_until: null
-    },
+
     // The `custom_links` property is an array of custom link objects that the user can add to the
     // extension. Each custom link object has a `title` and a `url` property.
     custom_links: [],
@@ -70,7 +67,11 @@ export const initial_store: Store = {
     token_manager: {
         dev_token_state: true,      // true = enabled, false = disabled
         dev_token_ttl: 5 * 60,      // set default to 5 min
-        session_token_state: true   // true = enabled, false = disabled
+        session_token_state: true,  // true = enabled, false = disabled
+        session_token: {
+            token: null,
+            valid_until: null
+        },
     },
 
     // The `code_guard` property is an object that stores settings related to the code guard feature
@@ -87,39 +88,42 @@ export const initial_store: Store = {
 
 // This function loads the data from Chrome's sync storage, which is used to store data
 // that should be synchronized across all devices that the user is logged in to.
-export const load_store = async () => {
-    // Retrieve all items from sync storage.
-    const response: unknown = await chrome.storage.sync.get(null);
-
-    // Check if the response is an object and not null.
-    if (typeof response === 'object' && response !== null) {
-        // If the response is an object and not null, we assume it is of the correct shape
-        // and we cast it to the Store interface (assuming that Store is defined elsewhere).
-        const s = response as Store;
-        if (s.version !== undefined && s.version === STORE_VERSION) {
-            return s;
-        }
-        console.warn("Storage Version out of date! Auto upgrade!")
-    }
-
-    // If the response is not an object or is null, we assume that the sync storage is
-    // empty or corrupted, and we save the initial store object to the sync storage.
-    await chrome.storage.sync.clear();
-    return initial_store; // Return the initial store object.
-}
-
+export const load_store = (): Promise<Store> => {
+    return new Promise<Store>((resolve, reject) => {
+        chrome.storage.sync.get(null, (response) => {
+            console.log("Loaded", response);
+            if (typeof response === 'object' && response !== null) {
+                const s = response as Store;
+                if (s.version !== undefined && s.version === STORE_VERSION) {
+                    resolve(s);
+                } else {
+                    console.warn("Storage Version out of date! Auto upgrade!");
+                    reset_store()
+                    reject(new Error("Storage Version out of date!"));
+                }
+            } else {
+                chrome.storage.sync.clear(() => {
+                    console.warn("Error reading store. Returning initial state!")
+                    resolve(initial_store);
+                });
+            }
+        });
+    });
+};
 
 // This function saves the given store object to Chrome's sync storage, which is used to
 // store data that should be synchronized across all devices that the user is logged in to.
-export const save_store = async (s: Store) => {
-    try {
+export const save_store = async (s: Store): Promise<void> => {
+    return new Promise((resolve, reject) => {
         // Save the given store object to sync storage using the chrome.storage.sync API.
-        await chrome.storage.sync.set(s);
-    } catch (e) {
-        // If there was an error while saving the store object, log a warning message
-        // to the console with the error details.
-        console.warn(e);
-    }
+        console.log("Saving", s)
+        chrome.storage.sync.set(s, () => {
+            console.log("Saved", s)
+            chrome.runtime.lastError
+                ? reject(Error(chrome.runtime.lastError.message))
+                : resolve()
+        })
+    });
 };
 
 

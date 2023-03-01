@@ -13,7 +13,7 @@ const DevelopmentToken = ({ store, toast }: DevelopmentTokenProps) => {
         const requestOptions = {
             method: 'POST',
             headers: {
-                Authorization: "Bearer " + store.session_token.token,
+                Authorization: "Bearer " + store.token_manager.session_token.token,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({

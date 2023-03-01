@@ -3,24 +3,34 @@ import React, { useState, useEffect } from 'react';
 import Menu from "./Menu/Menu";
 import { Store, save_store, load_store, initial_store } from './Store';
 
-const RootComponent = () => {
+
+type RootComponentProps = {
+    tmp_store: Store;
+}
+
+const RootComponent = ({ tmp_store }: RootComponentProps) => {
 
     const [store, setStore] = useState<Store>(initial_store)
 
     const onStoreChangeListener = async () => {
+        console.log("STORE CHANGED")
         setStore(await load_store())
+        console.log("STORE CHANGED")
     }
 
-    const autoDetectHost = () => {
-        if (store.custom_hosts.length == 0) {
-            // if not setup, auto configure this one
-            const detected_hostname = location.hostname
+    const getHostInfo = () => {
+        const detected_hostname = location.hostname
+        if (!store.custom_hosts.includes(detected_hostname)) {
+            console.log("SAVE CUSTOM_HOST")
             save_store(
                 {
                     ...store,
-                    custom_hosts: [detected_hostname]
+                    custom_hosts: [...store.custom_hosts, detected_hostname]
                 }
-            )
+            ).then(() => {
+                console.log(store.token_manager.session_token)
+                console.log("SAVED SHOST")
+            })
         }
     }
 
@@ -41,10 +51,10 @@ const RootComponent = () => {
     }
 
     const init = async () => {
-        await onStoreChangeListener()
-        attachStoreListener();
-        registerToBackground();
-        autoDetectHost()
+        setStore(tmp_store)
+        getHostInfo()
+        registerToBackground()
+        attachStoreListener()
     }
 
     useEffect(() => {

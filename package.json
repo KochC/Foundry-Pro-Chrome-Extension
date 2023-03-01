@@ -15,10 +15,13 @@
         "@types/node": "^16.18.12",
         "@types/react": "^18.0.27",
         "@types/react-dom": "^18.0.10",
+        "@types/react-redux": "^7.1.25",
         "jquery": "^3.6.3",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-redux": "^8.0.5",
         "react-scripts": "5.0.1",
+        "redux": "^4.2.1",
         "styled-components": "^5.3.6",
         "typescript": "^4.9.5",
         "web-vitals": "^2.1.4"

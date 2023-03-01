@@ -35,16 +35,26 @@ const SessionToken = ({ store, toast }: SessionTokenProps) => {
     };
 
     const init = async () => {
+        console.log("SAVE SESSION_TOKEN")
+        const token = getSessionKeyFromCookie()
+        console.log(token)
         save_store(
             {
                 ...store,
-                session_token:
+                token_manager:
                 {
-                    token: getSessionKeyFromCookie(),
-                    valid_until: null
+                    ...store.token_manager,
+                    session_token:
+                    {
+                        token: token,
+                        valid_until: null
+                    }
                 }
             }
-        )
+        ).then(() => {
+            console.log(store.token_manager.session_token)
+            console.log("SAVE SESSION_TOKEN")
+        })
     }
 
     // this function runs once at the beginning
