@@ -1,52 +1,49 @@
-import React from 'react';
+
 import ReactDOM from 'react-dom/client';
+
 import './index.css';
 import $ from "jquery";
-import Menu from "./Menu/Menu";
-import { save_store, load_store, initial_store } from './Store';
+
+import RootComponent from './RootComponent'
+import { load_store } from './Store';
 import { version, branch, commit } from './version'
 
-function init_menu(n: any) {
-  // check if hosts are setup
-  if (store.custom_hosts.length == 0) {
-    // if not setup, auto configure this one
-    const detected_hostname = location.hostname
-    save_store(
-      {
-        ...store,
-        custom_hosts: [detected_hostname]
-      }
-    )
-  }
+const attachComponentToWebsite = (n: HTMLElement) => {
 
-  $('<div class="pf_separator"/>').prependTo(n);
-  var menu = document.createElement('div')
-  menu.setAttribute("id", "pf_menu_89345h0ade")
+  // attaching the component to the existing website
+  const menu: HTMLElement = document.createElement('div')
   $(menu).prependTo(n);
-  const domNode: any = document.getElementById("pf_menu_89345h0ade")
-  const root = ReactDOM.createRoot(domNode);
+  const root = ReactDOM.createRoot(menu);
+
   root.render(
-    <React.StrictMode>
-      <Menu></Menu>
-    </React.StrictMode>
+    <RootComponent />
   );
 }
 
-const init = async () => {
+const welcomeConsoleMessage = () => {
+  console.log('\n' +
+    '********************************' + '\n\n' +
+    '   Foundry Pro' + '\n' +
+    '   Version: ' + version + '\n' +
+    '   Branch:  ' + branch + '\n' +
+    '   Commit:  ' + commit + '\n\n' +
+    '******************************** \n\n')
+}
+
+const tryToInit = async () => {
+
+  const tmp_store = await load_store()
+
   if (counter < 10) {
-
     counter++;
-
     // try to init menu
     // this part tries to find the following element on every website
     // this can be optimized and limited by setting a custom host
-    store = await load_store()
+
     // check if custom hosts are setup
-    if (store.custom_hosts.length > 0) {
-
+    if (tmp_store.custom_hosts.length > 0) {
       // if setup, check if this host is allowed
-      if (!store.custom_hosts.includes(location.host)) {
-
+      if (!tmp_store.custom_hosts.includes(location.host)) {
         // if none is allowed, stop execution
         if (init_interval != null)
           clearInterval(init_interval);
@@ -57,16 +54,14 @@ const init = async () => {
     // this code only runs if no host was setup or the host is allowed
     var n = $('[class^="workspace-shell-ui__sidebar-grouped-menu-container__"]')[0];
     if (n !== undefined) {
-      console.log('\n' +
-        '********************************' + '\n\n' +
-        '   Foundry Pro' + '\n' +
-        '   Version: ' + version + '\n' +
-        '   Branch:  ' + branch + '\n' +
-        '   Commit:  ' + commit + '\n\n' +
-        '******************************** \n\n')
+      welcomeConsoleMessage()
+
+      // try to clear interval
       if (init_interval != null)
         clearInterval(init_interval);
-      init_menu(n);
+
+      // init main component
+      attachComponentToWebsite(n);
       return;
     }
 
@@ -80,5 +75,4 @@ const init = async () => {
 }
 
 var counter = 0;
-var store = initial_store;
-var init_interval = setInterval(init, 100);
+var init_interval = setInterval(tryToInit, 100);

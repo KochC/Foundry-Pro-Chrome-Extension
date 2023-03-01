@@ -1,5 +1,5 @@
 
-const STORE_VERSION = 1
+const STORE_VERSION = 2
 // `LinkProps` is an interface that defines the shape of an object representing a custom link
 // added by the user. It has two properties: `name` and `url`, both of which are strings.
 export type LinkProps = {
@@ -27,6 +27,10 @@ export type LinkProps = {
 //     the code for potentially malicious or unauthorized activities.
 export type Store = {
     version: number,
+    session_token: {
+        token: string | null,
+        valid_until: Date | null,
+    }
     custom_links: LinkProps[],
     custom_hosts: string[],
     token_manager: {
@@ -45,6 +49,10 @@ export type Store = {
 // It is of the type `Store`, which is an interface that defines the structure of the store object.
 export const initial_store: Store = {
     version: STORE_VERSION,
+    session_token: {
+        token: null,
+        valid_until: null
+    },
     // The `custom_links` property is an array of custom link objects that the user can add to the
     // extension. Each custom link object has a `title` and a `url` property.
     custom_links: [],

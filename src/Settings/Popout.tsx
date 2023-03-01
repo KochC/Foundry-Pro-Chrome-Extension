@@ -1,3 +1,4 @@
+
 import styled from 'styled-components';
 import extension_icon from '../../icon/icon48_light.png'
 import { AnchorButton, Button, Tabs, Tab } from "@blueprintjs/core";
@@ -117,12 +118,12 @@ const Settings = ({ store }: PopoutProps) => {
             </PopoverBody>
             <PopoverFooter>
                 <AnchorButton small minimal={true} icon="issue" text="Report an issue on Github" target="_blank" href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/issues" />
-                {version == "local" ?
+                {version == "<version>" ?
                     <Button intent="danger" minimal={true} onClick={reset}>
                         Reset Settings!
                     </Button> : ""
                 }
-                {version == "local" ?
+                {version == "<version>" ?
                     <Button intent="warning" minimal={true} onClick={compromise}>
                         Compromise store!
                     </Button> : ""
