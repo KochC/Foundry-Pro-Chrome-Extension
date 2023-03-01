@@ -1,28 +1,13 @@
 import styled from 'styled-components';
-import extension_icon from '../../icon/icon48_dark.png'
-import { Tag, AnchorButton, Button, Navbar, Alignment, Tabs, Tab, H6 } from "@blueprintjs/core";
+import extension_icon from '../../icon/icon48_light.png'
+import { AnchorButton, Button, Tabs, Tab } from "@blueprintjs/core";
 import { version } from '../version';
 import About from './About';
 import CustomHost from './CustomHost';
 import CustomLinks from './CustomLinks';
 import SecretGuard from './CodeGuard';
 import { reset_store } from '../Store';
-import React, { useEffect, useRef } from 'react';
-
-
-const SettingsContainer = styled.div`
-    width: 660px;    
-    & div:focus{
-        outline:none;
-    }
-    & button:focus{
-        outline:none;
-    }
-`
-
-const Content = styled.div`
-    padding: 20px;
-`
+import React, { useEffect } from 'react';
 
 const Category = styled.p`
     color: #5F6B7C;
@@ -37,12 +22,53 @@ const Category = styled.p`
     }
 `
 
+const Box = styled.div`
+    min-width: 300px;
+    width: 100%;
+    max-width: 700px;
+`
+
 const Logo = styled.img`
     margin-bottom: -4.5px;
     margin-right: 5px;
 `
+const PopoverHeader = styled.div`
+    background: rgb(179,179,179);
+    background: linear-gradient(0deg, rgba(230,230,230,1) 0%, rgba(240,240,240,1) 100%);
+    padding: 20px 20px 5px;
+    border-radius: 3px 3px 0 0;
+    border-bottom: 1px solid lightgray;
+    > h3{
+        font-size: 22px;
+        font-weight: normal;
+        display: inline-block;
+    }
+`
 
+const PopoverBody = styled.div`
+    background: white;
+    border-radius: 0 0 3px 3px;
+    display: flex;
+    padding: 10px;
 
+    & .bp4-tab-list{
+        border-right: 1px solid lightgray;
+        padding-right: 10px;
+    }
+
+    & .bp4-tab-panel{
+        padding-left: 10px !important;
+    }
+`
+
+const PopoverFooter = styled.div`
+    border-top: 1px solid lightgray;
+    background: white;
+    border-radius: 0 0 3px 3px;
+    background: rgb(240,240,240);
+    display: flex;
+    padding: 10px;
+`
 
 const Settings = () => {
     let ref = React.createRef<HTMLInputElement>();
@@ -74,27 +100,15 @@ const Settings = () => {
     }, [])
 
     return (
-        <SettingsContainer ref={ref} >
-            <Navbar className="bp4-dark">
-                <Navbar.Group align={Alignment.LEFT}>
-                    <Navbar.Heading>
-                        <Logo height="20px" src={extension_icon} />Foundry-Pro
-                    </Navbar.Heading>
-                </Navbar.Group>
-                <Navbar.Group align={Alignment.RIGHT}>
-                    <AnchorButton small minimal={true} intent="danger" icon="issue" text="Report an issue" target="_blank" href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/issues" />
-                    <Navbar.Divider />
-                    <Tag round={true} minimal={true}>
-                        {"Release " + version}
-                    </Tag>
-                    {version == "local" ?
-                        <Button minimal={true} onClick={reset}>
-                            Reset
-                        </Button> : ""
-                    }
-                </Navbar.Group>
-            </Navbar>
-            <Content>
+        <Box>
+            <PopoverHeader ref={ref}>
+                <Logo height="25px" src={extension_icon} /><h3>Foundry-Pro</h3>
+                <p className="bp4-text-muted bp4-text-small">
+                    {"Release " + version}. Add hosts here to allow the extension to run on multiple hosts.
+
+                </p>
+            </PopoverHeader>
+            <PopoverBody>
                 <Tabs
                     animate={true}
                     id="TabsExample"
@@ -110,8 +124,16 @@ const Settings = () => {
                     <Tab id="mb" title="About" panel={<About />} panelClassName="ember-panel" />
                     <Tabs.Expander />
                 </Tabs>
-            </Content>
-        </SettingsContainer >
+            </PopoverBody>
+            <PopoverFooter>
+                <AnchorButton small minimal={true} icon="issue" text="Report an issue on Github" target="_blank" href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/issues" />
+                {version == "local" ?
+                    <Button intent="danger" minimal={true} onClick={reset}>
+                        Reset Settings
+                    </Button> : ""
+                }
+            </PopoverFooter>
+        </Box>
     );
 };
 

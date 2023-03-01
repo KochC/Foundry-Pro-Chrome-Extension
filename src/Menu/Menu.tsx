@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import ProSettings from './PopoutMenuEntry'
 
 import {
   Toast,
@@ -111,6 +112,7 @@ const Menu = () => {
 
   return (
     <div>
+      <ProSettings></ProSettings>
       <Container>
         {
           store.token_manager.session_token_state ?

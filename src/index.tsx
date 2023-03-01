@@ -1,21 +1,9 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import $ from "jquery";
 import Menu from "./Menu/Menu";
-import Popup from "./Settings/Popup"
-import root from 'react-shadow';
 import { save_store, load_store, initial_store } from './Store';
-
-function init_popup(n: any) {
-
-  const popup = ReactDOM.createRoot(n);
-  popup.render(
-    <React.StrictMode>
-      <Popup />
-    </React.StrictMode>
-  );
-}
 
 function init_menu(n: any) {
   // check if hosts are setup
@@ -48,18 +36,6 @@ const init = async () => {
 
     counter++;
 
-    // try to init popup
-    // this part is needed to enable settings on every tab
-    var p = document.getElementById("pf_popup_container")
-    if (p !== null) {
-      console.log("Init popup")
-      if (init_interval != null)
-        clearInterval(init_interval);
-      init_popup(p);
-      return;
-    }
-
-
     // try to init menu
     // this part tries to find the following element on every website
     // this can be optimized and limited by setting a custom host
@@ -90,7 +66,7 @@ const init = async () => {
 
   } else {
     // stop trying because there is no foundry installation
-    console.log("Not foundry nor popup");
+    console.log("Not foundry");
 
     if (init_interval != null)
       clearInterval(init_interval);

@@ -5,8 +5,7 @@
     "author": "Christopher Koch",
     "version": "0",
     "action": {
-        "default_title": "Foundry Pro Chrome Extension",
-        "default_popup": "iframe.html"
+        "default_title": "Foundry Pro Chrome Extension"
     },
     "permissions": ["storage"],
     "background": {

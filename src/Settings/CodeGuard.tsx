@@ -34,7 +34,7 @@ const CodeGuard = () => {
     const code_guard_scan_interval = () => { }
 
     return (
-        <Card>
+        <>
             <H5>
                 Secret Guard Settings
             </H5>
@@ -49,7 +49,7 @@ const CodeGuard = () => {
                 To change the scan interval, please disable the code quard and enable again after changing the parameters.
             </p>
             <NumericInput disabled={store.code_guard.state} onValueChange={code_guard_scan_interval} fill={true} leftIcon={"stopwatch"} allowNumericCharactersOnly={true} value={store.code_guard.scan_interval} />
-        </Card>
+        </>
     );
 };
 
