@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import extension_icon from '../../icon/icon48_dark.png'
@@ -47,15 +47,6 @@ type PopoutMenuEntryProps = {
 const ProSettings = ({ store }: PopoutMenuEntryProps) => {
 
     const init = async () => {
-        // register to the background.js
-        chrome.runtime.sendMessage({ action: "register" }, (result) => {
-            if (!window.chrome.runtime.lastError) {
-                // works
-            } else {
-                const error = window.chrome.runtime.lastError
-                console.log(error.message)
-            }
-        });
     }
 
     // this function runs once at the beginning

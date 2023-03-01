@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Tag, H5, Switch, NumericInput } from "@blueprintjs/core";
-import { Store, initial_store, load_store, save_store } from '../Store'
+import { Store, save_store } from '../Store'
 
 type CodeGuardProps = {
     store: Store;

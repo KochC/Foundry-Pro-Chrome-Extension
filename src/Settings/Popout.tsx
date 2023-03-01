@@ -84,31 +84,9 @@ const Settings = ({ store }: PopoutProps) => {
     const compromise = async () => {
         await chrome.storage.sync.set({ version: 0 });
         console.warn("Store is compromized")
-        const s = await chrome.storage.sync.get(null);
-        console.warn(s)
     }
 
     useEffect(() => {
-        let normalize = document.createElement('link')
-        normalize.href = "node_modules/normalize.css/normalize.css"
-        normalize.rel = "stylesheet"
-        ref.current?.appendChild(normalize)
-
-        let blueprint = document.createElement('link')
-        blueprint.href = "node_modules/@blueprintjs/core/lib/css/blueprint.css"
-        blueprint.rel = "stylesheet"
-        ref.current?.appendChild(blueprint)
-
-        let blueprint_icons = document.createElement('link')
-        blueprint_icons.href = "node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css"
-        blueprint_icons.rel = "stylesheet"
-        ref.current?.appendChild(blueprint_icons)
-
-        chrome.runtime.sendMessage({
-            action: "resize",
-            clientHeight: ref.current?.scrollHeight,
-            clientWidth: ref.current?.scrollWidth
-        });
     }, [])
 
     return (

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Card, H5, Callout, Tag, ControlGroup, InputGroup, Button, Icon } from "@blueprintjs/core";
-import { Store, initial_store, load_store, save_store } from '../Store'
+import { H5, Callout, Tag, ControlGroup, InputGroup, Button, Icon } from "@blueprintjs/core";
+import { Store, save_store } from '../Store'
 import styled from 'styled-components';
 
 const Space = styled.div`

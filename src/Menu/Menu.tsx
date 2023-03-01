@@ -52,7 +52,7 @@ const Menu = () => {
         // works
       } else {
         const error = window.chrome.runtime.lastError
-        console.log(error.message)
+        //console.log(error.message)
       }
     });
   }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Card, H5, Button, HTMLTable, ControlGroup, InputGroup, Icon, NumericInput, Tag, Switch } from "@blueprintjs/core";
-import { Store, LinkProps, initial_store, load_store, save_store } from '../Store'
+import { Store, LinkProps, save_store } from '../Store'
 
 const SettingsContainer = styled.div`
     > div{

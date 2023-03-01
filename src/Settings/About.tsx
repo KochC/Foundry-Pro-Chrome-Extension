@@ -1,5 +1,5 @@
 
-import { Card, H5, Code, FormGroup, Callout } from "@blueprintjs/core";
+import { H5, Code, FormGroup, Callout } from "@blueprintjs/core";
 import { version, branch, commit } from '../version';
 
 const About = () => {

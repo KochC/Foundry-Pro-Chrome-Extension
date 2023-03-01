@@ -4,6 +4,7 @@ import './index.css';
 import $ from "jquery";
 import Menu from "./Menu/Menu";
 import { save_store, load_store, initial_store } from './Store';
+import { version, branch, commit } from './version'
 
 function init_menu(n: any) {
   // check if hosts are setup
@@ -56,7 +57,13 @@ const init = async () => {
     // this code only runs if no host was setup or the host is allowed
     var n = $('[class^="workspace-shell-ui__sidebar-grouped-menu-container__"]')[0];
     if (n !== undefined) {
-      console.log("Init menu")
+      console.log('\n' +
+        '********************************' + '\n\n' +
+        '   Foundry Pro' + '\n' +
+        '   Version: ' + version + '\n' +
+        '   Branch:  ' + branch + '\n' +
+        '   Commit:  ' + commit + '\n\n' +
+        '******************************** \n\n')
       if (init_interval != null)
         clearInterval(init_interval);
       init_menu(n);
@@ -66,8 +73,6 @@ const init = async () => {
 
   } else {
     // stop trying because there is no foundry installation
-    console.log("Not foundry");
-
     if (init_interval != null)
       clearInterval(init_interval);
     return;
