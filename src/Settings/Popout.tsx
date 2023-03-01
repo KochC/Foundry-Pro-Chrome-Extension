@@ -102,9 +102,9 @@ const Settings = () => {
     return (
         <Box>
             <PopoverHeader ref={ref}>
-                <Logo height="25px" src={extension_icon} /><h3>Foundry-Pro</h3>
+                <Logo height="25px" src={extension_icon} /><h3>Foundry Pro</h3>
                 <p className="bp4-text-muted bp4-text-small">
-                    {"Release " + version}. Add hosts here to allow the extension to run on multiple hosts.
+                    {"Version " + version}. Open-source Chrome Extension to improve the developers experience on the platform.
 
                 </p>
             </PopoverHeader>
