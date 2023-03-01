@@ -26,7 +26,7 @@ export const initial_store: Store = {
         session_token_state: true   // true = enabled, false = disabled
     },
     code_guard: {
-        state: true,
+        state: false,
         scan_interval: 1000
     }
 }

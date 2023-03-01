@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, H5, Switch, NumericInput } from "@blueprintjs/core";
+import { Tag, H5, Switch, NumericInput } from "@blueprintjs/core";
 import { Store, initial_store, load_store, save_store } from '../Store'
 
 const CodeGuard = () => {
@@ -36,7 +36,7 @@ const CodeGuard = () => {
     return (
         <>
             <H5>
-                Secret Guard Settings
+                <Tag minimal={true} intent={"primary"}>Beta</Tag>&nbsp;Secret Guard Settings
             </H5>
             <p className="bp4-text-muted bp4-text-small">
                 The Secret Guard is a tool to identify potential threads in authoring tools such as Code-Repository.
