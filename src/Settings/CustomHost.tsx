@@ -48,7 +48,7 @@ const CustomHost = () => {
     }, [])
 
     return (
-        <Card>
+        <>
             <H5>
                 Manually add additional hosts
             </H5>
@@ -87,7 +87,7 @@ const CustomHost = () => {
                 Please note, this chrome extension does <strong>not</strong> send any information anywhere else. It does not collect any data! The settings of this extension are saved within chromes sync storage.
             </Callout>
 
-        </Card>
+        </>
     );
 };
 

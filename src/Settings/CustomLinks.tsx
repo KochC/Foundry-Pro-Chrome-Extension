@@ -102,7 +102,7 @@ const ManageExistingLinks = () => {
 
     return (
         <SettingsContainer>
-            <Card>
+            <>
                 <H5>
                     Add your custom links
                 </H5>
@@ -185,7 +185,7 @@ const ManageExistingLinks = () => {
 
                 <H5>Reset Settings</H5>
                 <Button icon="refresh" minimal intent="danger" text="Reset all links" onClick={reset} />
-            </Card>
+            </>
         </SettingsContainer >
     );
 };
