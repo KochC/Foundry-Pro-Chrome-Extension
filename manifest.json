@@ -23,7 +23,7 @@
             "matches": ["*://*/*"],
             "resources": [
                 "content.js",
-                "icon/*",
+                "src/icon/*",
                 "*.eot",
                 "*.woff",
                 "*.woff2",
@@ -32,8 +32,8 @@
         }
     ],
     "icons": {
-        "16": "icon/icon16_light.png",
-        "48": "icon/icon48_light.png",
-        "128": "icon/icon128_light.png"
+        "16": "src/icon/icon16_light.png",
+        "48": "src/icon/icon48_light.png",
+        "128": "src/icon/icon128_light.png"
     }
 }

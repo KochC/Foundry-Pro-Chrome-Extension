@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 
-import extension_icon from '../../icon/icon48_dark.png'
+import extension_icon from '../icon/icon48_dark.png'
 import { PopoverInteractionKind, Button, Position } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2"
 import { useStore } from '../Store'

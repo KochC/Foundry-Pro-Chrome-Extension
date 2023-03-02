@@ -5,28 +5,34 @@ import { version } from "./version";
 // that should be synchronized across all devices that the user is logged in to.
 export const load_store = (): Promise<Settings> => {
     return new Promise<Settings>((resolve, reject) => {
-        chrome.storage.sync.get(null, (response) => {
-            if (typeof response === "object" && response !== null) {
-                const s = response as Settings;
-                if (
-                    s != undefined &&
-                    s.version !== undefined &&
-                    s.version === version
-                ) {
-                    resolve(s);
+        if (chrome.storage === undefined) {
+            resolve(initial_settings);
+        } else {
+            chrome.storage.sync.get(null, (response) => {
+                if (typeof response === "object" && response !== null) {
+                    const s = response as Settings;
+                    if (
+                        s != undefined &&
+                        s.version !== undefined &&
+                        s.version === version
+                    ) {
+                        resolve(s);
+                    } else {
+                        console.log(
+                            "Storage Version out of date! Auto upgrade!"
+                        );
+                        resolve(initial_settings);
+                    }
                 } else {
-                    console.log("Storage Version out of date! Auto upgrade!");
-                    resolve(initial_settings);
+                    chrome.storage.sync.clear(() => {
+                        console.log(
+                            "Error reading store. Returning initial state!"
+                        );
+                        resolve(initial_settings);
+                    });
                 }
-            } else {
-                chrome.storage.sync.clear(() => {
-                    console.log(
-                        "Error reading store. Returning initial state!"
-                    );
-                    resolve(initial_settings);
-                });
-            }
-        });
+            });
+        }
     });
 };
 
@@ -36,28 +42,36 @@ export const save_store = async (s: Settings): Promise<void> => {
     // console.log(s);
     return new Promise((resolve, reject) => {
         // Save the given store object to sync storage using the chrome.storage.sync API.
-        chrome.storage.sync.set(s, () => {
-            chrome.runtime.lastError
-                ? reject(Error(chrome.runtime.lastError.message))
-                : resolve();
-        });
+        if (chrome.storage === undefined) {
+            resolve();
+        } else {
+            chrome.storage.sync.set(s, () => {
+                chrome.runtime.lastError
+                    ? reject(Error(chrome.runtime.lastError.message))
+                    : resolve();
+            });
+        }
     });
 };
 
 // This function resets the store to its initial state by clearing the sync storage and
 // saving the initial store object to it.
 export const reset_store = async () => {
-    try {
-        // Clear the sync storage by saving an empty object to it using the chrome.storage.sync API.
-        await chrome.storage.sync.clear();
+    if (chrome.storage === undefined) {
+        return;
+    } else {
+        try {
+            // Clear the sync storage by saving an empty object to it using the chrome.storage.sync API.
+            await chrome.storage.sync.clear();
 
-        // Save the initial store object to sync storage using the chrome.storage.sync API.
-        await chrome.storage.sync.set(initial_settings);
-        // console.log(initial_settings);
-    } catch (e) {
-        // If there was an error while resetting the store, log a warning message
-        // to the console with the error details.
-        console.warn(e);
+            // Save the initial store object to sync storage using the chrome.storage.sync API.
+            await chrome.storage.sync.set(initial_settings);
+            // console.log(initial_settings);
+        } catch (e) {
+            // If there was an error while resetting the store, log a warning message
+            // to the console with the error details.
+            console.warn(e);
+        }
     }
 };
 
