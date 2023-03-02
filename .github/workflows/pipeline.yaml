@@ -53,7 +53,6 @@ jobs:
             - name: Cleanup release package
               run: |
                   rm -rf ./node_modules
-                  rm -rf ./src
                   rm -rf ./public
                   rm package-lock.json
                   rm package.json
