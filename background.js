@@ -1,6 +1,4 @@
 chrome.runtime.onInstalled.addListener(() => {
-    console.log("Foundry Pro Chrome Extension");
-
     chrome.runtime.onMessage.addListener(
         async (request, sender, sendResponse) => {
             // registering a active client and showing it in the icon
@@ -34,7 +32,9 @@ chrome.runtime.onInstalled.addListener(() => {
                         },
                     });
                 }
+                return false;
             }
+            return false;
         }
     );
 });

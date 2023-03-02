@@ -1,10 +1,10 @@
 
-import { Card, H5, Code, FormGroup, Callout } from "@blueprintjs/core";
+import { H5, Code, FormGroup, Callout } from "@blueprintjs/core";
 import { version, branch, commit } from '../version';
 
 const About = () => {
     return (
-        <Card>
+        <>
             <H5>
                 About this chrome extension
             </H5>
@@ -32,7 +32,7 @@ const About = () => {
                 It uses <a target="_blank" href="https://blueprintjs.com/">Blueprint</a> from Palantir for UI components. Feel free to request features and contribute to the code on <a target="_blank" href="https://github.com/KochC/Foundry-Pro-Chrome-Extension">Github</a>.
             </Callout>
 
-        </Card>
+        </>
     );
 };
 

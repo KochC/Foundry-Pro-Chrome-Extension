@@ -1,85 +1,48 @@
-import React from 'react';
+
 import ReactDOM from 'react-dom/client';
+
 import './index.css';
 import $ from "jquery";
-import Menu from "./Menu/Menu";
-import Popup from "./Settings/Popup"
-import styled from "styled-components"
 
-import { save_store, load_store, initial_store } from './Store';
+import RootComponent from './RootComponent'
+import { Settings } from './Store';
+import { load_store } from './chrome_store';
+import { version, branch, commit } from './version'
 
-const MenuBorder = styled.div`
-`
+const attachComponentToWebsite = (n: HTMLElement, tmp_store: Settings) => {
 
-function init_popup(n: any) {
-  const popup = ReactDOM.createRoot(n);
-  popup.render(
-    <React.StrictMode>
-      <Popup />
-    </React.StrictMode>
-  );
-}
-
-function init_menu(n: any) {
-  // check if hosts are setup
-  if (store.custom_hosts.length == 0) {
-    // if not setup, auto configure this one
-    const detected_hostname = location.hostname
-    save_store(
-      {
-        ...store,
-        custom_hosts: [detected_hostname]
-      }
-    )
-  }
-
-  var banner = $('[class^="workspace-shell-ui__banner"]')[0];
-  if (banner !== undefined) {
-    banner.classList.add("expand_by_hover");
-  }
-
-  $('<div class="pf_separator"/>').prependTo(n);
-  var menu = document.createElement('div')
-  menu.setAttribute("id", "pf_menu_89345h0ade")
+  // attaching the component to the existing website
+  const menu: HTMLElement = document.createElement('div')
   $(menu).prependTo(n);
-  const domNode: any = document.getElementById("pf_menu_89345h0ade")
-  const root = ReactDOM.createRoot(domNode);
+  const root = ReactDOM.createRoot(menu);
+
   root.render(
-    <React.StrictMode>
-      <MenuBorder>
-        <Menu></Menu>
-      </MenuBorder>
-    </React.StrictMode>
+    <RootComponent loaded_settings={tmp_store} />
   );
 }
 
-const init = async () => {
+const welcomeConsoleMessage = () => {
+  console.log('\n' +
+    '********************************' + '\n\n' +
+    '   Foundry Pro' + '\n' +
+    '   Version: ' + version + '\n' +
+    '   Branch:  ' + branch + '\n' +
+    '   Commit:  ' + commit + '\n\n' +
+    '******************************** \n\n')
+}
+
+const tryToInit = (restored_settings: Settings) => {
+
   if (counter < 10) {
-
     counter++;
-
-    // try to init popup
-    // this part is needed to enable settings on every tab
-    var p = document.getElementById("pf_popup_container")
-    if (p !== null) {
-      console.log("Init popup")
-      if (init_interval != null)
-        clearInterval(init_interval);
-      init_popup(p);
-      return;
-    }
-
-
     // try to init menu
     // this part tries to find the following element on every website
     // this can be optimized and limited by setting a custom host
-    store = await load_store()
+
     // check if custom hosts are setup
-    if (store.custom_hosts.length > 0) {
-
+    if (restored_settings.custom_hosts.length > 0) {
       // if setup, check if this host is allowed
-      if (!store.custom_hosts.includes(location.host)) {
-
+      if (!restored_settings.custom_hosts.includes(location.host)) {
         // if none is allowed, stop execution
         if (init_interval != null)
           clearInterval(init_interval);
@@ -90,18 +53,20 @@ const init = async () => {
     // this code only runs if no host was setup or the host is allowed
     var n = $('[class^="workspace-shell-ui__sidebar-grouped-menu-container__"]')[0];
     if (n !== undefined) {
-      console.log("Init menu")
+      welcomeConsoleMessage()
+
+      // try to clear interval
       if (init_interval != null)
         clearInterval(init_interval);
-      init_menu(n);
+
+      // init main component
+      attachComponentToWebsite(n, restored_settings);
       return;
     }
 
 
   } else {
     // stop trying because there is no foundry installation
-    console.log("Not foundry nor popup");
-
     if (init_interval != null)
       clearInterval(init_interval);
     return;
@@ -109,5 +74,13 @@ const init = async () => {
 }
 
 var counter = 0;
-var store = initial_store;
-var init_interval = setInterval(init, 100);
+var init_interval: NodeJS.Timer | null = null;
+
+const start = async () => {
+  const restored_settings: Settings = await load_store()
+  init_interval = setInterval(() => tryToInit(restored_settings), 100);
+}
+
+start()
+
+
