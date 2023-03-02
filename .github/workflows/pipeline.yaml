@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
     push:
-        branches: [main, dev, default-webpack]
+        branches: [main, dev]
 
 jobs:
     build:
@@ -80,7 +80,7 @@ jobs:
               run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
 
             - name: Pre-Release Package
-              if: env.BRANCH_NAME != 'main'
+              if: env.BRANCH_NAME == 'dev'
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
