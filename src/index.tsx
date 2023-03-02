@@ -36,8 +36,17 @@ const welcomeConsoleMessage = () => {
     '******************************** \n\n')
 }
 
-const tryToInit = (restored_settings: Settings) => {
+const welcomeDevConsoleMessage = () => {
+  console.log('\n' +
+    '********************************' + '\n\n' +
+    '   Foundry Pro Dev' + '\n' +
+    '   Version: ' + version + '\n' +
+    '   Branch:  ' + branch + '\n' +
+    '   Commit:  ' + commit + '\n\n' +
+    '******************************** \n\n')
+}
 
+const tryToInit = (restored_settings: Settings) => {
   if (counter < 10) {
     counter++;
     // try to init menu
@@ -47,7 +56,7 @@ const tryToInit = (restored_settings: Settings) => {
     // check if custom hosts are setup
     if (restored_settings.custom_hosts.length > 0) {
       // if setup, check if this host is allowed
-      if (!restored_settings.custom_hosts.includes(location.host)) {
+      if (!restored_settings.custom_hosts.includes(window.location.host)) {
         // if none is allowed, stop execution
         if (init_interval != null)
           clearInterval(init_interval);
@@ -68,13 +77,33 @@ const tryToInit = (restored_settings: Settings) => {
       attachComponentToWebsite(n, restored_settings);
       return;
     }
-
-
   } else {
     // stop trying because there is no foundry installation
-    if (init_interval != null)
+    if (init_interval != null) {
       clearInterval(init_interval);
-    return;
+      init_interval = null
+
+      let normalize = document.createElement('link')
+      normalize.href = "../node_modules/normalize.css/normalize.css"
+      normalize.rel = "stylesheet"
+      document.head.appendChild(normalize)
+
+      let blueprint = document.createElement('link')
+      blueprint.href = "../node_modules/@blueprintjs/core/lib/css/blueprint.css"
+      blueprint.rel = "stylesheet"
+      document.head.appendChild(blueprint)
+
+      let blueprint_icons = document.createElement('link')
+      blueprint_icons.href = "../node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css"
+      blueprint_icons.rel = "stylesheet"
+      document.head.appendChild(blueprint_icons)
+
+      welcomeDevConsoleMessage()
+      const dummy: HTMLElement = document.createElement('div')
+      $(dummy).prependTo(document.body);
+      attachComponentToWebsite(dummy, restored_settings);
+      return;
+    }
   }
 }
 
@@ -82,8 +111,21 @@ var counter = 0;
 var init_interval: NodeJS.Timer | null = null;
 
 const start = async () => {
-  const restored_settings: Settings = await load_store()
+  let restored_settings: Settings;
+  try {
+    restored_settings = await load_store()
+  }
+  catch (e) {
+    console.log(e)
+  }
+
   init_interval = setInterval(() => tryToInit(restored_settings), 100);
+}
+
+try {
+  console.log(process.env)
+} catch (e) {
+  console.log(e)
 }
 
 start()

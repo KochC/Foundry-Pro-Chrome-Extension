@@ -1,6 +1,6 @@
 
 import styled from 'styled-components';
-import extension_icon from '../../icon/icon48_light.png'
+import extension_icon from '../icon/icon48_light.png'
 import { AnchorButton, Button, Tabs, Tab } from "@blueprintjs/core";
 import { version } from '../version';
 import About from './About';
