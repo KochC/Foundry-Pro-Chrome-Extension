@@ -39,6 +39,13 @@ jobs:
               uses: jossef/action-set-json-field@v2.1
               with:
                   file: manifest.json
+                  field: name
+                  value: Foundry Pro nightly
+
+            - name: Update my-file.json description
+              uses: jossef/action-set-json-field@v2.1
+              with:
+                  file: manifest.json
                   field: version
                   value: ${{ env.VERSION }}
 
