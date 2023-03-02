@@ -1,14 +1,13 @@
 
 import { useEffect } from 'react';
 import { MenuItem, ToastProps } from "@blueprintjs/core";
-import { Store, save_store } from '../Store'
+import { useStore } from '../Store'
 
 type SessionTokenProps = {
-    store: Store;
     toast: (msg: string, intent: ToastProps['intent'], icon: ToastProps['icon']) => void;
 }
 
-const SessionToken = ({ store, toast }: SessionTokenProps) => {
+const SessionToken = ({ toast }: SessionTokenProps) => {
 
     const getSessionKeyFromCookie = () => {
         var nameEQ = "PALANTIR_TOKEN=";
@@ -34,39 +33,25 @@ const SessionToken = ({ store, toast }: SessionTokenProps) => {
         }
     };
 
+    const { settings, setSessionToken } = useStore()
+
     const init = async () => {
-        console.log("SAVE SESSION_TOKEN")
         const token = getSessionKeyFromCookie()
-        console.log(token)
-        save_store(
-            {
-                ...store,
-                token_manager:
-                {
-                    ...store.token_manager,
-                    session_token:
-                    {
-                        token: token,
-                        valid_until: null
-                    }
-                }
-            }
-        ).then(() => {
-            console.log(store.token_manager.session_token)
-            console.log("SAVE SESSION_TOKEN")
-        })
+        if (settings.ready) {
+            setSessionToken(token)
+        }
     }
 
     // this function runs once at the beginning
     useEffect(() => {
         init();
-    }, [])
+    }, [settings.ready])
 
 
     return (
         <>
             {
-                store.token_manager.session_token_state ?
+                settings.token_manager.session_token_state ?
                     <MenuItem icon="key" text="Copy session token" onClick={copySessionToken} /> : ""
             }
         </>

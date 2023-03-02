@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { H5, Button, HTMLTable, ControlGroup, InputGroup, Icon, NumericInput, Tag, Switch } from "@blueprintjs/core";
-import { Store, LinkProps, save_store } from '../Store'
+import { useStore, CustomLink, initial_settings } from '../Store'
 
 const SettingsContainer = styled.div`
     > div{
@@ -17,87 +17,53 @@ const TD = styled.td`
     text-overflow: ellipsis;
     white-space: nowrap;
 `
-type ManageExistingLinksProps = {
-    store: Store;
-}
 
-const ManageExistingLinks = ({ store }: ManageExistingLinksProps) => {
+const ManageExistingLinks = () => {
 
     const [name, setName] = useState("")
     const [url, setUrl] = useState("")
-
+    const {
+        settings,
+        addCustomLink,
+        removeCustomLink,
+        toggleDevTokenState,
+        toggleSessionTokenState,
+        setDevTokenTTL,
+        setSettings
+    } = useStore()
 
     const init = async () => {
 
     }
 
     const reset = async () => {
-        save_store(
-            {
-                ...store,
-                custom_links: []
-            }
-        )
+        setSettings(initial_settings)
     }
 
-    const add_link = async () => {
-        save_store(
-            {
-                ...store,
-                custom_links: [...store.custom_links, { url: url, name: name }]
-            }
-        )
+    const add_link = () => {
+        addCustomLink({ url: url, name: name } as CustomLink)
     }
 
 
-    const delete_item = async (item: LinkProps) => {
-        save_store(
-            {
-                ...store,
-                custom_links: store.custom_links.filter((i) => i.name !== item.name)
-            }
-        )
+    const delete_item = (link: CustomLink) => {
+        removeCustomLink(link)
     }
 
     const toggle_dev_token_state = () => {
-        save_store(
-            {
-                ...store,
-                token_manager: {
-                    ...store.token_manager,
-                    dev_token_state: !store.token_manager.dev_token_state
-                }
-            }
-        )
+        toggleDevTokenState()
     }
 
     const toggle_session_token_state = () => {
-        save_store(
-            {
-                ...store,
-                token_manager: {
-                    ...store.token_manager,
-                    session_token_state: !store.token_manager.session_token_state
-                }
-            }
-        )
+        toggleSessionTokenState()
     }
 
     const dev_token_ttl_change = (ttl: number) => {
-        save_store(
-            {
-                ...store,
-                token_manager: {
-                    ...store.token_manager,
-                    dev_token_ttl: ttl
-                }
-            }
-        )
+        setDevTokenTTL(ttl)
     }
 
     useEffect(() => {
         init()
-    }, [store.token_manager.dev_token_state, store.token_manager.session_token_state])
+    }, [settings.token_manager.dev_token_state, settings.token_manager.session_token_state])
 
     return (
         <SettingsContainer>
@@ -145,7 +111,7 @@ const ManageExistingLinks = ({ store }: ManageExistingLinksProps) => {
                                 <Tag round={true} minimal={true}>default</Tag>
                             </TD>
                             <TD className='gray' style={{ width: "40px", paddingTop: "10px", height: "32px", paddingLeft: "5px" }}>
-                                <Switch checked={store.token_manager.session_token_state} onChange={toggle_session_token_state} />
+                                <Switch checked={settings.token_manager.session_token_state} onChange={toggle_session_token_state} />
                             </TD>
                         </tr>
                         <tr>
@@ -153,14 +119,14 @@ const ManageExistingLinks = ({ store }: ManageExistingLinksProps) => {
                                 Development Token
                             </TD>
                             <TD style={{ width: "calc(50% - 20px)", height: "32px", paddingTop: "1px", paddingBottom: 0 }}>
-                                <NumericInput disabled={!store.token_manager.dev_token_state} onValueChange={dev_token_ttl_change} fill={true} leftIcon={"stopwatch"} allowNumericCharactersOnly={true} value={store.token_manager.dev_token_ttl} />
+                                <NumericInput disabled={!settings.token_manager.dev_token_state} onValueChange={dev_token_ttl_change} fill={true} leftIcon={"stopwatch"} allowNumericCharactersOnly={true} value={settings.token_manager.dev_token_ttl} />
                             </TD>
                             <TD style={{ width: "40px", paddingTop: "10px", height: "32px", paddingLeft: "5px" }}>
-                                <Switch checked={store.token_manager.dev_token_state} onChange={toggle_dev_token_state} />
+                                <Switch checked={settings.token_manager.dev_token_state} onChange={toggle_dev_token_state} />
                             </TD>
                         </tr>
                         {
-                            store.custom_links.length > 0 ? store.custom_links.map((link) =>
+                            settings.custom_links.length > 0 ? settings.custom_links.map((link) =>
                                 <tr>
                                     <TD style={{ width: "calc(50% - 20px)" }}>
                                         {link.name}

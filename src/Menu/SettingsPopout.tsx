@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import extension_icon from '../../icon/icon48_dark.png'
 import { PopoverInteractionKind, Button, Position } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2"
-import { Store } from '../Store'
+import { useStore } from '../Store'
 import Popup from '../Settings/Popout'
 
 const Container = styled.li`
@@ -36,14 +36,10 @@ const Logo = styled.img`
     margin-right: 5px;
 `
 
-type PopoutMenuEntryProps = {
-    store: Store;
-}
+const ProSettingsPopout = () => {
 
-const ProSettingsPopout = ({ store }: PopoutMenuEntryProps) => {
-
-    const init = async () => {
-    }
+    const { settings } = useStore()
+    const init = async () => { }
 
     // this function runs once at the beginning
     useEffect(() => {
@@ -52,7 +48,7 @@ const ProSettingsPopout = ({ store }: PopoutMenuEntryProps) => {
 
     let popoverContent = (
         <Box>
-            <Popup store={store} />
+            <Popup />
         </Box>
     );
 

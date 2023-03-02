@@ -1,32 +1,20 @@
 
 import { useState, useEffect } from 'react';
 import { Tag, H5, Switch, NumericInput } from "@blueprintjs/core";
-import { Store, save_store } from '../Store'
+import { useStore } from '../Store'
 
-type CodeGuardProps = {
-    store: Store;
-}
+const CodeGuard = () => {
 
-const CodeGuard = ({ store }: CodeGuardProps) => {
+    const { settings, toggleCodeGuardState } = useStore()
 
-    const init = async () => {
-
-    }
+    const init = async () => { }
 
     useEffect(() => {
         init()
     }, [])
 
     const toggle_code_quard_state = () => {
-        save_store(
-            {
-                ...store,
-                code_guard: {
-                    ...store.code_guard,
-                    state: !store.code_guard.state
-                }
-            }
-        )
+        toggleCodeGuardState()
     }
 
     const code_guard_scan_interval = () => { }
@@ -40,28 +28,31 @@ const CodeGuard = ({ store }: CodeGuardProps) => {
                 The Secret Guard is a tool to identify potential threads in authoring tools such as Code-Repository.
                 The intension is to detect jwt-tokens or other kinds of hard coded secrets, that should never make it into a commit.
             </p>
-            <p>Code Guard is {store.code_guard.state ? "enabled" : "disabled"}.</p>
+            <p>Code Guard is {settings.code_guard.state ? "enabled" : "disabled"}.</p>
 
-            <Switch checked={store.code_guard.state} onChange={toggle_code_quard_state} />
+            <Switch checked={settings.code_guard.state} onChange={toggle_code_quard_state} />
             <p className="bp4-text-muted bp4-text-small">
                 To change the scan interval, please disable the code quard and enable again after changing the parameters.
             </p>
-            <NumericInput disabled={store.code_guard.state} onValueChange={code_guard_scan_interval} fill={true} leftIcon={"stopwatch"} allowNumericCharactersOnly={true} value={store.code_guard.scan_interval} />
+            <NumericInput disabled={settings.code_guard.state}
+                onValueChange={code_guard_scan_interval}
+                fill={true} leftIcon={"stopwatch"}
+                allowNumericCharactersOnly={true}
+                value={settings.code_guard.scan_interval} />
         </>
     );
 };
 
-type CodeGuardListenerProps = {
-    store: Store;
-}
 
-export const CodeGuardListener = ({ store }: CodeGuardListenerProps) => {
+export const CodeGuardListener = () => {
+
+    const { settings } = useStore()
     const [codeGuardInterval, setCodeGuardInterval] = useState<ReturnType<typeof setInterval>>()
 
     const init = () => {
-        if (store.code_guard.state && codeGuardInterval == undefined) {
-            setCodeGuardInterval(setInterval(guard_code, store.code_guard.scan_interval))
-        } else if (!store.code_guard.state && codeGuardInterval != undefined) {
+        if (settings.code_guard.state && codeGuardInterval == undefined) {
+            setCodeGuardInterval(setInterval(guard_code, settings.code_guard.scan_interval))
+        } else if (!settings.code_guard.state && codeGuardInterval != undefined) {
             clearInterval(codeGuardInterval)
             setCodeGuardInterval(undefined)
         }
@@ -69,7 +60,7 @@ export const CodeGuardListener = ({ store }: CodeGuardListenerProps) => {
 
     useEffect(() => {
         init()
-    }, [store.code_guard])
+    }, [settings.code_guard])
 
     const guard_code = () => {
         // jwt token pattern: /([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_\-\+\/=]*)/

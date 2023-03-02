@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { H5, Callout, Tag, ControlGroup, InputGroup, Button, Icon } from "@blueprintjs/core";
-import { Store, save_store } from '../Store'
+import { useStore } from '../Store'
 import styled from 'styled-components';
 
 const Space = styled.div`
@@ -9,36 +9,20 @@ const Space = styled.div`
     padding-bottom: 5px;
     display: inline-block;
 `
-type CustomHostProps = {
-    store: Store;
-}
 
-const CustomHost = ({ store }: CustomHostProps) => {
+const CustomHost = () => {
 
+    const { settings, addCustomHost, removeCustomHost } = useStore()
     const [host, setHost] = useState<string>("")
 
-    const init = async () => {
-
-    }
+    const init = async () => { }
 
     const remove = (host: string) => {
-        save_store(
-            {
-                ...store,
-                custom_hosts: store.custom_hosts.filter((item) => item !== host)
-            }
-        )
+        removeCustomHost(host)
     }
 
     const add = () => {
-        if (!store.custom_hosts.includes(host)) {
-            save_store(
-                {
-                    ...store,
-                    custom_hosts: [...store.custom_hosts, host]
-                }
-            )
-        }
+        addCustomHost(host)
     }
 
     useEffect(() => {
@@ -65,13 +49,13 @@ const CustomHost = ({ store }: CustomHostProps) => {
                 Auto detected hosts
             </H5>
             {
-                store!.custom_hosts.length > 0 ? <p className="bp4-text-muted bp4-text-small">
+                settings.custom_hosts.length > 0 ? <p className="bp4-text-muted bp4-text-small">
                     We detected the following host:
                 </p> : ""
             }
             {
-                store!.custom_hosts.length > 0 ?
-                    store!.custom_hosts.map((host) =>
+                settings.custom_hosts.length > 0 ?
+                    settings.custom_hosts.map((host) =>
                         <Space>
                             <Tag onRemove={() => { remove(host) }}>{host}</Tag>
                         </Space>

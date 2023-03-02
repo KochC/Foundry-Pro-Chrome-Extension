@@ -1,15 +1,12 @@
 import { useEffect } from 'react';
 import { MenuItem } from "@blueprintjs/core";
-import { Store } from '../Store'
+import { useStore } from '../Store'
 
-type CustomLinksProps = {
-    store: Store;
-}
+const CustomLinks = () => {
 
-const CustomLinks = ({ store }: CustomLinksProps) => {
+    const { settings } = useStore()
 
-    const init = async () => {
-    }
+    const init = async () => { }
 
     // this function runs once at the beginning
     useEffect(() => {
@@ -20,7 +17,7 @@ const CustomLinks = ({ store }: CustomLinksProps) => {
     return (
         <>
             {
-                store.custom_links.length > 0 ? store.custom_links.map((link) => <MenuItem icon="link" text={link.name} href={link.url} />) : ""
+                settings.custom_links.length > 0 ? settings.custom_links.map((link) => <MenuItem icon="link" text={link.name} href={link.url} />) : ""
             }
         </>
     );

@@ -1,42 +1,15 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Menu from "./Menu/Menu";
-import { Store, save_store, load_store, initial_store } from './Store';
-
+import { useStore, Settings } from './Store';
 
 type RootComponentProps = {
-    tmp_store: Store;
+    loaded_settings: Settings
 }
 
-const RootComponent = ({ tmp_store }: RootComponentProps) => {
+const RootComponent = ({ loaded_settings }: RootComponentProps) => {
 
-    const [store, setStore] = useState<Store>(initial_store)
-
-    const onStoreChangeListener = async () => {
-        console.log("STORE CHANGED")
-        setStore(await load_store())
-        console.log("STORE CHANGED")
-    }
-
-    const getHostInfo = () => {
-        const detected_hostname = location.hostname
-        if (!store.custom_hosts.includes(detected_hostname)) {
-            console.log("SAVE CUSTOM_HOST")
-            save_store(
-                {
-                    ...store,
-                    custom_hosts: [...store.custom_hosts, detected_hostname]
-                }
-            ).then(() => {
-                console.log(store.token_manager.session_token)
-                console.log("SAVED SHOST")
-            })
-        }
-    }
-
-    const attachStoreListener = () => {
-        chrome.storage.onChanged.addListener(onStoreChangeListener);
-    }
+    const { settings, initialize, addCustomHost } = useStore();
 
     const registerToBackground = () => {
         // register to the background.js
@@ -51,19 +24,28 @@ const RootComponent = ({ tmp_store }: RootComponentProps) => {
     }
 
     const init = async () => {
-        setStore(tmp_store)
-        getHostInfo()
         registerToBackground()
-        attachStoreListener()
+        // update state with local settings if not yet done
+        if (!settings.ready) {
+            initialize(loaded_settings)
+        }
+
+        // only do this if local settings are loaded
+        if (settings.ready) {
+            const detected_hostname = location.hostname
+            if (!settings.custom_hosts.includes(detected_hostname)) {
+                addCustomHost(detected_hostname)
+            }
+        }
     }
 
     useEffect(() => {
         init();
-    }, [])
+    }, [settings.ready])
 
     return (
         <React.StrictMode>
-            <Menu store={store}></Menu>
+            <Menu></Menu>
         </React.StrictMode>
     );
 };

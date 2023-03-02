@@ -1,25 +1,26 @@
 import { useEffect } from 'react';
 import { MenuItem, ToastProps } from "@blueprintjs/core";
-import { Store } from '../Store'
+import { useStore } from '../Store'
 
 type DevelopmentTokenProps = {
-    store: Store;
     toast: (msg: string, intent: ToastProps['intent'], icon: ToastProps['icon']) => void;
 }
 
-const DevelopmentToken = ({ store, toast }: DevelopmentTokenProps) => {
+const DevelopmentToken = ({ toast }: DevelopmentTokenProps) => {
+
+    const { settings } = useStore()
 
     const copyDevelopmentToken = (event: any) => {
         const requestOptions = {
             method: 'POST',
             headers: {
-                Authorization: "Bearer " + store.token_manager.session_token.token,
+                Authorization: "Bearer " + settings.token_manager.current_session_token,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                description: "Dev token created by Foundry-Pro. This token is only valid for " + store.token_manager.dev_token_ttl + "s and will auto expire.",
-                name: "foundry-pro-dev-token-" + store.token_manager.dev_token_ttl,
-                secondsToLive: store.token_manager.dev_token_ttl,
+                description: "Dev token created by Foundry-Pro. This token is only valid for " + settings.token_manager.dev_token_ttl + "s and will auto expire.",
+                name: "foundry-pro-dev-token-" + settings.token_manager.dev_token_ttl,
+                secondsToLive: settings.token_manager.dev_token_ttl,
             })
         };
 
@@ -35,8 +36,7 @@ const DevelopmentToken = ({ store, toast }: DevelopmentTokenProps) => {
             )
     }
 
-    const init = async () => {
-    }
+    const init = async () => { }
 
     // this function runs once at the beginning
     useEffect(() => {
@@ -47,7 +47,7 @@ const DevelopmentToken = ({ store, toast }: DevelopmentTokenProps) => {
     return (
         <>
             {
-                store.token_manager.dev_token_state ?
+                settings.token_manager.dev_token_state ?
                     <MenuItem icon="bug" text="Copy development token" onClick={copyDevelopmentToken} /> : ""
             }
         </>

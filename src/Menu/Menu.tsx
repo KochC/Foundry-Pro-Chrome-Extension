@@ -10,7 +10,7 @@ import {
   ToastProps
 } from "@blueprintjs/core";
 
-import { Store } from '../Store'
+import { useStore } from '../Store'
 import { CodeGuardListener } from "../Settings/CodeGuard"
 import SessionToken from "./SessionToken"
 import DevelopmentToken from "./DevelopmentToken"
@@ -30,11 +30,10 @@ const MenuWrapper = styled.ul`
     }
   }
 `
-type MenuProps = {
-  store: Store;
-}
 
-const Menu = ({ store }: MenuProps) => {
+const Menu = () => {
+
+  const { settings } = useStore();
 
   const init = async () => { }
 
@@ -42,7 +41,6 @@ const Menu = ({ store }: MenuProps) => {
   useEffect(() => {
     init();
   }, [])
-
 
   var toaster: Toaster;
   const [toasts, setToasts] = useState<ToastProps[]>([])
@@ -62,13 +60,13 @@ const Menu = ({ store }: MenuProps) => {
       </Toaster>
 
       <MenuWrapper>
-        <ProSettingsPopout store={store} />
-        <SessionToken store={store} toast={addToast} />
-        <DevelopmentToken store={store} toast={addToast} />
-        <CustomLinks store={store} />
+        <ProSettingsPopout />
+        <SessionToken toast={addToast} />
+        <DevelopmentToken toast={addToast} />
+        <CustomLinks />
       </MenuWrapper>
 
-      <CodeGuardListener store={store} />
+      <CodeGuardListener />
     </>
   );
 };

@@ -5,10 +5,11 @@ import './index.css';
 import $ from "jquery";
 
 import RootComponent from './RootComponent'
-import { load_store, Store } from './Store';
+import { Settings } from './Store';
+import { load_store } from './chrome_store';
 import { version, branch, commit } from './version'
 
-const attachComponentToWebsite = (n: HTMLElement, tmp_store: Store) => {
+const attachComponentToWebsite = (n: HTMLElement, tmp_store: Settings) => {
 
   // attaching the component to the existing website
   const menu: HTMLElement = document.createElement('div')
@@ -16,7 +17,7 @@ const attachComponentToWebsite = (n: HTMLElement, tmp_store: Store) => {
   const root = ReactDOM.createRoot(menu);
 
   root.render(
-    <RootComponent tmp_store={tmp_store} />
+    <RootComponent loaded_settings={tmp_store} />
   );
 }
 
@@ -30,7 +31,7 @@ const welcomeConsoleMessage = () => {
     '******************************** \n\n')
 }
 
-const tryToInit = (restored_settings: Store) => {
+const tryToInit = (restored_settings: Settings) => {
 
   if (counter < 10) {
     counter++;
@@ -76,7 +77,7 @@ var counter = 0;
 var init_interval: NodeJS.Timer | null = null;
 
 const start = async () => {
-  const restored_settings: Store = await load_store()
+  const restored_settings: Settings = await load_store()
   init_interval = setInterval(() => tryToInit(restored_settings), 100);
 }
 
