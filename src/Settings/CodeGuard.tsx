@@ -63,22 +63,21 @@ export const CodeGuardListener = () => {
     }, [settings.code_guard])
 
     const guard_code = () => {
-        // jwt token pattern: /([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_\-\+\/=]*)/
-        const regex = /([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_\-\+\/=]*)/g;
-
         // query all open 'code files'
-        var elements_to_guard = Array.from(document.querySelectorAll('[role=code]'))
-        elements_to_guard.map((c) => {
-            // query all 'lines of code'
-            var lines = Array.from(c.getElementsByClassName('view-lines')[0].children)
-            lines.map((l) => {
-                var content = l.textContent
-                const findings = content!.match(regex);
-                if (findings !== null) {
-                    l.classList.add("code_guard_error");
-                }
+        if (settings.code_guard.regex !== null) {
+            var elements_to_guard = Array.from(document.querySelectorAll('[role=code]'))
+            elements_to_guard.map((c) => {
+                // query all 'lines of code'
+                var lines = Array.from(c.getElementsByClassName('view-lines')[0].children)
+                lines.map((l) => {
+                    var content = l.textContent
+                    const findings = content!.match(settings.code_guard.regex!);
+                    if (findings !== null) {
+                        l.classList.add("code_guard_error");
+                    }
+                })
             })
-        })
+        }
     }
 
     return (
