@@ -80,11 +80,6 @@ const Settings = () => {
         setSettings(initial_settings)
     }
 
-    const compromise = async () => {
-        await chrome.storage.sync.set({ version: 0 });
-        console.warn("Store is compromized")
-    }
-
     useEffect(() => {
     }, [])
 
@@ -116,14 +111,9 @@ const Settings = () => {
             </PopoverBody>
             <PopoverFooter>
                 <AnchorButton small minimal={true} icon="issue" text="Report an issue on Github" target="_blank" href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/issues" />
-                {version == "<version>" ?
+                {version === "local" ?
                     <Button intent="danger" minimal={true} onClick={reset}>
                         Reset Settings!
-                    </Button> : ""
-                }
-                {version == "<version>" ?
-                    <Button intent="warning" minimal={true} onClick={compromise}>
-                        Compromise store!
                     </Button> : ""
                 }
             </PopoverFooter>
