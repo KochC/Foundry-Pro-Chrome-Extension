@@ -18,17 +18,17 @@ chrome.runtime.onInstalled.addListener(() => {
                 if (request.scheme == "light") {
                     chrome.action.setIcon({
                         path: {
-                            128: "src/icon/icon128_light.png",
-                            48: "src/icon/icon48_light.png",
-                            16: "src/icon/icon16_light.png",
+                            128: "icon/icon128_light.png",
+                            48: "icon/icon48_light.png",
+                            16: "icon/icon16_light.png",
                         },
                     });
                 } else if (request.schema == "dark") {
                     chrome.action.setIcon({
                         path: {
-                            128: "src/icon/icon128_dark.png",
-                            48: "src/icon/icon48_dark.png",
-                            16: "src/icon/icon16_dark.png",
+                            128: "icon/icon128_dark.png",
+                            48: "icon/icon48_dark.png",
+                            16: "icon/icon16_dark.png",
                         },
                     });
                 }

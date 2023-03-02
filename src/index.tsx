@@ -6,6 +6,7 @@ import './index.css';
 import $ from "jquery";
 
 import RootComponent from './RootComponent'
+import Popup from './Popup/Popup'
 import { Settings } from './Store';
 import { load_store } from './chrome_store';
 import { version, branch, commit } from './version'
@@ -26,20 +27,19 @@ const attachComponentToWebsite = (n: HTMLElement, tmp_store: Settings) => {
   );
 }
 
+const attachComponentToPopup = (n: any) => {
+  const popup = ReactDOM.createRoot(n);
+  popup.render(
+    <React.StrictMode>
+      <Popup />
+    </React.StrictMode>
+  );
+}
+
 const welcomeConsoleMessage = () => {
   console.log('\n' +
     '********************************' + '\n\n' +
     '   Foundry Pro' + '\n' +
-    '   Version: ' + version + '\n' +
-    '   Branch:  ' + branch + '\n' +
-    '   Commit:  ' + commit + '\n\n' +
-    '******************************** \n\n')
-}
-
-const welcomeDevConsoleMessage = () => {
-  console.log('\n' +
-    '********************************' + '\n\n' +
-    '   Foundry Pro Dev' + '\n' +
     '   Version: ' + version + '\n' +
     '   Branch:  ' + branch + '\n' +
     '   Commit:  ' + commit + '\n\n' +
@@ -52,6 +52,14 @@ const tryToInit = (restored_settings: Settings) => {
     // try to init menu
     // this part tries to find the following element on every website
     // this can be optimized and limited by setting a custom host
+    var p = document.getElementById("pf_popup_container")
+    if (p !== null) {
+      console.log("Init popup")
+      if (init_interval != null)
+        clearInterval(init_interval);
+      attachComponentToPopup(p);
+      return;
+    }
 
     // check if custom hosts are setup
     if (restored_settings.custom_hosts.length > 0) {
@@ -77,31 +85,12 @@ const tryToInit = (restored_settings: Settings) => {
       attachComponentToWebsite(n, restored_settings);
       return;
     }
+
   } else {
     // stop trying because there is no foundry installation
     if (init_interval != null) {
       clearInterval(init_interval);
       init_interval = null
-
-      let normalize = document.createElement('link')
-      normalize.href = "../node_modules/normalize.css/normalize.css"
-      normalize.rel = "stylesheet"
-      document.head.appendChild(normalize)
-
-      let blueprint = document.createElement('link')
-      blueprint.href = "../node_modules/@blueprintjs/core/lib/css/blueprint.css"
-      blueprint.rel = "stylesheet"
-      document.head.appendChild(blueprint)
-
-      let blueprint_icons = document.createElement('link')
-      blueprint_icons.href = "../node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css"
-      blueprint_icons.rel = "stylesheet"
-      document.head.appendChild(blueprint_icons)
-
-      welcomeDevConsoleMessage()
-      const dummy: HTMLElement = document.createElement('div')
-      $(dummy).prependTo(document.body);
-      attachComponentToWebsite(dummy, restored_settings);
       return;
     }
   }
@@ -122,12 +111,9 @@ const start = async () => {
   init_interval = setInterval(() => tryToInit(restored_settings), 100);
 }
 
-try {
-  console.log(process.env)
-} catch (e) {
-  console.log(e)
-}
+$(document).ready(function () {
+  start()
+});
 
-start()
 
 
