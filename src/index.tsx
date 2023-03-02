@@ -1,4 +1,5 @@
 
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import './index.css';
@@ -13,11 +14,15 @@ const attachComponentToWebsite = (n: HTMLElement, tmp_store: Settings) => {
 
   // attaching the component to the existing website
   const menu: HTMLElement = document.createElement('div')
+  menu.setAttribute("id", "pf_menu_89345h0ade")
   $(menu).prependTo(n);
-  const root = ReactDOM.createRoot(menu);
+  const domNode: any = document.getElementById("pf_menu_89345h0ade")
+  const root = ReactDOM.createRoot(domNode);
 
   root.render(
-    <RootComponent loaded_settings={tmp_store} />
+    <React.StrictMode>
+      <RootComponent loaded_settings={tmp_store} />
+    </React.StrictMode>
   );
 }
 
@@ -51,7 +56,7 @@ const tryToInit = (restored_settings: Settings) => {
     }
 
     // this code only runs if no host was setup or the host is allowed
-    var n = $('[class^="workspace-shell-ui__sidebar-grouped-menu-container__"]')[0];
+    var n: HTMLElement = $('[class^="workspace-shell-ui__sidebar-grouped-menu-container__"]')[0];
     if (n !== undefined) {
       welcomeConsoleMessage()
 

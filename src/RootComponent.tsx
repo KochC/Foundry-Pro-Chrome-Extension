@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Menu from "./Menu/Menu";
 import { useStore, Settings } from './Store';
 
@@ -44,9 +44,7 @@ const RootComponent = ({ loaded_settings }: RootComponentProps) => {
     }, [settings.ready])
 
     return (
-        <React.StrictMode>
-            <Menu></Menu>
-        </React.StrictMode>
+        <Menu />
     );
 };
 
