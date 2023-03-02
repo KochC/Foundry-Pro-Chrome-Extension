@@ -5,6 +5,7 @@
     "author": "Christopher Koch",
     "version": "0",
     "action": {
+        "default_popup": "popup.html",
         "default_title": "Foundry Pro Chrome Extension"
     },
     "permissions": ["storage"],
@@ -23,7 +24,7 @@
             "matches": ["*://*/*"],
             "resources": [
                 "content.js",
-                "icon/*",
+                "src/icon/*",
                 "*.eot",
                 "*.woff",
                 "*.woff2",

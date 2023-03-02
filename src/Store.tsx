@@ -13,7 +13,7 @@ export interface TokenManagerSettings {
 export interface CodeGuardSettings {
     state: boolean;
     scan_interval: 1000;
-    regex: string | null;
+    regex: RegExp | null;
 }
 
 export interface CustomLink {
@@ -46,7 +46,7 @@ export const initial_settings: Settings = {
     code_guard: {
         state: false,
         scan_interval: 1000,
-        regex: null
+        regex: /("[a-zA-Z0-9_=]+)\.([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_\-\+\/=]*")/g
     }
 }
 

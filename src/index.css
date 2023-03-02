@@ -2,13 +2,6 @@
     outline: none;
 }
 
-body#pf_popup_container {
-    margin: 0;
-    padding: 0;
-    background: #edeff2;
-    width: 660px;
-}
-
 .code_guard_error span{
     text-decoration: #fbb360 underline  wavy;
 }

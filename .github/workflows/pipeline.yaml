@@ -15,10 +15,10 @@ jobs:
 
         steps:
             - uses: actions/checkout@v2
-            - name: Use Node.js 14.x
+            - name: Use Node.js 19.x
               uses: actions/setup-node@v1
               with:
-                  node-version: 14.x
+                  node-version: 19.x
 
             - name: Define version
               run: |
@@ -53,7 +53,6 @@ jobs:
             - name: Cleanup release package
               run: |
                   rm -rf ./node_modules
-                  rm -rf ./src
                   rm -rf ./public
                   rm package-lock.json
                   rm package.json
