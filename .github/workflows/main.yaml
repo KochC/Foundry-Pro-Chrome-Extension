@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
     push:
-        branches: [nightly]
+        branches: [main]
 
 jobs:
     build:
@@ -11,26 +11,19 @@ jobs:
 
         permissions: write-all
         runs-on: ubuntu-latest
-        environment: nightly
+        environment: production
 
         steps:
-            - name: Generate build number
-              uses: einaregilsson/build-number@v3
-              with:
-                token: ${{secrets.github_token}}        
-            - name: Print new build number
-              run: echo "Build number is $BUILD_NUMBER"
-              
             - uses: actions/checkout@v2
             - name: Use Node.js 19.x
               uses: actions/setup-node@v1
               with:
                   node-version: 19.x
-            - uses: actions/checkout@v1
 
             - name: Define version
               run: |
-                  echo "VERSION=${{ vars.MAJOR_VERSION }}.$BUILD_NUMBER" >> $GITHUB_ENV
+                      echo "VERSION=${{ vars.MAJOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_ENV
+                      echo "RERELEASE=false" >> $GITHUB_ENV
 
             - name: Create versioning file for app
               run: |
@@ -46,13 +39,6 @@ jobs:
               uses: jossef/action-set-json-field@v2.1
               with:
                   file: manifest.json
-                  field: name
-                  value: Foundry Pro nightly
-
-            - name: Update my-file.json description
-              uses: jossef/action-set-json-field@v2.1
-              with:
-                  file: manifest.json
                   field: version
                   value: ${{ env.VERSION }}
 
@@ -63,6 +49,7 @@ jobs:
               run: |
                   rm -rf ./node_modules
                   rm -rf ./public
+                  rm -rf ./src
                   rm package-lock.json
                   rm package.json
                   rm tsconfig.json
@@ -85,23 +72,23 @@ jobs:
                   privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
 
             - name: Rename to release
-              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-Nightly-${{ env.VERSION }}.zip
+              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
 
             - name: Release Package
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                  automatic_release_tag: "nightly_${{ env.VERSION }}"
-                  prerelease: true
-                  title: "Foundry-Upgrade-Chrome-Extension-Nightly-${{ env.VERSION }}"
+                  automatic_release_tag: "stable_${{ env.VERSION }}"
+                  prerelease: false
+                  title: "Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}"
                   files: |
-                      ./build/Foundry-Upgrade-Chrome-Extension-Nightly-${{ env.VERSION }}.zip
+                      ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
 
             - name: Upload & release
               uses: mnao305/chrome-extension-upload@v4.0.1
               with:
-                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-Nightly-${{ env.VERSION }}.zip"
-                  extension-id: ${{ vars.EXTENSION_ID }}
+                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip"
+                  extension-id: "anjiaghdipilddabdekbchcgenjmofan"
                   client-id: ${{ secrets.CLIENT_ID }}
                   client-secret: ${{ secrets.CLIENT_SECRET }}
                   refresh-token: ${{ secrets.REFRESH_TOKEN }}
