@@ -1,9 +1,10 @@
 ![logo](./icon/icon128.png)
 # Foundry Pro Chrome Extension
 
-<a href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/actions/workflows/main.yml"><img src="https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/main.yaml?branch=main&label=main%20build&style=flat-square"></a>
-![nightly build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/nightly.yaml?branch=nightly&label=nightly%20build&style=flat-square)
-![dev build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/dev.yaml?branch=dev&label=dev%20build&style=flat-square)
+<a href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/actions/workflows/main.yaml"><img src="https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/main.yaml?branch=main&label=main%20build&style=flat-square"></a>
+<a href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/actions/workflows/nightly.yaml"><img src="https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/nightly.yaml?branch=nightly&label=nightly%20build&style=flat-square"></a>
+<a href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/actions/workflows/dev.yaml"><img src="https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/dev.yaml?branch=dev&label=dev%20build&style=flat-square"></a>
+
 <a href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/issues"><img src="https://img.shields.io/github/issues/KochC/Foundry-Pro-Chrome-Extension?color=important&style=flat-square"/></a>
   <a href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/pulls"><img src="https://img.shields.io/github/issues-pr/KochC/Foundry-Pro-Chrome-Extension?color=blueviolet&style=flat-square"/></a>
 ![License](https://img.shields.io/github/license/KochC/Foundry-Pro-Chrome-Extension?style=flat-square)
