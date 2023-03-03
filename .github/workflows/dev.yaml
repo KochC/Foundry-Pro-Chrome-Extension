@@ -14,11 +14,23 @@ jobs:
         environment: dev
 
         steps:
+            - name: Get Git Version
+              uses: docker://gittools/gitversion:5.0.2-beta1-34-linux-debian-9-netcoreapp2.1
+              with:
+                  args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_MajorMinorPatch > /github/workspace/version.txt\""
+
+            - name: Get version
+              run: |
+                  echo "REPO_VERSION=$(cat /home/runner/work/AWSSamExample/AWSSamExample/version.txt)" >> $GITHUB_ENV
+
+            - run: echo ${{ env.REPO_VERSION }}
+        
             - uses: actions/checkout@v2
             - name: Use Node.js 19.x
               uses: actions/setup-node@v1
               with:
                   node-version: 19.x
+            - uses: actions/checkout@v1
 
             - name: Define version
               run: |
