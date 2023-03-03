@@ -1,6 +1,9 @@
 ![logo](./icon/icon128.png)
 # Foundry Pro Chrome Extension
 
+![Stable release](https://img.shields.io/chrome-web-store/v/anjiaghdipilddabdekbchcgenjmofan?label=Chrome%20Web%20Store%20Stable&style=flat-square)
+![](https://img.shields.io/chrome-web-store/v/fpfaholcjdlanlobdhjiciebiaipgldg?label=Chrome%20Web%20Store%20Nightly&style=flat-square)
+
 ![main build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/main.yaml?branch=main&label=main%20build&style=flat-square)
 ![nightly build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/nightly.yaml?branch=nightly&label=nightly%20build&style=flat-square)
 ![dev build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/dev.yaml?branch=dev&label=dev%20build&style=flat-square)
