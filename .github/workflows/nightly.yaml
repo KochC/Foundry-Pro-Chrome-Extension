@@ -94,7 +94,7 @@ jobs:
               uses: mnao305/chrome-extension-upload@v4.0.1
               with:
                   file-path: "./build/Foundry-Upgrade-Chrome-Extension-Nightly-${{ env.VERSION }}.zip"
-                  extension-id: ${{ variables.EXTENSION_ID }}
+                  extension-id: ${{ vars.EXTENSION_ID }}
                   client-id: ${{ secrets.CLIENT_ID }}
                   client-secret: ${{ secrets.CLIENT_SECRET }}
                   refresh-token: ${{ secrets.REFRESH_TOKEN }}
