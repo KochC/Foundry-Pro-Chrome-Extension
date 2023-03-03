@@ -1,0 +1,102 @@
+name: CI/CD Pipeline
+
+on:
+    push:
+        branches: [main]
+
+jobs:
+    build:
+        env:
+            BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+        permissions: write-all
+        runs-on: ubuntu-latest
+        environment: production
+
+        steps:
+            - name: Generate build number
+              uses: einaregilsson/build-number@v3
+              with:
+                token: ${{secrets.github_token}}        
+            - name: Print new build number
+              run: echo "Build number is $BUILD_NUMBER"
+              
+            - uses: actions/checkout@v2
+            - name: Use Node.js 19.x
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 19.x
+            - uses: actions/checkout@v1
+
+            - name: Define version
+              run: |
+                  echo "VERSION=${{ vars.MAJOR_VERSION }}.$BUILD_NUMBER" >> $GITHUB_ENV
+
+            - name: Create versioning file for app
+              run: |
+                  echo "export var version = '${{ env.VERSION }}';" > ./src/version.tsx
+                  echo "export var branch = '${{ env.BRANCH_NAME }}';" >> ./src/version.tsx
+                  echo "export var commit = '${{ github.sha }}';" >> ./src/version.tsx
+                  cat ./src/version.tsx
+
+            - name: Install npm packages
+              run: npm i
+
+            - name: Update my-file.json description
+              uses: jossef/action-set-json-field@v2.1
+              with:
+                  file: manifest.json
+                  field: version
+                  value: ${{ env.VERSION }}
+
+            - name: Build chrome extension
+              run: npm run build
+
+            - name: Cleanup release package
+              run: |
+                  rm -rf ./node_modules
+                  rm -rf ./public
+                  rm -rf ./src
+                  rm package-lock.json
+                  rm package.json
+                  rm tsconfig.json
+                  rm webpack.config.js
+                  rm logo.afdesign
+                  rm -rf .github
+                  rm -rf .gitignore
+
+            - id: packExtensionDir
+              uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
+              with:
+                  extensionDir: "."
+                  zipFilePath: "build/package.zip"
+
+            - uses: cardinalby/webext-buildtools-chrome-crx-action@v2
+              with:
+                  # zip file made at the packExtensionDir step
+                  zipFilePath: "build/package.zip"
+                  crxFilePath: "crx-file.crx"
+                  privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
+
+            - name: Rename to release
+              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
+
+            - name: Release Package
+              uses: "marvinpinto/action-automatic-releases@latest"
+              with:
+                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                  automatic_release_tag: "stable_${{ env.VERSION }}"
+                  prerelease: false
+                  title: "Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}"
+                  files: |
+                      ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
+
+            - name: Upload & release
+              uses: mnao305/chrome-extension-upload@v4.0.1
+              with:
+                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip"
+                  extension-id: "anjiaghdipilddabdekbchcgenjmofan"
+                  client-id: ${{ secrets.CLIENT_ID }}
+                  client-secret: ${{ secrets.CLIENT_SECRET }}
+                  refresh-token: ${{ secrets.REFRESH_TOKEN }}
+                  publish: false

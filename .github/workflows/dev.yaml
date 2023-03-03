@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
     push:
-        branches: [main, dev]
+        branches: [dev]
 
 jobs:
     build:
@@ -11,24 +11,26 @@ jobs:
 
         permissions: write-all
         runs-on: ubuntu-latest
-        environment: production
+        environment: dev
 
         steps:
+            - name: Generate build number
+              uses: einaregilsson/build-number@v3
+              with:
+                token: ${{secrets.github_token}}        
+            - name: Print new build number
+              run: echo "Build number is $BUILD_NUMBER"
+              
             - uses: actions/checkout@v2
             - name: Use Node.js 19.x
               uses: actions/setup-node@v1
               with:
                   node-version: 19.x
+            - uses: actions/checkout@v1
 
             - name: Define version
               run: |
-                  if [ "${{ env.BRANCH_NAME }}" = "main" ]; then
-                      echo "VERSION=${{ vars.MAJOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_ENV
-                      echo "RERELEASE=false" >> $GITHUB_ENV
-                  else
-                      echo "VERSION=${{ vars.NIGHTLY_MAJOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_ENV
-                      echo "RERELEASE=true" >> $GITHUB_ENV
-                  fi
+                  echo "VERSION=${{ vars.MAJOR_VERSION }}.$BUILD_NUMBER" >> $GITHUB_ENV
 
             - name: Create versioning file for app
               run: |
@@ -39,6 +41,13 @@ jobs:
 
             - name: Install npm packages
               run: npm i
+
+            - name: Update my-file.json description
+              uses: jossef/action-set-json-field@v2.1
+              with:
+                  file: manifest.json
+                  field: name
+                  value: Foundry Pro dev
 
             - name: Update my-file.json description
               uses: jossef/action-set-json-field@v2.1
@@ -76,37 +85,14 @@ jobs:
                   privateKey: ${{ secrets.CHROME_CRX_PRIVATE_KEY }}
 
             - name: Rename to release
-              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
-
-            - name: Pre-Release Package
-              if: env.BRANCH_NAME == 'dev'
-              uses: "marvinpinto/action-automatic-releases@latest"
-              with:
-                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                  automatic_release_tag: "nightly_${{ env.VERSION }}"
-                  prerelease: true
-                  title: "Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}"
-                  files: |
-                      ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
+              run: mv ./build/package.zip ./build/Foundry-Upgrade-Chrome-Extension-Dev-${{ env.VERSION }}.zip
 
             - name: Release Package
-              if: env.BRANCH_NAME == 'main'
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
-                  automatic_release_tag: "stable_${{ env.VERSION }}"
-                  prerelease: false
-                  title: "Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}"
+                  automatic_release_tag: "dev_${{ env.VERSION }}"
+                  prerelease: true
+                  title: "Foundry-Upgrade-Chrome-Extension-Dev-${{ env.VERSION }}"
                   files: |
-                      ./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip
-
-            - name: Upload & release
-              if: env.BRANCH_NAME == 'main'
-              uses: mnao305/chrome-extension-upload@v4.0.1
-              with:
-                  file-path: "./build/Foundry-Upgrade-Chrome-Extension-${{ env.VERSION }}.zip"
-                  extension-id: "anjiaghdipilddabdekbchcgenjmofan"
-                  client-id: ${{ secrets.CLIENT_ID }}
-                  client-secret: ${{ secrets.CLIENT_SECRET }}
-                  refresh-token: ${{ secrets.REFRESH_TOKEN }}
-                  publish: false
+                      ./build/Foundry-Upgrade-Chrome-Extension-Dev-${{ env.VERSION }}.zip
