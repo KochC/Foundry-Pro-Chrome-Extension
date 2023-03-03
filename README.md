@@ -4,6 +4,8 @@
 <a target="_blank" href="https://chrome.google.com/webstore/detail/foundry-pro/anjiaghdipilddabdekbchcgenjmofan?hl=en&authuser=0"><img src="https://img.shields.io/chrome-web-store/v/anjiaghdipilddabdekbchcgenjmofan?label=Chrome%20Web%20Store%20Stable&style=flat-square"></a>
 <a target="_blank" href="https://chrome.google.com/webstore/detail/foundry-pro/anjiaghdipilddabdekbchcgenjmofan?hl=en&authuser=0"><img src="https://img.shields.io/chrome-web-store/v/fpfaholcjdlanlobdhjiciebiaipgldg?label=Chrome%20Web%20Store%20Nightly&style=flat-square"></a>
 
+<a><img src="https://img.shields.io/github/v/release/KochC/Foundry-Pro-Chrome-Extension?label=Stable%20Release&style=flat-square"></a>
+
 ![main build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/main.yaml?branch=main&label=main%20build&style=flat-square)
 ![nightly build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/nightly.yaml?branch=nightly&label=nightly%20build&style=flat-square)
 ![dev build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/dev.yaml?branch=dev&label=dev%20build&style=flat-square)
