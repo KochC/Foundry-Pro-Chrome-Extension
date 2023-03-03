@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Nightly CI/CD Pipeline
 
 on:
     push:
