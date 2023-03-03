@@ -18,16 +18,16 @@ export const load_store = (): Promise<Settings> => {
                     ) {
                         resolve(s);
                     } else {
-                        console.log(
-                            "Storage Version out of date! Auto upgrade!"
-                        );
+                        //console.log(
+                        //    "Storage Version out of date! Auto upgrade!"
+                        //);
                         resolve(initial_settings);
                     }
                 } else {
                     chrome.storage.sync.clear(() => {
-                        console.log(
-                            "Error reading store. Returning initial state!"
-                        );
+                        //console.log(
+                        //    "Error reading store. Returning initial state!"
+                        //);
                         resolve(initial_settings);
                     });
                 }
