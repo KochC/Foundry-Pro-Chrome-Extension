@@ -1,10 +1,14 @@
-![logo](https://raw.githubusercontent.com/KochC/Foundry-Pro-Chrome-Extension/create-readme/icon/icon128.png)
-
-![main build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/main.yaml?branch=main&label=main%20build)
-![nightly build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/nightly.yaml?branch=nightly&label=nightly%20build)
-![dev build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/dev.yaml?branch=dev&label=dev%20build)
-
+![logo](./icon/icon128.png)
 # Foundry Pro Chrome Extension
+
+![main build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/main.yaml?branch=main&label=main%20build&style=flat-square)
+![nightly build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/nightly.yaml?branch=nightly&label=nightly%20build&style=flat-square)
+![dev build](https://img.shields.io/github/actions/workflow/status/KochC/Foundry-Pro-Chrome-Extension/dev.yaml?branch=dev&label=dev%20build&style=flat-square)
+<a href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/issues"><img src="https://img.shields.io/github/issues/KochC/Foundry-Pro-Chrome-Extension?color=important&style=flat-square"/></a>
+  <a href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/pulls"><img src="https://img.shields.io/github/issues-pr/KochC/Foundry-Pro-Chrome-Extension?color=blueviolet&style=flat-square"/></a>
+![License](https://img.shields.io/github/license/KochC/Foundry-Pro-Chrome-Extension?style=flat-square)
+
+
 ## Purpose of the Extension
 The Foundry Pro Chrome Extension is a tool designed to enhance the user experience of developers working on the Palantir Foundry platform, which is a data integration, management, and analysis platform.
 
