@@ -63,6 +63,7 @@ jobs:
               run: |
                   rm -rf ./node_modules
                   rm -rf ./public
+                  rm -rf ./src
                   rm package-lock.json
                   rm package.json
                   rm tsconfig.json
