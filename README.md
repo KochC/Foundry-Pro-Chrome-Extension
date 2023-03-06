@@ -11,7 +11,6 @@
 
 #### Releases
 <a target="_blank" href="https://chrome.google.com/webstore/detail/foundry-pro/anjiaghdipilddabdekbchcgenjmofan?hl=en&authuser=0"><img src="https://img.shields.io/chrome-web-store/v/anjiaghdipilddabdekbchcgenjmofan?label=Chrome%20Web%20Store%20Stable&style=flat-square"></a>
-<a target="_blank" href="https://chrome.google.com/webstore/detail/foundry-pro/anjiaghdipilddabdekbchcgenjmofan?hl=en&authuser=0"><img src="https://img.shields.io/chrome-web-store/v/fpfaholcjdlanlobdhjiciebiaipgldg?label=Chrome%20Web%20Store%20Nightly&style=flat-square"></a>
 <a href="https://github.com/KochC/Foundry-Pro-Chrome-Extension/releases"><img src="https://img.shields.io/github/v/release/KochC/Foundry-Pro-Chrome-Extension?label=Packaged%20Release&style=flat-square"></a>
 
 #### Release environments
