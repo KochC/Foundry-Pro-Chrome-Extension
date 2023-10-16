@@ -1,3 +1,5 @@
+> *After months of inactivity and no contributions from the community, the project has been deprecated and will no longer receive updates or support.*
+
 ![logo](./icon/icon128.png)
 # Foundry Pro Chrome Extension
 
